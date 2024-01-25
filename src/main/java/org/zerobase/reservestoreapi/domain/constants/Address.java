@@ -1,7 +1,8 @@
 package org.zerobase.reservestoreapi.domain.constants;
 
-import jakarta.persistence.Embeddable;
 import lombok.Getter;
+
+import javax.persistence.Embeddable;
 
 
 @Getter
