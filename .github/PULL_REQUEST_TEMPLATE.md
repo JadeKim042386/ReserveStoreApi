@@ -1,26 +1,26 @@
-## 🔍️ 이 PR을 통해 해결하려는 문제
->어떤 기능을 구현한건지, 이슈 대응이라면 어떤 이슈인지 PR이 열리게 된 계기와 목적을 Reviewer 들이 쉽게 이해할 수 있도록 적어 주세요
->일감 백로그 링크나 다이어그램, 피그마를 첨부해도 좋아요
+## 🔍️ Purpose of this PR
+>Clearly describe the feature implemented or the issue addressed.  
+>Provide the context and purpose of opening this PR for reviewers to easily understand.
 -
 
-## ✨ 이 PR에서 핵심적으로 변경된 사항
-> 문제를 해결하면서 주요하게 변경된 사항들을 적어 주세요
+## ✨ Key Changes in this PR
+> Outline the major changes made during the problem-solving process.
 -
 
-## 🔖 핵심 변경 사항 외에 추가적으로 변경된 부분
-> 없으면 "없음" 이라고 기재해 주세요
+## 🔖 Additional Changes Beyond Key Modifications
+> If none, state "None".
 -
 
-### 📌 PR 진행 시 이러한 점들을 참고해 주세요
-* Reviewer 분들은 코드 리뷰 시 좋은 코드의 방향을 제시하되, 코드 수정을 강제하지 말아 주세요.
-* Reviewer 분들은 좋은 코드를 발견한 경우, 칭찬과 격려를 아끼지 말아 주세요.
-* Review는 특수한 케이스가 아니면 Reviewer로 지정된 시점 기준으로 3일 이내에 진행해 주세요.
-* Comment 작성 시 Prefix로 P1, P2, P3 를 적어 주시면 Assignee가 보다 명확하게 Comment에 대해 대응할 수 있어요
-    * P1 : 꼭 반영해 주세요 (Request Changes) - 이슈가 발생하거나 취약점이 발견되는 케이스 등
-    * P2: 적극적으로 고려해 주세요 (Request changes)
-    * P3: 웬만하면 반영해 주세요 (Comment)
-    * P4: 반영해도 좋고 넘어가도 좋습니다 (Approve)
-    * P5: 그냥 사소한 의견입니다 (Approve)
+### 📌 Notes for Reviewers during PR Progress
+* Reviewers, when conducting code reviews, guide towards good code practices without enforcing changes.
+* Encourage and acknowledge good code found during the review process.
+* Reviews should ideally be completed within 3 days from the reviewer assignment point unless there are specific circumstances.
+* When commenting, use the prefixes P1, P2, P3 to help assignees understand the priority:
+  * P1: Must be addressed (Request Changes) - for critical issues or vulnerabilities
+  * P2: Strongly consider addressing (Request Changes)
+  * P3: Consider addressing if feasible (Comment)
+  * P4: Good to address but optional (Approve)
+  * P5: Minor suggestion (Approve)
 
 ## Issue Tags
 - Closed | Fixed: #
