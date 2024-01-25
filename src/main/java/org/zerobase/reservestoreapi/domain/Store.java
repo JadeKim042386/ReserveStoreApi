@@ -1,10 +1,10 @@
 package org.zerobase.reservestoreapi.domain;
 
-import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
 
+import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.LinkedHashSet;
 import java.util.Set;

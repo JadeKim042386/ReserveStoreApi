@@ -1,9 +1,10 @@
 package org.zerobase.reservestoreapi.domain;
 
-import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.zerobase.reservestoreapi.domain.auditing.AuditingFields;
+
+import javax.persistence.*;
 
 @Getter
 @Entity
