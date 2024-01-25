@@ -41,7 +41,7 @@ public class Store {
     private Member member;
 
     @OneToMany(mappedBy = "store")
-    private Set<Reservation> reservations = new LinkedHashSet<>();
+    private Set<Booking> reservations = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "store")
     private Set<Review> reviews = new LinkedHashSet<>();

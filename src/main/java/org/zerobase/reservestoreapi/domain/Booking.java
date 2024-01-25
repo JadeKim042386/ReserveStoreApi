@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Reservation extends AuditingFields {
+public class Booking extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
