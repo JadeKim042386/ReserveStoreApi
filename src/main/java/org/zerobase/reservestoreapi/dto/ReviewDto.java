@@ -1,6 +1,7 @@
 package org.zerobase.reservestoreapi.dto;
 
 import org.zerobase.reservestoreapi.domain.Review;
+import org.zerobase.reservestoreapi.dto.auditing.UserDateAllAudit;
 
 public record ReviewDto(
         String content,

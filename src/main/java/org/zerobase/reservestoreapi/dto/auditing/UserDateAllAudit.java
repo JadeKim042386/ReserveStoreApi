@@ -1,4 +1,4 @@
-package org.zerobase.reservestoreapi.dto;
+package org.zerobase.reservestoreapi.dto.auditing;
 
 import org.zerobase.reservestoreapi.utils.LocalDateTimeUtils;
 

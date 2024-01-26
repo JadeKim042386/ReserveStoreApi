@@ -1,6 +1,7 @@
 package org.zerobase.reservestoreapi.dto;
 
 import org.zerobase.reservestoreapi.domain.Booking;
+import org.zerobase.reservestoreapi.dto.auditing.UserDateCreatedAudit;
 
 public record BookingDto(
         Boolean approve,
