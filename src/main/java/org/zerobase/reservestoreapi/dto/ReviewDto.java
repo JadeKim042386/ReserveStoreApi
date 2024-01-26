@@ -5,13 +5,13 @@ import org.zerobase.reservestoreapi.domain.Review;
 public record ReviewDto(
         String content,
         Integer rating,
-        UserDateAudit userDateAudit
+        UserDateAllAudit userDateAllAudit
 ) {
     public static ReviewDto fromEntity(Review review) {
         return new ReviewDto(
                 review.getContent(),
                 review.getRating(),
-                UserDateAudit.of(
+                UserDateAllAudit.of(
                         review.getCreatedAt(),
                         review.getModifiedAt(),
                         review.getCreatedBy(),

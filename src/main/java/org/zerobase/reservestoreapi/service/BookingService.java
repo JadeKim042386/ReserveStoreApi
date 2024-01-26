@@ -2,11 +2,13 @@ package org.zerobase.reservestoreapi.service;
 
 import org.zerobase.reservestoreapi.dto.BookingDto;
 
+import java.time.LocalDateTime;
+
 public interface BookingService {
     /**
      * Request booking by memberId and storeId
      */
-    BookingDto requestBooking(String username, Long storeId);
+    BookingDto requestBooking(String username, Long storeId, LocalDateTime requestTime);
 
     /**
      * Check visit booked store before 10 minutes and delete.
