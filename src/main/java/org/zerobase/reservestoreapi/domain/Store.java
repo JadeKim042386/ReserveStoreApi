@@ -1,7 +1,9 @@
 package org.zerobase.reservestoreapi.domain;
 
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
 
@@ -12,6 +14,7 @@ import java.util.Set;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Store {
     @Id
@@ -50,5 +53,17 @@ public class Store {
     @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "store")
     private Set<Review> reviews = new LinkedHashSet<>();
+
+    public Store(String name, LocalTime startTime, LocalTime lastTime, Integer intervalTime, StoreType storeType) {
+        this.name = name;
+        this.startTime = startTime;
+        this.lastTime = lastTime;
+        this.intervalTime = intervalTime;
+        this.storeType = storeType;
+    }
+
+    public static Store of(String name, LocalTime startTime, LocalTime lastTime, Integer intervalTime, StoreType storeType) {
+        return new Store(name, startTime, lastTime, intervalTime, storeType);
+    }
     //TODO: implement isNew
 }

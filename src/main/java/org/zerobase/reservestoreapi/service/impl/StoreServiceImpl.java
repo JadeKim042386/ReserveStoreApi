@@ -7,6 +7,7 @@ import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
 import org.zerobase.reservestoreapi.repository.StoreRepository;
 import org.zerobase.reservestoreapi.service.StoreService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -16,11 +17,15 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public List<StoreDto> searchStores() {
-        return null;
+        return storeRepository.findAll().stream()
+                .map(StoreDto::fromEntity).toList();
     }
 
     @Override
     public StoreWithReviewDto searchStore(Long storeId) {
-        return null;
+        //TODO: handling exception
+        return storeRepository.findById(storeId)
+                .map(StoreWithReviewDto::fromEntity)
+                .orElseThrow(EntityNotFoundException::new);
     }
 }

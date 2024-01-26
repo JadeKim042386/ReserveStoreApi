@@ -1,13 +1,16 @@
 package org.zerobase.reservestoreapi.domain;
 
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.zerobase.reservestoreapi.domain.auditing.AuditingFields;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Review extends AuditingFields {
     @Id
@@ -20,5 +23,14 @@ public class Review extends AuditingFields {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "storeId")
     private Store store;
+
+    public Review(String content, Integer rating) {
+        this.content = content;
+        this.rating = rating;
+    }
+
+    public static Review of(String content, Integer rating) {
+        return new Review(content, rating);
+    }
     //TODO: implement isNew
 }
