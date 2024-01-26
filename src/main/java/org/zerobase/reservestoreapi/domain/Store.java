@@ -40,9 +40,11 @@ public class Store {
     @JoinColumn(name = "memberId")
     private Member member;
 
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "store")
-    private Set<Booking> reservations = new LinkedHashSet<>();
+    private Set<Booking> bookings = new LinkedHashSet<>();
 
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "store")
     private Set<Review> reviews = new LinkedHashSet<>();
     //TODO: implement isNew
