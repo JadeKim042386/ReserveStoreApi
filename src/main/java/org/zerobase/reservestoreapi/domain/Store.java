@@ -2,6 +2,7 @@ package org.zerobase.reservestoreapi.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
 
 import javax.persistence.*;
@@ -22,10 +23,12 @@ public class Store {
     /**
      * possible reservation start time
      */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalTime startTime;
     /**
      * possible reservation last time
      */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalTime lastTime;
     /**
      * reservation interval time(minute)
