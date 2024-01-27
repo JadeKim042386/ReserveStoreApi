@@ -1,9 +1,7 @@
 package org.zerobase.reservestoreapi.service;
 
-import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
