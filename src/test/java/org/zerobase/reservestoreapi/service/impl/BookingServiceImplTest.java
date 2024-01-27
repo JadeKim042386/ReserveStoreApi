@@ -1,8 +1,7 @@
 package org.zerobase.reservestoreapi.service.impl;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -12,21 +11,26 @@ import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.repository.BookingRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 class BookingServiceImplTest {
     @InjectMocks private BookingServiceImpl bookingService;
     @Mock private BookingRepository bookingRepository;
 
     @DisplayName("Request booking by memberId and storeId")
+    @Order(0)
     @Test
     void requestBooking() throws IllegalAccessException {
         //given
@@ -44,6 +48,7 @@ class BookingServiceImplTest {
     }
 
     @DisplayName("Check visit booked store before 10 minutes and delete")
+    @Order(1)
     @Test
     void checkVisit() throws IllegalAccessException {
         //given
@@ -56,6 +61,52 @@ class BookingServiceImplTest {
         willDoNothing().given(bookingRepository).delete(any());
         //when
         bookingService.checkVisit(username, storeId);
+        //then
+    }
+
+    @DisplayName("search bookings by date")
+    @Order(2)
+    @Test
+    void searchBookingsByDate() throws IllegalAccessException {
+        //given
+        LocalDateTime now = LocalDate.now().atTime(0, 0, 0);
+        given(bookingRepository.findAllByCreatedAtBetween(any(), any()))
+                .willReturn(List.of(createBooking(now)));
+        //when
+        List<BookingDto> bookingDtos = bookingService.searchBookingsByDate(now);
+        //then
+        assertThat(bookingDtos.size()).isEqualTo(1);
+        assertThat(bookingDtos.get(0).userDateCreatedAudit().createdBy()).isEqualTo("admin");
+    }
+
+    @DisplayName("confirm booking when approve")
+    @Order(3)
+    @Test
+    void confirmBooking_approve() throws IllegalAccessException {
+        //given
+        Long storeId = 1L;
+        Boolean isApprove = true;
+        Booking booking = createBooking(LocalDateTime.now());
+        given(bookingRepository.findById(anyLong()))
+                .willReturn(Optional.of(booking));
+        //when
+        assertThatNoException()
+                .isThrownBy(() -> bookingService.confirmBooking(storeId, isApprove));
+        //then
+        assertThat(booking.getApprove()).isEqualTo(true);
+    }
+
+    @DisplayName("confirm booking when reject")
+    @Order(4)
+    @Test
+    void confirmBooking_reject() {
+        //given
+        Long storeId = 1L;
+        Boolean isApprove = false;
+        willDoNothing().given(bookingRepository).deleteById(anyLong());
+        //when
+        assertThatNoException()
+                .isThrownBy(() -> bookingService.confirmBooking(storeId, isApprove));
         //then
     }
 

@@ -1,6 +1,7 @@
 package org.zerobase.reservestoreapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
@@ -9,7 +10,9 @@ import org.zerobase.reservestoreapi.service.BookingService;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
@@ -44,5 +47,29 @@ public class BookingServiceImpl implements BookingService {
         }
         //delete booking
         bookingRepository.delete(booking);
+    }
+
+    @Override
+    public List<BookingDto> searchBookingsByDate(LocalDateTime date) {
+        //TODO: use queryDSL to filter approval
+        return bookingRepository.findAllByCreatedAtBetween(date, date.plusDays(1)).stream()
+                .map(BookingDto::fromEntity)
+                .toList();
+    }
+
+    @Override
+    public void confirmBooking(Long bookingId, Boolean isApprove) {
+        //approval when isApprove is true
+        if (isApprove) {
+            Booking booking = bookingRepository.findById(bookingId)
+                    .orElseThrow(EntityNotFoundException::new);
+            booking.approval();
+            log.debug("you're successfully approve booking {}", bookingId);
+        }
+        //delete(reject) when isApprove is false
+        else {
+            bookingRepository.deleteById(bookingId);
+            log.debug("you're successfully delete booking {}", bookingId);
+        }
     }
 }

@@ -17,6 +17,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public List<StoreDto> searchStores() {
+        //TODO: pagination
         return storeRepository.findAll().stream()
                 .map(StoreDto::fromEntity).toList();
     }
