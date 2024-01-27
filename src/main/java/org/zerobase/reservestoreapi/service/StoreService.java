@@ -16,9 +16,4 @@ public interface StoreService {
      * Get store detail info by storeId
      */
     StoreWithReviewDto searchStore(Long storeId);
-
-    /**
-     * Approve or Deny for request booking
-     */
-    BookingDto confirmBooking(Long storeId);
 }

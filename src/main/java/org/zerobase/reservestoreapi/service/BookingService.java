@@ -22,5 +22,10 @@ public interface BookingService {
     /**
      * Get bookings info by date(e.g.2024-01-01)
      */
-    List<BookingDto> searchBookingsByDate(LocalDate date);
+    List<BookingDto> searchBookingsByDate(LocalDateTime date);
+
+    /**
+     * Approve or Deny for request booking
+     */
+    void confirmBooking(Long storeId, Boolean isApprove);
 }

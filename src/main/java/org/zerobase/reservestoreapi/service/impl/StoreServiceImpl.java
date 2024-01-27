@@ -2,7 +2,6 @@ package org.zerobase.reservestoreapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
 import org.zerobase.reservestoreapi.repository.StoreRepository;
@@ -29,10 +28,5 @@ public class StoreServiceImpl implements StoreService {
         return storeRepository.findById(storeId)
                 .map(StoreWithReviewDto::fromEntity)
                 .orElseThrow(EntityNotFoundException::new);
-    }
-
-    @Override
-    public BookingDto confirmBooking(Long storeId) {
-        return null;
     }
 }

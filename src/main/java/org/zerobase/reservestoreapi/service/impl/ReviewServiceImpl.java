@@ -12,6 +12,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Float getAverageRatingByStoreId(Long storeId) {
-        return null;
+        return reviewRepository.getAverageRatingByStoreId(storeId);
     }
 }

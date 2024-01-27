@@ -31,5 +31,9 @@ public class Booking extends AuditingCreatedFields {
         return new Booking(approve);
     }
 
+    public void approval() {
+        this.approve = true;
+    }
+
     //TODO: implement isNew
 }
