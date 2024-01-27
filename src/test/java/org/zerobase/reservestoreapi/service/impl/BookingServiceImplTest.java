@@ -12,7 +12,9 @@ import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.repository.BookingRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,6 +58,16 @@ class BookingServiceImplTest {
         willDoNothing().given(bookingRepository).delete(any());
         //when
         bookingService.checkVisit(username, storeId);
+        //then
+    }
+
+    @DisplayName("search bookings by date")
+    @Test
+    void searchBookingsByDate() {
+        //given
+        LocalDate now = LocalDate.now();
+        //when
+        List<BookingDto> bookingDtos = bookingService.searchBookingsByDate(now);
         //then
     }
 

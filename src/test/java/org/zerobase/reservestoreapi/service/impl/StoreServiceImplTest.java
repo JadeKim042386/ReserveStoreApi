@@ -13,6 +13,7 @@ import org.zerobase.reservestoreapi.domain.Review;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.domain.constants.Address;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
+import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
 import org.zerobase.reservestoreapi.repository.StoreRepository;
@@ -57,6 +58,16 @@ class StoreServiceImplTest {
         //then
         assertThat(storeWithReviewDto.storeDto().name()).isEqualTo("name");
         assertThat(storeWithReviewDto.reviews().size()).isEqualTo(1);
+    }
+
+    @DisplayName("confirm booking")
+    @Test
+    void confirmBooking() {
+        //given
+        Long storeId = 1L;
+        //when
+        BookingDto bookingDto = storeService.confirmBooking(storeId);
+        //then
     }
 
     private static Store createStore() throws IllegalAccessException {

@@ -8,7 +8,9 @@ import org.zerobase.reservestoreapi.repository.BookingRepository;
 import org.zerobase.reservestoreapi.service.BookingService;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,5 +46,10 @@ public class BookingServiceImpl implements BookingService {
         }
         //delete booking
         bookingRepository.delete(booking);
+    }
+
+    @Override
+    public List<BookingDto> searchBookingsByDate(LocalDate date) {
+        return null;
     }
 }

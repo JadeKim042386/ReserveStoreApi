@@ -8,5 +8,5 @@ insert into store(member_id, name, store_type, start_time, last_time, interval_t
 insert into review(store_id, content, rating, created_at, modified_at, created_by, modified_by) values
 (1, 'content', 5, now(), now(), 'admin', 'admin');
 
-insert into booking(store_id, approve, created_at, modified_at, created_by, modified_by) values
-(1, TRUE, now(), now(), 'admin', 'admin');
+insert into booking(store_id, approve, created_at, created_by) values
+(1, TRUE, now(), 'admin');

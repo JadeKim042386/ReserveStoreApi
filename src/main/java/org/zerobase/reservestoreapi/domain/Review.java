@@ -18,6 +18,7 @@ public class Review extends AuditingAllFields {
     @EqualsAndHashCode.Include
     private Long id;
     private String content;
+    //TODO: declare specific range (0~5)
     private Integer rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
