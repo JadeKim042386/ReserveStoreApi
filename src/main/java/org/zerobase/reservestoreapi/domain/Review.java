@@ -1,9 +1,6 @@
 package org.zerobase.reservestoreapi.domain;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.zerobase.reservestoreapi.domain.auditing.AuditingAllFields;
 
 import javax.persistence.*;
@@ -17,8 +14,10 @@ public class Review extends AuditingAllFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
+    @Setter
     private String content;
     //TODO: declare specific range (0~5)
+    @Setter
     private Integer rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
