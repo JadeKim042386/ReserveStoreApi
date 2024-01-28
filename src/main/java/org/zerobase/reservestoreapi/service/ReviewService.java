@@ -17,7 +17,7 @@ public interface ReviewService {
     /**
      * Update review
      */
-    ReviewDto updateReview(ReviewRequest reviewRequest);
+    ReviewDto updateReview(ReviewRequest reviewRequest, Long reviewId);
 
     /**
      * Delete review
