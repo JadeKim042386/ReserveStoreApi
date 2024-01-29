@@ -68,7 +68,7 @@ class StoreServiceImplTest {
                 30,
                 StoreType.CAFFE
         );
-        Member member = Member.of(
+        Member member = Member.ofMember(
                 "username",
                 "pw",
                 "nickname",

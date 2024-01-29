@@ -28,7 +28,7 @@ class MemberServiceImplTest {
         //given
         String username = "username";
         given(memberRepository.findByUsername(anyString()))
-                .willReturn(Optional.of(Member.of(
+                .willReturn(Optional.of(Member.ofMember(
                         "admin",
                         "pw",
                         "nickname",

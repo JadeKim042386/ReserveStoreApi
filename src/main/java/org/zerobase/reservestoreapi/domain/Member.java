@@ -32,17 +32,22 @@ public class Member {
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private Store store;
 
-    public Member(String username, String password, String nickname, MemberRole memberRole, Address address, String phone) {
+    public Member(String username, String password, String nickname, MemberRole memberRole, Address address, String phone, Store store) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.memberRole = memberRole;
         this.address = address;
         this.phone = phone;
+        this.store = store;
     }
 
-    public static Member of(String username, String password, String nickname, MemberRole memberRole, Address address, String phone) {
-        return new Member(username, password, nickname, memberRole, address, phone);
+    public static Member ofStore(String username, String password, String nickname, MemberRole memberRole, Address address, String phone, Store store) {
+        return new Member(username, password, nickname, memberRole, address, phone, store);
+    }
+
+    public static Member ofMember(String username, String password, String nickname, MemberRole memberRole, Address address, String phone) {
+        return new Member(username, password, nickname, memberRole, address, phone, null);
     }
 
     //TODO: implement isNew
