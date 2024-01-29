@@ -2,7 +2,6 @@ package org.zerobase.reservestoreapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.zerobase.reservestoreapi.domain.Review;
 import org.zerobase.reservestoreapi.dto.ReviewDto;

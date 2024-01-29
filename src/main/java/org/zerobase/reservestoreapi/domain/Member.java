@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.zerobase.reservestoreapi.domain.constants.Address;
+import org.zerobase.reservestoreapi.domain.constants.MemberRole;
 
 import javax.persistence.*;
 
@@ -21,6 +22,8 @@ public class Member {
     private String username;
     private String password;
     private String nickname;
+    @Enumerated(value = EnumType.STRING)
+    private MemberRole memberRole;
 
     @Embedded
     private Address address;
@@ -29,16 +32,22 @@ public class Member {
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private Store store;
 
-    public Member(String username, String password, String nickname, Address address, String phone) {
+    public Member(String username, String password, String nickname, MemberRole memberRole, Address address, String phone, Store store) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.memberRole = memberRole;
         this.address = address;
         this.phone = phone;
+        this.store = store;
     }
 
-    public static Member of(String username, String password, String nickname, Address address, String phone) {
-        return new Member(username, password, nickname, address, phone);
+    public static Member ofStore(String username, String password, String nickname, MemberRole memberRole, Address address, String phone, Store store) {
+        return new Member(username, password, nickname, memberRole, address, phone, store);
+    }
+
+    public static Member ofMember(String username, String password, String nickname, MemberRole memberRole, Address address, String phone) {
+        return new Member(username, password, nickname, memberRole, address, phone, null);
     }
 
     //TODO: implement isNew

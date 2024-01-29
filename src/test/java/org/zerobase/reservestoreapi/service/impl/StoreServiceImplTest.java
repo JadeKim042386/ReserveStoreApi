@@ -12,6 +12,7 @@ import org.zerobase.reservestoreapi.domain.Member;
 import org.zerobase.reservestoreapi.domain.Review;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.domain.constants.Address;
+import org.zerobase.reservestoreapi.domain.constants.MemberRole;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
 import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
@@ -67,10 +68,11 @@ class StoreServiceImplTest {
                 30,
                 StoreType.CAFFE
         );
-        Member member = Member.of(
+        Member member = Member.ofMember(
                 "username",
                 "pw",
                 "nickname",
+                MemberRole.MEMBER,
                 Address.of("12345", "street", "detail"),
                 "01012341234"
         );
