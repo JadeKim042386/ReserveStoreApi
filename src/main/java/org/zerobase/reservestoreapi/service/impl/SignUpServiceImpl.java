@@ -31,8 +31,24 @@ public class SignUpServiceImpl implements SignUpService {
         memberRepository.save(partnerSignUpRequest.signUpRequest().toStoreMemberEntity(store));
     }
 
+    @Override
+    public void isExistsNickname(String nickname) {
+        if (memberRepository.existsByNickname(nickname)) {
+            //TODO: exception handle
+            throw new RuntimeException("already exists nickname");
+        }
+    }
+
+    @Override
+    public void isExistsStoreName(String storeName) {
+        if (storeRepository.existsByName(storeName)) {
+            //TODO: exception handle
+            throw new RuntimeException("already exists store name");
+        }
+    }
+
     /**
-     * Validation username
+     * Check already exists username
      */
     private void isExistsUsername(String username) {
         if (memberRepository.existsByUsername(username)) {
@@ -41,13 +57,6 @@ public class SignUpServiceImpl implements SignUpService {
         }
     }
 
-    /**
-     * Validation store name
-     */
-    private void isExistsStoreName(String storeName) {
-        if (storeRepository.existsByName(storeName)) {
-            //TODO: exception handle
-            throw new RuntimeException("already exists store name");
-        }
-    }
+
+
 }

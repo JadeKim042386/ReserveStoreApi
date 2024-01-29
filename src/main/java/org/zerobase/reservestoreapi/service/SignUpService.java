@@ -13,4 +13,14 @@ public interface SignUpService {
      * Store sign up
      */
     void partnerSignUp(PartnerSignUpRequest signUpRequest);
+
+    /**
+     * Check already exists nickname
+     */
+    void isExistsNickname(String nickname);
+
+    /**
+     * Check already exists store name
+     */
+    void isExistsStoreName(String storeName);
 }
