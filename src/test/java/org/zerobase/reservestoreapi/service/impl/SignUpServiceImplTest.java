@@ -1,6 +1,5 @@
 package org.zerobase.reservestoreapi.service.impl;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
-import org.zerobase.reservestoreapi.domain.Member;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.domain.constants.MemberRole;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
@@ -19,8 +17,9 @@ import org.zerobase.reservestoreapi.repository.StoreRepository;
 
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ActiveProfiles("test")
@@ -38,23 +37,9 @@ class SignUpServiceImplTest {
         given(memberRepository.save(any()))
                 .willReturn(signUpRequest.toMemberEntity());
         //when
-        Assertions.assertThatNoException()
+        assertThatNoException()
                         .isThrownBy(() -> signUpService.signUp(signUpRequest));
         //then
-    }
-
-    private static SignUpRequest createSignUpRequest() {
-        SignUpRequest signUpRequest = new SignUpRequest(
-                "username",
-                "pw",
-                "nickname",
-                MemberRole.MEMBER,
-                "zipcode",
-                "street",
-                "detail",
-                "01011111111"
-        );
-        return signUpRequest;
     }
 
     @DisplayName("store sign up")
@@ -75,8 +60,47 @@ class SignUpServiceImplTest {
         given(memberRepository.save(any()))
                 .willReturn(partnerSignUpRequest.signUpRequest().toStoreMemberEntity(store));
         //when
-        Assertions.assertThatNoException()
+        assertThatNoException()
                 .isThrownBy(() -> signUpService.partnerSignUp(partnerSignUpRequest));
         //then
+    }
+
+    @DisplayName("check already exists nickname")
+    @Test
+    void isExistsNickname() {
+        //given
+        String nickname = "nickname";
+        given(memberRepository.existsByNickname(anyString()))
+                .willReturn(false);
+        //when
+        assertThatNoException()
+                .isThrownBy(() -> signUpService.isExistsNickname(nickname));
+        //then
+    }
+
+    @DisplayName("check already exists store name")
+    @Test
+    void isExistsStoreName() {
+        //given
+        String storeName = "store";
+        given(storeRepository.existsByName(anyString()))
+                .willReturn(false);
+        //when
+        assertThatNoException()
+                .isThrownBy(() -> signUpService.isExistsStoreName(storeName));
+        //then
+    }
+
+    private static SignUpRequest createSignUpRequest() {
+        return new SignUpRequest(
+                "username",
+                "pw",
+                "nickname",
+                MemberRole.MEMBER,
+                "zipcode",
+                "street",
+                "detail",
+                "01011111111"
+        );
     }
 }
