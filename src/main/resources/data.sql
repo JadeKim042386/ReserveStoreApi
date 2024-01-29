@@ -1,6 +1,6 @@
-insert into member(username, password, nickname, zipcode, street, detail, phone) values
-('admin', 'pw', 'admin', '12345', 'street', 'detail', '01011111111'),
-('store', 'pw', 'store', '12345', 'street', 'detail', '01011111111');
+insert into member(username, password, nickname, member_role, zipcode, street, detail, phone) values
+('admin', '{noop}pw', 'admin', 'ADMIN', '12345', 'street', 'detail', '01011111111'),
+('store', '{noop}pw', 'store', 'STORE', '12345', 'street', 'detail', '01011111111');
 
 insert into store(member_id, name, store_type, start_time, last_time, interval_time) values
 (2, 'caffe', 'CAFFE', '09:00', '18:00', 30);
