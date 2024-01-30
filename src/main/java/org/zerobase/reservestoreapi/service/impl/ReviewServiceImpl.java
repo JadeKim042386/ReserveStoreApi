@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.zerobase.reservestoreapi.domain.Review;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
-import org.zerobase.reservestoreapi.dto.ReviewRequest;
+import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
 import org.zerobase.reservestoreapi.repository.ReviewRepository;
 import org.zerobase.reservestoreapi.service.ReviewService;
 

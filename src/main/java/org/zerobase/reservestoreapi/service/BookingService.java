@@ -1,9 +1,10 @@
 package org.zerobase.reservestoreapi.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface BookingService {
     /**
@@ -20,10 +21,10 @@ public interface BookingService {
     /**
      * Get bookings info by date(e.g.2024-01-01)
      */
-    List<BookingDto> searchBookingsByDate(LocalDateTime date);
+    Page<BookingDto> searchBookingsByDate(LocalDateTime date, Long storeId, Pageable pageable);
 
     /**
      * Approve or Deny for request booking
      */
-    void confirmBooking(Long storeId, Boolean isApprove);
+    void confirmBooking(Long storeId, Boolean isApprove, String storeName);
 }

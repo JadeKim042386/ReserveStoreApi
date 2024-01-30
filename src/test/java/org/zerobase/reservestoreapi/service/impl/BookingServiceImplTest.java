@@ -6,6 +6,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
@@ -70,13 +74,14 @@ class BookingServiceImplTest {
     void searchBookingsByDate() throws IllegalAccessException {
         //given
         LocalDateTime now = LocalDate.now().atTime(0, 0, 0);
-        given(bookingRepository.findAllByCreatedAtBetween(any(), any()))
-                .willReturn(List.of(createBooking(now)));
+        Pageable pageable = PageRequest.of(0, 10);
+        given(bookingRepository.findAllByCreatedAtBetweenAndStoreId(any(), any(), anyLong(), any()))
+                .willReturn(new PageImpl<>(List.of(createBooking(now)), pageable, 1));
         //when
-        List<BookingDto> bookingDtos = bookingService.searchBookingsByDate(now);
+        Page<BookingDto> bookingDtos = bookingService.searchBookingsByDate(now,  1L, pageable);
         //then
-        assertThat(bookingDtos.size()).isEqualTo(1);
-        assertThat(bookingDtos.get(0).userDateCreatedAudit().createdBy()).isEqualTo("admin");
+        assertThat(bookingDtos.getTotalElements()).isEqualTo(1);
+        assertThat(bookingDtos.getContent().get(0).userDateCreatedAudit().createdBy()).isEqualTo("admin");
     }
 
     @DisplayName("confirm booking when approve")
@@ -86,12 +91,13 @@ class BookingServiceImplTest {
         //given
         Long storeId = 1L;
         Boolean isApprove = true;
+        String storeName = "store";
         Booking booking = createBooking(LocalDateTime.now());
         given(bookingRepository.findById(anyLong()))
                 .willReturn(Optional.of(booking));
         //when
         assertThatNoException()
-                .isThrownBy(() -> bookingService.confirmBooking(storeId, isApprove));
+                .isThrownBy(() -> bookingService.confirmBooking(storeId, isApprove, storeName));
         //then
         assertThat(booking.getApprove()).isEqualTo(true);
     }
@@ -103,10 +109,11 @@ class BookingServiceImplTest {
         //given
         Long storeId = 1L;
         Boolean isApprove = false;
+        String storeName = "store";
         willDoNothing().given(bookingRepository).deleteById(anyLong());
         //when
         assertThatNoException()
-                .isThrownBy(() -> bookingService.confirmBooking(storeId, isApprove));
+                .isThrownBy(() -> bookingService.confirmBooking(storeId, isApprove, storeName));
         //then
     }
 

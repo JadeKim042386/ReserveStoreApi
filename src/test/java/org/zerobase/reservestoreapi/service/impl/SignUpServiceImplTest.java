@@ -10,10 +10,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.domain.constants.MemberRole;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
-import org.zerobase.reservestoreapi.dto.PartnerSignUpRequest;
-import org.zerobase.reservestoreapi.dto.SignUpRequest;
-import org.zerobase.reservestoreapi.repository.MemberRepository;
-import org.zerobase.reservestoreapi.repository.StoreRepository;
+import org.zerobase.reservestoreapi.dto.request.PartnerSignUpRequest;
+import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
+import org.zerobase.reservestoreapi.service.MemberService;
+import org.zerobase.reservestoreapi.service.StoreService;
 
 import java.time.LocalTime;
 
@@ -21,21 +21,23 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class SignUpServiceImplTest {
     @InjectMocks private SignUpServiceImpl signUpService;
-    @Mock private MemberRepository memberRepository;
-    @Mock private StoreRepository storeRepository;
+    @Mock private MemberService memberService;
+    @Mock private StoreService storeService;
 
     @DisplayName("member sign up")
     @Test
     void signUp() {
         //given
         SignUpRequest signUpRequest = createSignUpRequest();
-        given(memberRepository.save(any()))
-                .willReturn(signUpRequest.toMemberEntity());
+        given(memberService.isExistsUsername(anyString())).willReturn(false);
+        given(memberService.isExistsNickname(anyString())).willReturn(false);
+        willDoNothing().given(memberService).saveMember(any());
         //when
         assertThatNoException()
                         .isThrownBy(() -> signUpService.signUp(signUpRequest));
@@ -55,39 +57,15 @@ class SignUpServiceImplTest {
                 StoreType.BAR
         );
         Store store = partnerSignUpRequest.toStoreEntity();
-        given(storeRepository.save(any()))
+        given(memberService.isExistsUsername(anyString())).willReturn(false);
+        given(memberService.isExistsNickname(anyString())).willReturn(false);
+        given(storeService.isExistsStoreName(anyString())).willReturn(false);
+        given(storeService.saveStore(any()))
                 .willReturn(store);
-        given(memberRepository.save(any()))
-                .willReturn(partnerSignUpRequest.signUpRequest().toStoreMemberEntity(store));
+        willDoNothing().given(memberService).saveMember(any());
         //when
         assertThatNoException()
                 .isThrownBy(() -> signUpService.partnerSignUp(partnerSignUpRequest));
-        //then
-    }
-
-    @DisplayName("check already exists nickname")
-    @Test
-    void isExistsNickname() {
-        //given
-        String nickname = "nickname";
-        given(memberRepository.existsByNickname(anyString()))
-                .willReturn(false);
-        //when
-        assertThatNoException()
-                .isThrownBy(() -> signUpService.isExistsNickname(nickname));
-        //then
-    }
-
-    @DisplayName("check already exists store name")
-    @Test
-    void isExistsStoreName() {
-        //given
-        String storeName = "store";
-        given(storeRepository.existsByName(anyString()))
-                .willReturn(false);
-        //when
-        assertThatNoException()
-                .isThrownBy(() -> signUpService.isExistsStoreName(storeName));
         //then
     }
 

@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ActiveProfiles("test")
@@ -85,5 +87,18 @@ class StoreServiceImplTest {
         FieldUtils.writeField(review, "modifiedBy", "admin", true);
         store.getReviews().add(review);
         return store;
+    }
+
+    @DisplayName("check already exists store name")
+    @Test
+    void isExistsStoreName() {
+        //given
+        String storeName = "store";
+        given(storeRepository.existsByName(anyString()))
+                .willReturn(false);
+        //when
+        assertThatNoException()
+                .isThrownBy(() -> storeService.isExistsStoreName(storeName));
+        //then
     }
 }

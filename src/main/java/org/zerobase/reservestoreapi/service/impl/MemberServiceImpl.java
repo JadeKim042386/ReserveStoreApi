@@ -18,4 +18,20 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByUsername(username)
                 .orElseThrow(EntityExistsException::new);//TODO: exception handling
     }
+
+
+    @Override
+    public boolean isExistsUsername(String username) {
+        return memberRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean isExistsNickname(String nickname) {
+        return memberRepository.existsByNickname(nickname);
+    }
+
+    @Override
+    public void saveMember(Member member) {
+        memberRepository.save(member);
+    }
 }
