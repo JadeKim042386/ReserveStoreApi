@@ -1,5 +1,6 @@
 package org.zerobase.reservestoreapi.service.impl;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +15,7 @@ import org.zerobase.reservestoreapi.repository.MemberRepository;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
@@ -41,5 +43,18 @@ class MemberServiceImplTest {
         //then
         assertThat(member.getUsername()).isEqualTo("admin");
         assertThat(member.getNickname()).isEqualTo("nickname");
+    }
+
+    @DisplayName("check already exists nickname")
+    @Test
+    void isExistsNickname() {
+        //given
+        String nickname = "nickname";
+        given(memberRepository.existsByNickname(anyString()))
+                .willReturn(false);
+        //when
+        assertThatNoException()
+                .isThrownBy(() -> memberService.isExistsNickname(nickname));
+        //then
     }
 }

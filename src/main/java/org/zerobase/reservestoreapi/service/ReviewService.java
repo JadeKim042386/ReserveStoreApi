@@ -1,7 +1,7 @@
 package org.zerobase.reservestoreapi.service;
 
 import org.zerobase.reservestoreapi.dto.ReviewDto;
-import org.zerobase.reservestoreapi.dto.ReviewRequest;
+import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
 
 public interface ReviewService {
     /**

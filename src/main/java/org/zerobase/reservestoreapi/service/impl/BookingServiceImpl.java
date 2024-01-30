@@ -2,12 +2,15 @@ package org.zerobase.reservestoreapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.repository.BookingRepository;
 import org.zerobase.reservestoreapi.service.BookingService;
 
+import javax.management.RuntimeMBeanException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +23,6 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto requestBooking(String username, Long storeId, LocalDateTime requestTime) {
-        //TODO: required sign up
         //1. if already exists booking at requestTime, you can't
         //2. if already exists booking by username, you can't
         if (bookingRepository.existsByCreatedAtAndStoreId(requestTime, storeId)
@@ -41,34 +43,38 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findByCreatedByAndStoreId(username, storeId)
                 .orElseThrow(EntityNotFoundException::new);
         //TODO: check whether approve or not
+        //delete booking
+        bookingRepository.delete(booking);
         //check visit before 10 minutes
         if (booking.getCreatedAt().minusMinutes(10).isBefore(LocalDateTime.now())) {
             throw new RuntimeException("you're late. you should be visit before 10 minutes.");
         }
-        //delete booking
-        bookingRepository.delete(booking);
     }
 
     @Override
-    public List<BookingDto> searchBookingsByDate(LocalDateTime date) {
+    public Page<BookingDto> searchBookingsByDate(LocalDateTime date, Long storeId, Pageable pageable) {
         //TODO: use queryDSL to filter approval
-        return bookingRepository.findAllByCreatedAtBetween(date, date.plusDays(1)).stream()
-                .map(BookingDto::fromEntity)
-                .toList();
+        return bookingRepository.findAllByCreatedAtBetweenAndStoreId(date, date.plusDays(1), storeId, pageable)
+                .map(BookingDto::fromEntity);
     }
 
     @Override
-    public void confirmBooking(Long bookingId, Boolean isApprove) {
+    public void confirmBooking(Long bookingId, Boolean isApprove, String storeName) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(EntityNotFoundException::new);
+        //check requested store and booking store match
+        if (!booking.getStore().getName().equals(storeName)) {
+            //TODO: exception handle
+            throw new RuntimeException("requested store and booking store do not match!");
+        }
         //approval when isApprove is true
         if (isApprove) {
-            Booking booking = bookingRepository.findById(bookingId)
-                    .orElseThrow(EntityNotFoundException::new);
             booking.approval();
             log.debug("you're successfully approve booking {}", bookingId);
         }
         //delete(reject) when isApprove is false
         else {
-            bookingRepository.deleteById(bookingId);
+            bookingRepository.delete(booking);
             log.debug("you're successfully delete booking {}", bookingId);
         }
     }

@@ -2,6 +2,7 @@ package org.zerobase.reservestoreapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
 import org.zerobase.reservestoreapi.repository.StoreRepository;
@@ -23,10 +24,20 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public Store saveStore(Store store) {
+        return storeRepository.save(store);
+    }
+
+    @Override
     public StoreWithReviewDto searchStore(Long storeId) {
         //TODO: handling exception
         return storeRepository.findById(storeId)
                 .map(StoreWithReviewDto::fromEntity)
                 .orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public boolean isExistsStoreName(String storeName) {
+        return storeRepository.existsByName(storeName);
     }
 }

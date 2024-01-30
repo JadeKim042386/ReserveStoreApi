@@ -3,60 +3,58 @@ package org.zerobase.reservestoreapi.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.zerobase.reservestoreapi.domain.Store;
-import org.zerobase.reservestoreapi.dto.PartnerSignUpRequest;
-import org.zerobase.reservestoreapi.dto.SignUpRequest;
-import org.zerobase.reservestoreapi.repository.MemberRepository;
-import org.zerobase.reservestoreapi.repository.StoreRepository;
+import org.zerobase.reservestoreapi.dto.request.PartnerSignUpRequest;
+import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
+import org.zerobase.reservestoreapi.service.MemberService;
 import org.zerobase.reservestoreapi.service.SignUpService;
+import org.zerobase.reservestoreapi.service.StoreService;
 
 @Service
 @RequiredArgsConstructor
 public class SignUpServiceImpl implements SignUpService {
-    private final MemberRepository memberRepository;
-    private final StoreRepository storeRepository;
+    private final MemberService memberService;
+    private final StoreService storeService;
 
     @Override
     public void signUp(SignUpRequest signUpRequest) {
-        isExistsUsername(signUpRequest.username());
-        memberRepository.save(signUpRequest.toMemberEntity());
+        validationMemberCheck(
+                signUpRequest.username(),
+                signUpRequest.nickname()
+        );
+        memberService.saveMember(signUpRequest.toMemberEntity());
     }
 
     @Override
     public void partnerSignUp(PartnerSignUpRequest partnerSignUpRequest) {
-        isExistsUsername(partnerSignUpRequest.signUpRequest().username());
-        isExistsStoreName(partnerSignUpRequest.storeName());
+        validationStoreCheck(
+                partnerSignUpRequest.signUpRequest().username(),
+                partnerSignUpRequest.signUpRequest().nickname(),
+                partnerSignUpRequest.storeName()
+        );
         //save store
-        Store store = storeRepository.save(partnerSignUpRequest.toStoreEntity());
+        Store store = storeService.saveStore(partnerSignUpRequest.toStoreEntity());
         //save store member
-        memberRepository.save(partnerSignUpRequest.signUpRequest().toStoreMemberEntity(store));
+        memberService.saveMember(partnerSignUpRequest.signUpRequest().toStoreMemberEntity(store));
     }
 
-    @Override
-    public void isExistsNickname(String nickname) {
-        if (memberRepository.existsByNickname(nickname)) {
+    /**
+     * Check validation for username and nickname
+     */
+    private void validationMemberCheck(String username, String nickname) {
+        if (memberService.isExistsUsername(username) || memberService.isExistsNickname(nickname)) {
             //TODO: exception handle
-            throw new RuntimeException("already exists nickname");
-        }
-    }
-
-    @Override
-    public void isExistsStoreName(String storeName) {
-        if (storeRepository.existsByName(storeName)) {
-            //TODO: exception handle
-            throw new RuntimeException("already exists store name");
+            throw new RuntimeException("already exists nickname or username");
         }
     }
 
     /**
-     * Check already exists username
+     * Check validation for store name, username, nickname
      */
-    private void isExistsUsername(String username) {
-        if (memberRepository.existsByUsername(username)) {
+    private void validationStoreCheck(String username, String nickname, String storeName) {
+        validationMemberCheck(username, nickname);
+        if (storeService.isExistsStoreName(storeName)) {
             //TODO: exception handle
-            throw new RuntimeException("already exists username");
+            throw new RuntimeException("already exists store name");
         }
     }
-
-
-
 }

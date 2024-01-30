@@ -1,7 +1,7 @@
 package org.zerobase.reservestoreapi.service;
 
-import org.zerobase.reservestoreapi.dto.PartnerSignUpRequest;
-import org.zerobase.reservestoreapi.dto.SignUpRequest;
+import org.zerobase.reservestoreapi.dto.request.PartnerSignUpRequest;
+import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 
 public interface SignUpService {
     /**
@@ -13,14 +13,4 @@ public interface SignUpService {
      * Store sign up
      */
     void partnerSignUp(PartnerSignUpRequest signUpRequest);
-
-    /**
-     * Check already exists nickname
-     */
-    void isExistsNickname(String nickname);
-
-    /**
-     * Check already exists store name
-     */
-    void isExistsStoreName(String storeName);
 }

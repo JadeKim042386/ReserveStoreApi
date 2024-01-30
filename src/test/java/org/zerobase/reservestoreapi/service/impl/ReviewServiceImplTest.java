@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.zerobase.reservestoreapi.domain.Review;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
-import org.zerobase.reservestoreapi.dto.ReviewRequest;
+import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
 import org.zerobase.reservestoreapi.repository.ReviewRepository;
 
 import java.time.LocalDateTime;
