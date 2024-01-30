@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface BookingService {
     /**

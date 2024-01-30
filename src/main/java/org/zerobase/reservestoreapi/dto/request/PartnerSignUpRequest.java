@@ -2,7 +2,6 @@ package org.zerobase.reservestoreapi.dto.request;
 
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
-import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 
 import java.time.LocalTime;
 

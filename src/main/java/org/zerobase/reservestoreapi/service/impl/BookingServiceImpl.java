@@ -10,10 +10,8 @@ import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.repository.BookingRepository;
 import org.zerobase.reservestoreapi.service.BookingService;
 
-import javax.management.RuntimeMBeanException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @Service
