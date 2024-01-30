@@ -1,5 +1,7 @@
 package org.zerobase.reservestoreapi.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.zerobase.reservestoreapi.domain.Booking;
 
@@ -14,5 +16,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     Optional<Booking> findByCreatedByAndStoreId(String username, Long storeId);
 
-    List<Booking> findAllByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
+    Page<Booking> findAllByCreatedAtBetweenAndStoreId(LocalDateTime startDate, LocalDateTime endDate, Long storeId, Pageable pageable);
 }
