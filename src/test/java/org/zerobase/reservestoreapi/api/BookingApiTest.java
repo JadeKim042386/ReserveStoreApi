@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.TestExecutionEvent;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,7 +38,6 @@ class BookingApiTest {
     @MockBean private BookingService bookingService;
     @Mock private MemberService memberService;
 
-    @WithMockUser
     @Test
     void searchBookingsByDate() throws Exception {
         //given
@@ -54,7 +52,7 @@ class BookingApiTest {
         )
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()").value(1));
+                .andExpect(jsonPath("$.totalElements").value(1));
         //then
     }
 
