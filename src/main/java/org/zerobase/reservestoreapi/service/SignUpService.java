@@ -1,6 +1,5 @@
 package org.zerobase.reservestoreapi.service;
 
-import org.zerobase.reservestoreapi.dto.request.PartnerSignUpRequest;
 import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 
 public interface SignUpService {
@@ -12,5 +11,5 @@ public interface SignUpService {
     /**
      * Store sign up
      */
-    void partnerSignUp(PartnerSignUpRequest signUpRequest);
+    void partnerSignUp(SignUpRequest signUpRequest);
 }

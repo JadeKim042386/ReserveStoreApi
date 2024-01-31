@@ -8,8 +8,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.zerobase.reservestoreapi.domain.Store;
-import org.zerobase.reservestoreapi.domain.constants.MemberRole;
-import org.zerobase.reservestoreapi.domain.constants.StoreType;
 import org.zerobase.reservestoreapi.dto.request.PartnerSignUpRequest;
 import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 import org.zerobase.reservestoreapi.service.MemberService;
@@ -34,7 +32,7 @@ class SignUpServiceImplTest {
     @Test
     void signUp() {
         //given
-        SignUpRequest signUpRequest = createSignUpRequest();
+        SignUpRequest signUpRequest = createMemberSignUpRequest();
         given(memberService.isExistsUsername(anyString())).willReturn(false);
         given(memberService.isExistsNickname(anyString())).willReturn(false);
         willDoNothing().given(memberService).saveMember(any());
@@ -48,15 +46,8 @@ class SignUpServiceImplTest {
     @Test
     void partnerSignUp() {
         //given
-        PartnerSignUpRequest partnerSignUpRequest = new PartnerSignUpRequest(
-                createSignUpRequest(),
-                "store",
-                LocalTime.of(9, 0),
-                LocalTime.of(18, 0),
-                30,
-                StoreType.BAR
-        );
-        Store store = partnerSignUpRequest.toStoreEntity();
+        SignUpRequest partnerSignUpRequest = createPartnerSignUpRequest();
+        Store store = partnerSignUpRequest.getPartnerInfo().toStoreEntity();
         given(memberService.isExistsUsername(anyString())).willReturn(false);
         given(memberService.isExistsNickname(anyString())).willReturn(false);
         given(storeService.isExistsStoreName(anyString())).willReturn(false);
@@ -69,16 +60,37 @@ class SignUpServiceImplTest {
         //then
     }
 
-    private static SignUpRequest createSignUpRequest() {
+    private static SignUpRequest createMemberSignUpRequest() {
         return new SignUpRequest(
                 "username",
                 "pw",
                 "nickname",
-                MemberRole.MEMBER,
+                "MEMBER",
                 "zipcode",
                 "street",
                 "detail",
-                "01011111111"
+                "01011111111",
+                null
+        );
+    }
+
+    private static SignUpRequest createPartnerSignUpRequest() {
+        return new SignUpRequest(
+                "username",
+                "pw",
+                "nickname",
+                "MEMBER",
+                "zipcode",
+                "street",
+                "detail",
+                "01011111111",
+                new PartnerSignUpRequest(
+                        "store",
+                        LocalTime.of(9, 0),
+                        LocalTime.of(18, 0),
+                        30,
+                        "BAR"
+                )
         );
     }
 }

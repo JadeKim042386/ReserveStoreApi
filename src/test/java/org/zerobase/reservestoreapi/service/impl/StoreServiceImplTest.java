@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,8 +29,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 @ActiveProfiles("test")
@@ -43,8 +43,8 @@ class StoreServiceImplTest {
     void searchStores() throws IllegalAccessException {
         //given
         Pageable pageable = PageRequest.of(0, 10);
-        given(storeRepository.findAll())
-                .willReturn(List.of(createStore()));
+        given(storeRepository.findAll(any(Pageable.class)))
+                .willReturn(new PageImpl<>(List.of(createStore()), pageable, 1));
         //when
         Page<StoreDto> storeDtos = storeService.searchStores(pageable);
         //then

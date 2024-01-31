@@ -3,11 +3,11 @@ package org.zerobase.reservestoreapi.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.zerobase.reservestoreapi.domain.Store;
-import org.zerobase.reservestoreapi.dto.request.PartnerSignUpRequest;
 import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 import org.zerobase.reservestoreapi.service.MemberService;
 import org.zerobase.reservestoreapi.service.SignUpService;
 import org.zerobase.reservestoreapi.service.StoreService;
+import org.zerobase.reservestoreapi.utils.LocalDateTimeUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -18,23 +18,31 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     public void signUp(SignUpRequest signUpRequest) {
         validationMemberCheck(
-                signUpRequest.username(),
-                signUpRequest.nickname()
+                signUpRequest.getUsername(),
+                signUpRequest.getNickname()
         );
         memberService.saveMember(signUpRequest.toMemberEntity());
     }
 
     @Override
-    public void partnerSignUp(PartnerSignUpRequest partnerSignUpRequest) {
+    public void partnerSignUp(SignUpRequest signUpRequest) {
         validationStoreCheck(
-                partnerSignUpRequest.signUpRequest().username(),
-                partnerSignUpRequest.signUpRequest().nickname(),
-                partnerSignUpRequest.storeName()
+                signUpRequest.getUsername(),
+                signUpRequest.getNickname(),
+                signUpRequest.getPartnerInfo().getStoreName()
         );
+        //intervalTime must not be greater than lastTime - startTime
+        //TODO: exception handle
+        if (
+                LocalDateTimeUtils.diffMinutes(
+                        signUpRequest.getPartnerInfo().getStartTime(),
+                        signUpRequest.getPartnerInfo().getLastTime()
+                ) < signUpRequest.getPartnerInfo().getIntervalTime()
+        ) throw new RuntimeException("intervalTime must not be greater than lastTime - startTime");
         //save store
-        Store store = storeService.saveStore(partnerSignUpRequest.toStoreEntity());
+        Store store = storeService.saveStore(signUpRequest.getPartnerInfo().toStoreEntity());
         //save store member
-        memberService.saveMember(partnerSignUpRequest.signUpRequest().toStoreMemberEntity(store));
+        memberService.saveMember(signUpRequest.toStoreMemberEntity(store));
     }
 
     /**
