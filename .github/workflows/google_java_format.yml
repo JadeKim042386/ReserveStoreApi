@@ -1,12 +1,6 @@
 name: Format
 
-permissions:
-  contents: read
-  pull-requests: write
-
-on:
-  pull_request:
-    types: [opened]
+on: [ push, pull_request ]
 
 jobs:
 
