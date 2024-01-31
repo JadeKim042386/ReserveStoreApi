@@ -6,8 +6,6 @@ import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
 
-import java.util.List;
-
 public interface StoreService {
     /**
      * Get all stores
