@@ -1,4 +1,4 @@
-name: Format
+name: Google Java Format 🔧
 
 on: [ pull_request ]
 
@@ -13,9 +13,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.ref }}
+      # https://github.com/actions/setup-java?tab=readme-ov-file#supported-distributions
+      - uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: corretto
       - uses: axel-op/googlejavaformat-action@v3.6.0
         with:
-          files-excluded: "dto"
           args: "--skip-sorting-imports --replace"
           # Recommended if you use MacOS:
           github-token: ${{ secrets.GITHUB_TOKEN }}
