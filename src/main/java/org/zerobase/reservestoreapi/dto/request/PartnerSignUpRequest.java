@@ -20,28 +20,28 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PartnerSignUpRequest{
-    @NotBlank
-    private String storeName;
-    @NotNull
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalTime startTime;
-    @NotNull
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalTime lastTime;
-    @NotNull
-    @Min(10)
-    @Max(1440)
-    private Integer intervalTime;
-    @ValidEnum(enumClass = StoreType.class)
-    private String storeType;
-
-    public Store toStoreEntity() {
-        return Store.of(
-                storeName,
-                startTime,
-                lastTime,
-                intervalTime,
-                StoreType.valueOf(storeType)
-        );
-    }
+  @NotBlank
+  private String storeName;
+  @NotNull
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+  private LocalTime startTime;
+  @NotNull
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+  private LocalTime lastTime;
+  @NotNull
+  @Min(10)
+  @Max(1440)
+  private Integer intervalTime;
+  @ValidEnum(enumClass = StoreType.class)
+  private String storeType;
+  
+  public Store toStoreEntity() {
+    return Store.of(
+      storeName,
+      startTime,
+      lastTime,
+      intervalTime,
+      StoreType.valueOf(storeType)
+    );
+  }
 }

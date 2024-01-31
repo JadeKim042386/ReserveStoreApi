@@ -7,23 +7,23 @@ import javax.validation.ConstraintValidatorContext;
 
 @Slf4j
 public class EnumValidator implements ConstraintValidator<ValidEnum, String> {
-    private ValidEnum annotation;
+  private ValidEnum annotation;
 
-    @Override
-    public void initialize(ValidEnum constraintAnnotation) {
-        this.annotation = constraintAnnotation;
-    }
+  @Override
+  public void initialize(ValidEnum constraintAnnotation) {
+    this.annotation = constraintAnnotation;
+  }
 
-    @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
-        Enum<?>[] enums = this.annotation.enumClass().getEnumConstants();
-        if (enums != null) {
-            for (Enum<?> anEnum : enums) {
-                if (value.equalsIgnoreCase(anEnum.toString())) {
-                    return true;
-                }
-            }
+  @Override
+  public boolean isValid(String value, ConstraintValidatorContext context) {
+    Enum<?>[] enums = this.annotation.enumClass().getEnumConstants();
+    if (enums != null) {
+      for (Enum<?> anEnum : enums) {
+        if (value.equalsIgnoreCase(anEnum.toString())) {
+          return true;
         }
-        return false;
+      }
     }
+    return false;
+  }
 }

@@ -18,46 +18,46 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpRequest{
-    @NotBlank
-    private String username;
-    @NotBlank
-    private String password;
-    @NotBlank
-    private String nickname;
-    @ValidEnum(enumClass = MemberRole.class)
-    private String memberRole;
-    @NotBlank
-    @Size(min = 5, max = 5)
-    private String zipcode;
-    @NotBlank
-    private String street;
-    @NotBlank
-    private String detail;
-    @NotBlank
-    @Size(min = 9, max = 11)
-    private String phone;
-    private PartnerSignUpRequest partnerInfo;
-    
-    public Member toMemberEntity() {
-        return Member.ofMember(
-                username,
-                password,
-                nickname,
-                MemberRole.valueOf(memberRole),
-                Address.of(zipcode, street, detail),
-                phone
-        );
-    }
+  @NotBlank
+  private String username;
+  @NotBlank
+  private String password;
+  @NotBlank
+  private String nickname;
+  @ValidEnum(enumClass = MemberRole.class)
+  private String memberRole;
+  @NotBlank
+  @Size(min = 5, max = 5)
+  private String zipcode;
+  @NotBlank
+  private String street;
+  @NotBlank
+  private String detail;
+  @NotBlank
+  @Size(min = 9, max = 11)
+  private String phone;
+  private PartnerSignUpRequest partnerInfo;
+  
+  public Member toMemberEntity() {
+    return Member.ofMember(
+      username,
+      password,
+      nickname,
+      MemberRole.valueOf(memberRole),
+      Address.of(zipcode, street, detail),
+      phone
+    );
+  }
 
-    public Member toStoreMemberEntity(Store store) {
-        return Member.ofStore(
-                username,
-                password,
-                nickname,
-                MemberRole.valueOf(memberRole),
-                Address.of(zipcode, street, detail),
-                phone,
-                store
-        );
-    }
+  public Member toStoreMemberEntity(Store store) {
+    return Member.ofStore(
+      username,
+      password,
+      nickname,
+      MemberRole.valueOf(memberRole),
+      Address.of(zipcode, street, detail),
+      phone,
+      store
+    );
+  }
 }
