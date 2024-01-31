@@ -10,25 +10,24 @@ import java.util.Collection;
 import java.util.Set;
 
 public record MemberPrincipal(
-  Long id,
-  String username,
-  String password,
-  String nickname,
-  Address address,
-  String phone,
-  Collection<? extends GrantedAuthority> authorities
-) implements UserDetails {
+    Long id,
+    String username,
+    String password,
+    String nickname,
+    Address address,
+    String phone,
+    Collection<? extends GrantedAuthority> authorities)
+    implements UserDetails {
 
   public static MemberPrincipal fromEntity(Member member) {
     return new MemberPrincipal(
-      member.getId(),
-      member.getUsername(),
-      member.getPassword(),
-      member.getNickname(),
-      member.getAddress(),
-      member.getPhone(),
-      Set.of(new SimpleGrantedAuthority(member.getMemberRole().getName()))
-    );
+        member.getId(),
+        member.getUsername(),
+        member.getPassword(),
+        member.getNickname(),
+        member.getAddress(),
+        member.getPhone(),
+        Set.of(new SimpleGrantedAuthority(member.getMemberRole().getName())));
   }
 
   @Override
