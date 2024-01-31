@@ -14,41 +14,61 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Member {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
+  private Long id;
 
-    private String username;
-    private String password;
-    private String nickname;
-    @Enumerated(value = EnumType.STRING)
-    private MemberRole memberRole;
+  private String username;
+  private String password;
+  private String nickname;
 
-    @Embedded
-    private Address address;
-    private String phone;
+  @Enumerated(value = EnumType.STRING)
+  private MemberRole memberRole;
 
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
-    private Store store;
+  @Embedded private Address address;
+  private String phone;
 
-    public Member(String username, String password, String nickname, MemberRole memberRole, Address address, String phone, Store store) {
-        this.username = username;
-        this.password = password;
-        this.nickname = nickname;
-        this.memberRole = memberRole;
-        this.address = address;
-        this.phone = phone;
-        this.store = store;
-    }
+  @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+  private Store store;
 
-    public static Member ofStore(String username, String password, String nickname, MemberRole memberRole, Address address, String phone, Store store) {
-        return new Member(username, password, nickname, memberRole, address, phone, store);
-    }
+  public Member(
+      String username,
+      String password,
+      String nickname,
+      MemberRole memberRole,
+      Address address,
+      String phone,
+      Store store) {
+    this.username = username;
+    this.password = password;
+    this.nickname = nickname;
+    this.memberRole = memberRole;
+    this.address = address;
+    this.phone = phone;
+    this.store = store;
+  }
 
-    public static Member ofMember(String username, String password, String nickname, MemberRole memberRole, Address address, String phone) {
-        return new Member(username, password, nickname, memberRole, address, phone, null);
-    }
+  public static Member ofStore(
+      String username,
+      String password,
+      String nickname,
+      MemberRole memberRole,
+      Address address,
+      String phone,
+      Store store) {
+    return new Member(username, password, nickname, memberRole, address, phone, store);
+  }
 
-    //TODO: implement isNew
+  public static Member ofMember(
+      String username,
+      String password,
+      String nickname,
+      MemberRole memberRole,
+      Address address,
+      String phone) {
+    return new Member(username, password, nickname, memberRole, address, phone, null);
+  }
+
+  // TODO: implement isNew
 }

@@ -17,63 +17,63 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
-    private final BookingRepository bookingRepository;
+  private final BookingRepository bookingRepository;
 
-    @Override
-    public BookingDto requestBooking(String username, Long storeId, LocalDateTime requestTime) {
-        //1. if already exists booking at requestTime, you can't
-        //2. if already exists booking by username, you can't
-        if (bookingRepository.existsByCreatedAtAndStoreId(requestTime, storeId)
-                || bookingRepository.existsByCreatedByAndStoreId(username, storeId)) {
-            //TODO: handling exception
-            throw new RuntimeException("already exists booking");
-        }
-        //add booking
-        return BookingDto.fromEntity(
-                bookingRepository.save(
-                        Booking.of(false)
-                )
-        );
+  @Override
+  public BookingDto requestBooking(String username, Long storeId, LocalDateTime requestTime) {
+    // 1. if already exists booking at requestTime, you can't
+    // 2. if already exists booking by username, you can't
+    if (bookingRepository.existsByCreatedAtAndStoreId(requestTime, storeId)
+        || bookingRepository.existsByCreatedByAndStoreId(username, storeId)) {
+      // TODO: handling exception
+      throw new RuntimeException("already exists booking");
     }
+    // add booking
+    return BookingDto.fromEntity(bookingRepository.save(Booking.of(false)));
+  }
 
-    @Override
-    public void checkVisit(String username, Long storeId) {
-        Booking booking = bookingRepository.findByCreatedByAndStoreId(username, storeId)
-                .orElseThrow(EntityNotFoundException::new);
-        //TODO: check whether approve or not
-        //delete booking
-        bookingRepository.delete(booking);
-        //check visit before 10 minutes
-        if (booking.getCreatedAt().minusMinutes(10).isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("you're late. you should be visit before 10 minutes.");
-        }
+  @Override
+  public void checkVisit(String username, Long storeId) {
+    Booking booking =
+        bookingRepository
+            .findByCreatedByAndStoreId(username, storeId)
+            .orElseThrow(EntityNotFoundException::new);
+    // TODO: check whether approve or not
+    // delete booking
+    bookingRepository.delete(booking);
+    // check visit before 10 minutes
+    if (booking.getCreatedAt().minusMinutes(10).isBefore(LocalDateTime.now())) {
+      throw new RuntimeException("you're late. you should be visit before 10 minutes.");
     }
+  }
 
-    @Override
-    public Page<BookingDto> searchBookingsByDate(LocalDateTime date, Long storeId, Pageable pageable) {
-        //TODO: use queryDSL to filter approval
-        return bookingRepository.findAllByCreatedAtBetweenAndStoreId(date, date.plusDays(1), storeId, pageable)
-                .map(BookingDto::fromEntity);
-    }
+  @Override
+  public Page<BookingDto> searchBookingsByDate(
+      LocalDateTime date, Long storeId, Pageable pageable) {
+    // TODO: use queryDSL to filter approval
+    return bookingRepository
+        .findAllByCreatedAtBetweenAndStoreId(date, date.plusDays(1), storeId, pageable)
+        .map(BookingDto::fromEntity);
+  }
 
-    @Override
-    public void confirmBooking(Long bookingId, Boolean isApprove, String storeName) {
-        Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(EntityNotFoundException::new);
-        //check requested store and booking store match
-        if (!booking.getStore().getName().equals(storeName)) {
-            //TODO: exception handle
-            throw new RuntimeException("requested store and booking store do not match!");
-        }
-        //approval when isApprove is true
-        if (isApprove) {
-            booking.approval();
-            log.debug("you're successfully approve booking {}", bookingId);
-        }
-        //delete(reject) when isApprove is false
-        else {
-            bookingRepository.delete(booking);
-            log.debug("you're successfully delete booking {}", bookingId);
-        }
+  @Override
+  public void confirmBooking(Long bookingId, Boolean isApprove, String storeName) {
+    Booking booking =
+        bookingRepository.findById(bookingId).orElseThrow(EntityNotFoundException::new);
+    // check requested store and booking store match
+    if (!booking.getStore().getName().equals(storeName)) {
+      // TODO: exception handle
+      throw new RuntimeException("requested store and booking store do not match!");
     }
+    // approval when isApprove is true
+    if (isApprove) {
+      booking.approval();
+      log.debug("you're successfully approve booking {}", bookingId);
+    }
+    // delete(reject) when isApprove is false
+    else {
+      bookingRepository.delete(booking);
+      log.debug("you're successfully delete booking {}", bookingId);
+    }
+  }
 }

@@ -25,67 +25,65 @@ import static org.mockito.BDDMockito.willDoNothing;
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class ReviewServiceImplTest {
-    @InjectMocks private ReviewServiceImpl reviewService;
-    @Mock private ReviewRepository reviewRepository;
+  @InjectMocks private ReviewServiceImpl reviewService;
+  @Mock private ReviewRepository reviewRepository;
 
-    @DisplayName("get average rating")
-    @Test
-    void getAverageRatingByStoreId() {
-        //given
-        Long storeId = 1L;
-        given(reviewRepository.getAverageRatingByStoreId(anyLong()))
-                .willReturn(3.4f);
-        //when
-        Float rating = reviewService.getAverageRatingByStoreId(storeId);
-        //then
-        assertThat(rating).isEqualTo(3.4f);
-    }
+  @DisplayName("get average rating")
+  @Test
+  void getAverageRatingByStoreId() {
+    // given
+    Long storeId = 1L;
+    given(reviewRepository.getAverageRatingByStoreId(anyLong())).willReturn(3.4f);
+    // when
+    Float rating = reviewService.getAverageRatingByStoreId(storeId);
+    // then
+    assertThat(rating).isEqualTo(3.4f);
+  }
 
-    @DisplayName("write review")
-    @Test
-    void writeReview() throws IllegalAccessException {
-        //given
-        ReviewRequest reviewRequest = new ReviewRequest("content", 5);
-        given(reviewRepository.save(any())).willReturn(createReview("content", 5));
-        //when
-        ReviewDto reviewDto = reviewService.writeReview(reviewRequest);
-        //then
-        assertThat(reviewDto.content()).isEqualTo("content");
-        assertThat(reviewDto.rating()).isEqualTo(5);
-    }
+  @DisplayName("write review")
+  @Test
+  void writeReview() throws IllegalAccessException {
+    // given
+    ReviewRequest reviewRequest = new ReviewRequest("content", 5);
+    given(reviewRepository.save(any())).willReturn(createReview("content", 5));
+    // when
+    ReviewDto reviewDto = reviewService.writeReview(reviewRequest);
+    // then
+    assertThat(reviewDto.content()).isEqualTo("content");
+    assertThat(reviewDto.rating()).isEqualTo(5);
+  }
 
-    @DisplayName("update review")
-    @Test
-    void updateReview() throws IllegalAccessException {
-        //given
-        Long reviewId = 1L;
-        ReviewRequest reviewRequest = new ReviewRequest("update content", 5);
-        given(reviewRepository.findById(anyLong()))
-                .willReturn(Optional.of(createReview("content", 3)));
-        //when
-        ReviewDto updatedReviewDto = reviewService.updateReview(reviewRequest, reviewId);
-        //then
-        assertThat(updatedReviewDto.content()).isEqualTo("update content");
-        assertThat(updatedReviewDto.rating()).isEqualTo(5);
-    }
+  @DisplayName("update review")
+  @Test
+  void updateReview() throws IllegalAccessException {
+    // given
+    Long reviewId = 1L;
+    ReviewRequest reviewRequest = new ReviewRequest("update content", 5);
+    given(reviewRepository.findById(anyLong())).willReturn(Optional.of(createReview("content", 3)));
+    // when
+    ReviewDto updatedReviewDto = reviewService.updateReview(reviewRequest, reviewId);
+    // then
+    assertThat(updatedReviewDto.content()).isEqualTo("update content");
+    assertThat(updatedReviewDto.rating()).isEqualTo(5);
+  }
 
-    @DisplayName("delete review")
-    @Test
-    void deleteReview() {
-        //given
-        Long reviewId = 1L;
-        willDoNothing().given(reviewRepository).deleteById(anyLong());
-        //when
-        reviewService.deleteReview(reviewId);
-        //then
-    }
+  @DisplayName("delete review")
+  @Test
+  void deleteReview() {
+    // given
+    Long reviewId = 1L;
+    willDoNothing().given(reviewRepository).deleteById(anyLong());
+    // when
+    reviewService.deleteReview(reviewId);
+    // then
+  }
 
-    private Review createReview(String content, Integer rating) throws IllegalAccessException {
-        Review review = Review.of(content, rating);
-        FieldUtils.writeField(review, "createdAt", LocalDateTime.now(), true);
-        FieldUtils.writeField(review, "modifiedAt", LocalDateTime.now(), true);
-        FieldUtils.writeField(review, "createdBy", "admin", true);
-        FieldUtils.writeField(review, "modifiedBy", "admin", true);
-        return review;
-    }
+  private Review createReview(String content, Integer rating) throws IllegalAccessException {
+    Review review = Review.of(content, rating);
+    FieldUtils.writeField(review, "createdAt", LocalDateTime.now(), true);
+    FieldUtils.writeField(review, "modifiedAt", LocalDateTime.now(), true);
+    FieldUtils.writeField(review, "createdBy", "admin", true);
+    FieldUtils.writeField(review, "modifiedBy", "admin", true);
+    return review;
+  }
 }

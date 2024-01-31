@@ -17,53 +17,62 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Store {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
-    private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
+  private Long id;
 
-    /**
-     * possible reservation start time
-     */
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalTime startTime;
-    /**
-     * possible reservation last time
-     */
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalTime lastTime;
-    /**
-     * reservation interval time(minute)
-     * if intervalTime is 30 minutes, you can make possible reservation time like 12:00(startTime), 12:30, 13:00, ..., 18:00(lastTime)
-     */
-    private Integer intervalTime;
+  private String name;
 
-    @Enumerated(EnumType.STRING)
-    private StoreType storeType;
+  /** possible reservation start time */
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+  private LocalTime startTime;
 
-    @OneToOne
-    @JoinColumn(name = "memberId")
-    private Member member;
+  /** possible reservation last time */
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+  private LocalTime lastTime;
 
-    @OrderBy("createdAt DESC")
-    @OneToMany(mappedBy = "store")
-    private Set<Booking> bookings = new LinkedHashSet<>();
+  /**
+   * reservation interval time(minute) if intervalTime is 30 minutes, you can make possible
+   * reservation time like 12:00(startTime), 12:30, 13:00, ..., 18:00(lastTime)
+   */
+  private Integer intervalTime;
 
-    @OrderBy("createdAt DESC")
-    @OneToMany(mappedBy = "store")
-    private Set<Review> reviews = new LinkedHashSet<>();
+  @Enumerated(EnumType.STRING)
+  private StoreType storeType;
 
-    public Store(String name, LocalTime startTime, LocalTime lastTime, Integer intervalTime, StoreType storeType) {
-        this.name = name;
-        this.startTime = startTime;
-        this.lastTime = lastTime;
-        this.intervalTime = intervalTime;
-        this.storeType = storeType;
-    }
+  @OneToOne
+  @JoinColumn(name = "memberId")
+  private Member member;
 
-    public static Store of(String name, LocalTime startTime, LocalTime lastTime, Integer intervalTime, StoreType storeType) {
-        return new Store(name, startTime, lastTime, intervalTime, storeType);
-    }
-    //TODO: implement isNew
+  @OrderBy("createdAt DESC")
+  @OneToMany(mappedBy = "store")
+  private Set<Booking> bookings = new LinkedHashSet<>();
+
+  @OrderBy("createdAt DESC")
+  @OneToMany(mappedBy = "store")
+  private Set<Review> reviews = new LinkedHashSet<>();
+
+  public Store(
+      String name,
+      LocalTime startTime,
+      LocalTime lastTime,
+      Integer intervalTime,
+      StoreType storeType) {
+    this.name = name;
+    this.startTime = startTime;
+    this.lastTime = lastTime;
+    this.intervalTime = intervalTime;
+    this.storeType = storeType;
+  }
+
+  public static Store of(
+      String name,
+      LocalTime startTime,
+      LocalTime lastTime,
+      Integer intervalTime,
+      StoreType storeType) {
+    return new Store(name, startTime, lastTime, intervalTime, storeType);
+  }
+  // TODO: implement isNew
 }
