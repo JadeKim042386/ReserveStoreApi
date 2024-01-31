@@ -17,6 +17,10 @@ import org.zerobase.reservestoreapi.service.StoreService;
 public class StoreApi {
     private final StoreService storeService;
 
+    /**
+     * Look up all stores
+     * Returns Page based on SSR(Server Side Rendering). Therefore, the return type may change in the future.
+     */
     @GetMapping
     public ResponseEntity<?> searchAllStores(
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
@@ -26,6 +30,9 @@ public class StoreApi {
         );
     }
 
+    /**
+     * Look up specific store
+     */
     @GetMapping("/{storeId}")
     public ResponseEntity<?> searchStore(
             @PathVariable Long storeId
