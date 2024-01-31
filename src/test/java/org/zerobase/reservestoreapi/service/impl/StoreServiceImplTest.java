@@ -7,6 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.zerobase.reservestoreapi.domain.Member;
 import org.zerobase.reservestoreapi.domain.Review;
@@ -39,13 +42,14 @@ class StoreServiceImplTest {
     @Test
     void searchStores() throws IllegalAccessException {
         //given
+        Pageable pageable = PageRequest.of(0, 10);
         given(storeRepository.findAll())
                 .willReturn(List.of(createStore()));
         //when
-        List<StoreDto> storeDtos = storeService.searchStores();
+        Page<StoreDto> storeDtos = storeService.searchStores(pageable);
         //then
-        assertThat(storeDtos.size()).isEqualTo(1);
-        assertThat(storeDtos.get(0).name()).isEqualTo("name");
+        assertThat(storeDtos.getTotalElements()).isEqualTo(1);
+        assertThat(storeDtos.getContent().get(0).name()).isEqualTo("name");
     }
 
     @DisplayName("Get store detail info by storeId")

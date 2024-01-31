@@ -12,11 +12,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.zerobase.reservestoreapi.domain.Booking;
+import org.zerobase.reservestoreapi.domain.Store;
+import org.zerobase.reservestoreapi.domain.constants.StoreType;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.repository.BookingRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,12 +108,15 @@ class BookingServiceImplTest {
     @DisplayName("confirm booking when reject")
     @Order(4)
     @Test
-    void confirmBooking_reject() {
+    void confirmBooking_reject() throws IllegalAccessException {
         //given
         Long storeId = 1L;
         Boolean isApprove = false;
         String storeName = "store";
-        willDoNothing().given(bookingRepository).deleteById(anyLong());
+        Booking booking = createBooking(LocalDateTime.now());
+        given(bookingRepository.findById(anyLong()))
+                .willReturn(Optional.of(booking));
+        willDoNothing().given(bookingRepository).delete(any());
         //when
         assertThatNoException()
                 .isThrownBy(() -> bookingService.confirmBooking(storeId, isApprove, storeName));
@@ -121,6 +127,17 @@ class BookingServiceImplTest {
         Booking booking = Booking.of(false);
         FieldUtils.writeField(booking,"createdAt", now.plusMinutes(11), true);
         FieldUtils.writeField(booking,"createdBy", "admin", true);
+        FieldUtils.writeField(booking, "store", createStore(), true);
         return booking;
+    }
+
+    private static Store createStore() {
+        return Store.of(
+                "store",
+                LocalTime.of(9, 0),
+                LocalTime.of(18, 0),
+                30,
+                StoreType.BAR
+        );
     }
 }

@@ -39,7 +39,6 @@ class BookingApiTest {
     @MockBean private BookingService bookingService;
     @Mock private MemberService memberService;
 
-    @WithMockUser
     @Test
     void searchBookingsByDate() throws Exception {
         //given
@@ -54,7 +53,7 @@ class BookingApiTest {
         )
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()").value(1));
+                .andExpect(jsonPath("$.totalElements").value(1));
         //then
     }
 
