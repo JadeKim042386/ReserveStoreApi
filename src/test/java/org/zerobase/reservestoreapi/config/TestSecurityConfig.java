@@ -13,31 +13,27 @@ import static org.mockito.BDDMockito.given;
 
 @Import(SecurityConfig.class)
 public class TestSecurityConfig {
-    @MockBean private MemberService memberService;
+  @MockBean private MemberService memberService;
 
-    @BeforeTestMethod
-    public void securitySetUp() {
-        given(memberService.searchMemberByUsername("testUser"))
-                .willReturn(
-                        Member.ofMember(
-                                "testUser",
-                                "pw",
-                                "testUser",
-                                MemberRole.MEMBER,
-                                Address.of("zipcode", "street", "detail"),
-                                "01011111111"
-                        )
-                );
-        given(memberService.searchMemberByUsername("testStore"))
-                .willReturn(
-                        Member.ofMember(
-                                "testStore",
-                                "pw",
-                                "testStore",
-                                MemberRole.STORE,
-                                Address.of("zipcode", "street", "detail"),
-                                "01011111111"
-                        )
-                );
-    }
+  @BeforeTestMethod
+  public void securitySetUp() {
+    given(memberService.searchMemberByUsername("testUser"))
+        .willReturn(
+            Member.ofMember(
+                "testUser",
+                "pw",
+                "testUser",
+                MemberRole.MEMBER,
+                Address.of("zipcode", "street", "detail"),
+                "01011111111"));
+    given(memberService.searchMemberByUsername("testStore"))
+        .willReturn(
+            Member.ofMember(
+                "testStore",
+                "pw",
+                "testStore",
+                MemberRole.STORE,
+                Address.of("zipcode", "street", "detail"),
+                "01011111111"));
+  }
 }

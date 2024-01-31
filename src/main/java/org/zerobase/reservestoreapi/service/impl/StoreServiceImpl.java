@@ -15,29 +15,29 @@ import javax.persistence.EntityNotFoundException;
 @Service
 @RequiredArgsConstructor
 public class StoreServiceImpl implements StoreService {
-    private final StoreRepository storeRepository;
+  private final StoreRepository storeRepository;
 
-    @Override
-    public Page<StoreDto> searchStores(Pageable pageable) {
-        return storeRepository.findAll(pageable)
-                .map(StoreDto::fromEntity);
-    }
+  @Override
+  public Page<StoreDto> searchStores(Pageable pageable) {
+    return storeRepository.findAll(pageable).map(StoreDto::fromEntity);
+  }
 
-    @Override
-    public Store saveStore(Store store) {
-        return storeRepository.save(store);
-    }
+  @Override
+  public Store saveStore(Store store) {
+    return storeRepository.save(store);
+  }
 
-    @Override
-    public StoreWithReviewDto searchStore(Long storeId) {
-        //TODO: handling exception
-        return storeRepository.findById(storeId)
-                .map(StoreWithReviewDto::fromEntity)
-                .orElseThrow(EntityNotFoundException::new);
-    }
+  @Override
+  public StoreWithReviewDto searchStore(Long storeId) {
+    // TODO: handling exception
+    return storeRepository
+        .findById(storeId)
+        .map(StoreWithReviewDto::fromEntity)
+        .orElseThrow(EntityNotFoundException::new);
+  }
 
-    @Override
-    public boolean isExistsStoreName(String storeName) {
-        return storeRepository.existsByName(storeName);
-    }
+  @Override
+  public boolean isExistsStoreName(String storeName) {
+    return storeRepository.existsByName(storeName);
+  }
 }

@@ -13,27 +13,28 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Booking extends AuditingCreatedFields {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
-    private Boolean approve;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "storeId")
-    private Store store;
+  private Boolean approve;
 
-    public Booking(Boolean approve) {
-        this.approve = approve;
-    }
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "storeId")
+  private Store store;
 
-    public static Booking of(Boolean approve) {
-        return new Booking(approve);
-    }
+  public Booking(Boolean approve) {
+    this.approve = approve;
+  }
 
-    public void approval() {
-        this.approve = true;
-    }
+  public static Booking of(Boolean approve) {
+    return new Booking(approve);
+  }
 
-    //TODO: implement isNew
+  public void approval() {
+    this.approve = true;
+  }
+
+  // TODO: implement isNew
 }

@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ReserveStoreApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ReserveStoreApiApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(ReserveStoreApiApplication.class, args);
+  }
 }

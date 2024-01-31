@@ -15,38 +15,35 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
-    private final ReviewRepository reviewRepository;
+  private final ReviewRepository reviewRepository;
 
-    @Override
-    public Float getAverageRatingByStoreId(Long storeId) {
-        return reviewRepository.getAverageRatingByStoreId(storeId);
-    }
+  @Override
+  public Float getAverageRatingByStoreId(Long storeId) {
+    return reviewRepository.getAverageRatingByStoreId(storeId);
+  }
 
-    @Override
-    public ReviewDto writeReview(ReviewRequest reviewRequest) {
-        //TODO: check whether booking user or not
-        return ReviewDto.fromEntity(
-                reviewRepository.save(reviewRequest.toEntity())
-        );
-    }
+  @Override
+  public ReviewDto writeReview(ReviewRequest reviewRequest) {
+    // TODO: check whether booking user or not
+    return ReviewDto.fromEntity(reviewRepository.save(reviewRequest.toEntity()));
+  }
 
-    @Override
-    public ReviewDto updateReview(ReviewRequest reviewRequest, Long reviewId) {
-        //TODO: check whether writer or not
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(EntityNotFoundException::new);
-        if (StringUtils.hasText(reviewRequest.content())) {
-            review.setContent(reviewRequest.content());
-        }
-        if (!Objects.isNull(reviewRequest.rating())) {
-            review.setRating(reviewRequest.rating());
-        }
-        return ReviewDto.fromEntity(review);
+  @Override
+  public ReviewDto updateReview(ReviewRequest reviewRequest, Long reviewId) {
+    // TODO: check whether writer or not
+    Review review = reviewRepository.findById(reviewId).orElseThrow(EntityNotFoundException::new);
+    if (StringUtils.hasText(reviewRequest.content())) {
+      review.setContent(reviewRequest.content());
     }
+    if (!Objects.isNull(reviewRequest.rating())) {
+      review.setRating(reviewRequest.rating());
+    }
+    return ReviewDto.fromEntity(review);
+  }
 
-    @Override
-    public void deleteReview(Long reviewId) {
-        //TODO: check writer or store
-        reviewRepository.deleteById(reviewId);
-    }
+  @Override
+  public void deleteReview(Long reviewId) {
+    // TODO: check writer or store
+    reviewRepository.deleteById(reviewId);
+  }
 }

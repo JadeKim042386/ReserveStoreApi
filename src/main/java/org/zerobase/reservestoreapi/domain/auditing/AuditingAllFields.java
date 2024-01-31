@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 @ToString
 @MappedSuperclass
 public abstract class AuditingAllFields extends AuditingCreatedFields {
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @LastModifiedDate
-    @Column(nullable = false)
-    protected LocalDateTime modifiedAt;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+  @LastModifiedDate
+  @Column(nullable = false)
+  protected LocalDateTime modifiedAt;
 
-    @LastModifiedBy
-    @Column(nullable = false)
-    protected String modifiedBy;
+  @LastModifiedBy
+  @Column(nullable = false)
+  protected String modifiedBy;
 }

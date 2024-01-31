@@ -10,27 +10,26 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Review extends AuditingAllFields {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
-    @Setter
-    private String content;
-    //TODO: declare specific range (0~5)
-    @Setter
-    private Integer rating;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "storeId")
-    private Store store;
+  @Setter private String content;
+  // TODO: declare specific range (0~5)
+  @Setter private Integer rating;
 
-    public Review(String content, Integer rating) {
-        this.content = content;
-        this.rating = rating;
-    }
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "storeId")
+  private Store store;
 
-    public static Review of(String content, Integer rating) {
-        return new Review(content, rating);
-    }
-    //TODO: implement isNew
+  public Review(String content, Integer rating) {
+    this.content = content;
+    this.rating = rating;
+  }
+
+  public static Review of(String content, Integer rating) {
+    return new Review(content, rating);
+  }
+  // TODO: implement isNew
 }
