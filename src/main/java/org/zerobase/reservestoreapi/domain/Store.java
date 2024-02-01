@@ -41,8 +41,9 @@ public class Store {
   @Enumerated(EnumType.STRING)
   private StoreType storeType;
 
-  // TODO: add average rating and total review count fields -> update when write/update/delete
-  // review
+  // TODO: update when write/update/delete
+  @OneToOne(mappedBy = "store", cascade = CascadeType.ALL)
+  private StoreReviewInfo storeReviewInfo;
 
   @OneToOne
   @JoinColumn(name = "memberId")
@@ -67,6 +68,7 @@ public class Store {
     this.lastTime = lastTime;
     this.intervalTime = intervalTime;
     this.storeType = storeType;
+    this.storeReviewInfo = StoreReviewInfo.of(0f, 0);
   }
 
   public static Store of(
