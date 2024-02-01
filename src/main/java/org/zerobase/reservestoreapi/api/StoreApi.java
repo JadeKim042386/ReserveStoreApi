@@ -30,6 +30,6 @@ public class StoreApi {
   /** Look up specific store */
   @GetMapping("/{storeId}")
   public ResponseEntity<?> searchStore(@PathVariable Long storeId) {
-    return ResponseEntity.ok(storeService.searchStore(storeId));
+    return ResponseEntity.ok(storeService.searchStoreWithReviewDto(storeId));
   }
 }

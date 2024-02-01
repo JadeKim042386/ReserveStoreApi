@@ -83,12 +83,12 @@ class StoreApiTest {
   private Store createStore() throws IllegalAccessException {
     Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.BAR);
     FieldUtils.writeField(store, "member", createMember(), true);
-    store.getReviews().add(createReview());
+    store.getReviews().add(createReview(store));
     return store;
   }
 
-  private static Review createReview() throws IllegalAccessException {
-    Review review = Review.of("content", 5);
+  private Review createReview(Store store) throws IllegalAccessException {
+    Review review = Review.of("content", 5, store);
     FieldUtils.writeField(review, "createdAt", LocalDateTime.now(), true);
     FieldUtils.writeField(review, "modifiedAt", LocalDateTime.now(), true);
     FieldUtils.writeField(review, "createdBy", "admin", true);
