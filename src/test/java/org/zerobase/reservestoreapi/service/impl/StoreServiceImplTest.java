@@ -75,7 +75,7 @@ class StoreServiceImplTest {
             MemberRole.MEMBER,
             Address.of("12345", "street", "detail"),
             "01012341234");
-    Review review = Review.of("content", 5);
+    Review review = Review.of("content", 5, store);
     FieldUtils.writeField(store, "member", member, true);
     LocalDateTime now = LocalDateTime.now();
     FieldUtils.writeField(review, "createdAt", now, true);

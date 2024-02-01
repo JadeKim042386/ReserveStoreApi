@@ -82,7 +82,7 @@ class ReviewServiceImplTest {
   }
 
   private Review createReview(String content, Integer rating) throws IllegalAccessException {
-    Review review = Review.of(content, rating);
+    Review review = Review.of(content, rating, createStore());
     FieldUtils.writeField(review, "createdAt", LocalDateTime.now(), true);
     FieldUtils.writeField(review, "modifiedAt", LocalDateTime.now(), true);
     FieldUtils.writeField(review, "createdBy", "admin", true);

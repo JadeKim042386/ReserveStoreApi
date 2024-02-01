@@ -16,20 +16,23 @@ public class Review extends AuditingAllFields {
   private Long id;
 
   @Setter private String content;
-  // TODO: declare specific range (0~5)
-  @Setter private Integer rating;
+
+  @Column(columnDefinition = "int constraint rating_range check (rating between 0 and 5)")
+  @Setter
+  private Integer rating;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "storeId")
   private Store store;
 
-  public Review(String content, Integer rating) {
+  public Review(String content, Integer rating, Store store) {
     this.content = content;
     this.rating = rating;
+    this.store = store;
   }
 
-  public static Review of(String content, Integer rating) {
-    return new Review(content, rating);
+  public static Review of(String content, Integer rating, Store store) {
+    return new Review(content, rating, store);
   }
   // TODO: implement isNew
 }

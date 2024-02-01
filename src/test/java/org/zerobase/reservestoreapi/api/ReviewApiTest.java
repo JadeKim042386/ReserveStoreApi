@@ -99,7 +99,7 @@ class ReviewApiTest {
   }
 
   private Review createReview(String content, Integer rating) throws IllegalAccessException {
-    Review review = Review.of(content, rating);
+    Review review = Review.of(content, rating, createStore());
     FieldUtils.writeField(review, "createdAt", LocalDateTime.now(), true);
     FieldUtils.writeField(review, "modifiedAt", LocalDateTime.now(), true);
     FieldUtils.writeField(review, "createdBy", "admin", true);
@@ -117,7 +117,7 @@ class ReviewApiTest {
             MemberRole.MEMBER,
             Address.of("12345", "street", "detail"),
             "01012341234");
-    Review review = Review.of("content", 5);
+    Review review = Review.of("content", 5, store);
     FieldUtils.writeField(store, "member", member, true);
     LocalDateTime now = LocalDateTime.now();
     FieldUtils.writeField(review, "createdAt", now, true);
