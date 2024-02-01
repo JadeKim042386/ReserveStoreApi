@@ -26,9 +26,7 @@ public class ReviewServiceImpl implements ReviewService {
 
   @Override
   public ReviewDto writeReview(Store store, ReviewRequest reviewRequest) {
-    return ReviewDto.fromEntity(
-      reviewRepository.save(reviewRequest.toEntity(store))
-    );
+    return ReviewDto.fromEntity(reviewRepository.save(reviewRequest.toEntity(store)));
   }
 
   @Override
