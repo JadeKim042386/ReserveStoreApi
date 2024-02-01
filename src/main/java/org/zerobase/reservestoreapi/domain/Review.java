@@ -17,6 +17,7 @@ public class Review extends AuditingAllFields {
 
   @Setter private String content;
   // TODO: declare specific range (0~5)
+  @Column(columnDefinition = "int CONSTRAINT rating_range check (rating between 0 and 5)")
   @Setter private Integer rating;
 
   @ManyToOne(fetch = FetchType.LAZY)
