@@ -17,48 +17,44 @@ import org.zerobase.reservestoreapi.service.StoreService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/review")
-//TODO: bindingResult AOP handle
+// TODO: bindingResult AOP handle
 public class ReviewApi {
-    private final StoreService storeService;
-    private final ReviewService reviewService;
+  private final StoreService storeService;
+  private final ReviewService reviewService;
 
-    @PostMapping("/{storeId}")
-    public ResponseEntity<?> writeReview(
-            @PathVariable Long storeId,
-            @RequestBody @Validated ReviewRequest reviewRequest,
-            BindingResult bindingResult
-    ) {
-        if (bindingResult.hasErrors()) {
-            log.error("bindingResult: {}", bindingResult);
-            //TODO: exception handle
-            throw new RuntimeException();
-        }
-        // TODO: check whether booking user or not -> create log table
-        ReviewDto reviewDto = reviewService.writeReview(storeService.searchStore(storeId), reviewRequest);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(reviewDto);
+  @PostMapping("/{storeId}")
+  public ResponseEntity<?> writeReview(
+      @PathVariable Long storeId,
+      @RequestBody @Validated ReviewRequest reviewRequest,
+      BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      log.error("bindingResult: {}", bindingResult);
+      // TODO: exception handle
+      throw new RuntimeException();
     }
+    // TODO: check whether booking user or not -> create log table
+    ReviewDto reviewDto =
+        reviewService.writeReview(storeService.searchStore(storeId), reviewRequest);
+    return ResponseEntity.status(HttpStatus.CREATED).body(reviewDto);
+  }
 
-    @PutMapping("/{reviewId}")
-    public ResponseEntity<?> updateReview(
-            @PathVariable Long reviewId,
-            @RequestBody @Validated ReviewRequest reviewRequest,
-            BindingResult bindingResult
-    ) {
-        if (bindingResult.hasErrors()) {
-            log.error("bindingResult: {}", bindingResult);
-            //TODO: exception handle
-            throw new RuntimeException();
-        }
-        return ResponseEntity.ok(
-                reviewService.updateReview(reviewRequest, reviewId)
-        );
+  @PutMapping("/{reviewId}")
+  public ResponseEntity<?> updateReview(
+      @PathVariable Long reviewId,
+      @RequestBody @Validated ReviewRequest reviewRequest,
+      BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      log.error("bindingResult: {}", bindingResult);
+      // TODO: exception handle
+      throw new RuntimeException();
     }
+    return ResponseEntity.ok(reviewService.updateReview(reviewRequest, reviewId));
+  }
 
-    @DeleteMapping("/{reviewId}")
-    public ResponseEntity<?> deleteReview(@PathVariable Long reviewId) {
-        reviewService.deleteReview(reviewId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .body(ApiResponse.of("You're successfully delete review."));
-    }
+  @DeleteMapping("/{reviewId}")
+  public ResponseEntity<?> deleteReview(@PathVariable Long reviewId) {
+    reviewService.deleteReview(reviewId);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT)
+        .body(ApiResponse.of("You're successfully delete review."));
+  }
 }

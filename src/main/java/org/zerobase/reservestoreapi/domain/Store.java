@@ -41,7 +41,8 @@ public class Store {
   @Enumerated(EnumType.STRING)
   private StoreType storeType;
 
-  //TODO: add average rating and total review count fields -> update when write/update/delete review
+  // TODO: add average rating and total review count fields -> update when write/update/delete
+  // review
 
   @OneToOne
   @JoinColumn(name = "memberId")

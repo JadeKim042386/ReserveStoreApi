@@ -91,12 +91,6 @@ class ReviewServiceImplTest {
   }
 
   private Store createStore() {
-    return Store.of(
-            "store",
-            LocalTime.of(9, 0),
-            LocalTime.of(18, 0),
-            30,
-            StoreType.BAR
-    );
+    return Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.BAR);
   }
 }

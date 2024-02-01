@@ -10,9 +10,7 @@ public interface StoreService {
   /** Get all stores */
   Page<StoreDto> searchStores(Pageable pageable);
 
-  /**
-   * Get specific store
-   */
+  /** Get specific store */
   Store searchStore(Long storeId);
 
   Store saveStore(Store store);

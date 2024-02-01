@@ -8,7 +8,6 @@ import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
 import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
 import org.zerobase.reservestoreapi.repository.ReviewRepository;
-import org.zerobase.reservestoreapi.repository.StoreRepository;
 import org.zerobase.reservestoreapi.service.ReviewService;
 
 import javax.persistence.EntityNotFoundException;
@@ -19,7 +18,7 @@ import java.util.Objects;
 public class ReviewServiceImpl implements ReviewService {
   private final ReviewRepository reviewRepository;
 
-  //TODO: may be not using
+  // TODO: may be not using
   @Override
   public Float getAverageRatingByStoreId(Long storeId) {
     return reviewRepository.getAverageRatingByStoreId(storeId);

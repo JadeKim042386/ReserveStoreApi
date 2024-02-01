@@ -7,14 +7,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public record ReviewRequest(
-        @NotBlank
-        String content,
-        @NotNull
-        @Min(0)
-        @Max(5)
-        Integer rating)
-{
+public record ReviewRequest(@NotBlank String content, @NotNull @Min(0) @Max(5) Integer rating) {
   public Review toEntity() {
     return Review.of(content, rating);
   }
