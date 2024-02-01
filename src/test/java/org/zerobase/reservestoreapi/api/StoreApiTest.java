@@ -61,7 +61,7 @@ class StoreApiTest {
   void searchStore() throws Exception {
     // given
     Long storeId = 1L;
-    given(storeService.searchStore(anyLong())).willReturn(createStoreWithReviewDto());
+    given(storeService.searchStoreWithReviewDto(anyLong())).willReturn(createStoreWithReviewDto());
     // when
     mvc.perform(get("/api/v1/store/" + storeId))
         .andExpect(status().isOk())

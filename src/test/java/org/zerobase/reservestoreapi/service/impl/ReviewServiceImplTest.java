@@ -9,11 +9,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.zerobase.reservestoreapi.domain.Review;
+import org.zerobase.reservestoreapi.domain.Store;
+import org.zerobase.reservestoreapi.domain.constants.StoreType;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
 import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
 import org.zerobase.reservestoreapi.repository.ReviewRepository;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,7 +50,7 @@ class ReviewServiceImplTest {
     ReviewRequest reviewRequest = new ReviewRequest("content", 5);
     given(reviewRepository.save(any())).willReturn(createReview("content", 5));
     // when
-    ReviewDto reviewDto = reviewService.writeReview(reviewRequest);
+    ReviewDto reviewDto = reviewService.writeReview(createStore(), reviewRequest);
     // then
     assertThat(reviewDto.content()).isEqualTo("content");
     assertThat(reviewDto.rating()).isEqualTo(5);
@@ -85,5 +88,15 @@ class ReviewServiceImplTest {
     FieldUtils.writeField(review, "createdBy", "admin", true);
     FieldUtils.writeField(review, "modifiedBy", "admin", true);
     return review;
+  }
+
+  private Store createStore() {
+    return Store.of(
+            "store",
+            LocalTime.of(9, 0),
+            LocalTime.of(18, 0),
+            30,
+            StoreType.BAR
+    );
   }
 }
