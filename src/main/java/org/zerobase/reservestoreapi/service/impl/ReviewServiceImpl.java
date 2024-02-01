@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.zerobase.reservestoreapi.domain.Review;
+import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
 import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
 import org.zerobase.reservestoreapi.repository.ReviewRepository;
@@ -17,15 +18,17 @@ import java.util.Objects;
 public class ReviewServiceImpl implements ReviewService {
   private final ReviewRepository reviewRepository;
 
+  // TODO: may be not using
   @Override
   public Float getAverageRatingByStoreId(Long storeId) {
     return reviewRepository.getAverageRatingByStoreId(storeId);
   }
 
   @Override
-  public ReviewDto writeReview(ReviewRequest reviewRequest) {
-    // TODO: check whether booking user or not
-    return ReviewDto.fromEntity(reviewRepository.save(reviewRequest.toEntity()));
+  public ReviewDto writeReview(Store store, ReviewRequest reviewRequest) {
+    Review review = reviewRequest.toEntity();
+    store.getReviews().add(review);
+    return ReviewDto.fromEntity(review);
   }
 
   @Override

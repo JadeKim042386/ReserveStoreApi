@@ -23,17 +23,19 @@ public class StoreServiceImpl implements StoreService {
   }
 
   @Override
+  public Store searchStore(Long storeId) {
+    return storeRepository.findById(storeId).orElseThrow(EntityNotFoundException::new);
+  }
+
+  @Override
   public Store saveStore(Store store) {
     return storeRepository.save(store);
   }
 
   @Override
-  public StoreWithReviewDto searchStore(Long storeId) {
+  public StoreWithReviewDto searchStoreWithReviewDto(Long storeId) {
     // TODO: handling exception
-    return storeRepository
-        .findById(storeId)
-        .map(StoreWithReviewDto::fromEntity)
-        .orElseThrow(EntityNotFoundException::new);
+    return StoreWithReviewDto.fromEntity(searchStore(storeId));
   }
 
   @Override

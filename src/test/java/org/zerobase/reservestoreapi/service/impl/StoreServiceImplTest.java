@@ -59,7 +59,7 @@ class StoreServiceImplTest {
     Long storeId = 1L;
     given(storeRepository.findById(anyLong())).willReturn(Optional.of(createStore()));
     // when
-    StoreWithReviewDto storeWithReviewDto = storeService.searchStore(storeId);
+    StoreWithReviewDto storeWithReviewDto = storeService.searchStoreWithReviewDto(storeId);
     // then
     assertThat(storeWithReviewDto.storeDto().name()).isEqualTo("name");
     assertThat(storeWithReviewDto.reviews().size()).isEqualTo(1);
