@@ -83,6 +83,6 @@ public class BookingApi {
 
     bookingService.checkVisit(memberPrincipal.username(), storeId);
     return ResponseEntity.status(HttpStatus.NO_CONTENT)
-            .body(ApiResponse.of("you're successfully check visit."));
+        .body(ApiResponse.of("you're successfully check visit."));
   }
 }

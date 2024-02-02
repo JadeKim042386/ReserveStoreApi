@@ -26,8 +26,9 @@ public class StoreServiceImpl implements StoreService {
 
   @Override
   public Store searchStore(Long storeId) {
-    return storeRepository.findById(storeId)
-            .orElseThrow(() -> new StoreException(ErrorCode.NOT_FOUND_ENTITY));
+    return storeRepository
+        .findById(storeId)
+        .orElseThrow(() -> new StoreException(ErrorCode.NOT_FOUND_ENTITY));
   }
 
   @Override

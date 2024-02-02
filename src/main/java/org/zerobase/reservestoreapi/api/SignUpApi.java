@@ -60,12 +60,8 @@ public class SignUpApi {
     if (bindingResult.hasErrors()) {
       log.error("bindingResult: {}", bindingResult);
       throw new ValidatedException(
-              ErrorCode.INVALID_REQUEST,
-              ExceptionResponse.fromBindingResult(
-                      "validation error during sign up",
-                      bindingResult
-              )
-      );
+          ErrorCode.INVALID_REQUEST,
+          ExceptionResponse.fromBindingResult("validation error during sign up", bindingResult));
     }
     if (isPartnerSignUp) {
       signUpService.partnerSignUp(signUpRequest);

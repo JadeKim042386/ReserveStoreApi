@@ -33,12 +33,8 @@ public class ReviewApi {
     if (bindingResult.hasErrors()) {
       log.error("bindingResult: {}", bindingResult);
       throw new ValidatedException(
-              ErrorCode.INVALID_REQUEST,
-              ExceptionResponse.fromBindingResult(
-                      "validation error during add review",
-                      bindingResult
-              )
-      );
+          ErrorCode.INVALID_REQUEST,
+          ExceptionResponse.fromBindingResult("validation error during add review", bindingResult));
     }
     // TODO: check whether booking user or not -> create log table
     ReviewDto reviewDto =
@@ -55,12 +51,9 @@ public class ReviewApi {
     if (bindingResult.hasErrors()) {
       log.error("bindingResult: {}", bindingResult);
       throw new ValidatedException(
-              ErrorCode.INVALID_REQUEST,
-              ExceptionResponse.fromBindingResult(
-                      "validation error during update review",
-                      bindingResult
-              )
-      );
+          ErrorCode.INVALID_REQUEST,
+          ExceptionResponse.fromBindingResult(
+              "validation error during update review", bindingResult));
     }
     return ResponseEntity.ok(reviewService.updateReview(reviewRequest, reviewId, storeId));
   }
