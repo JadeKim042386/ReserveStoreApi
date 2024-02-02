@@ -4,16 +4,18 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Persistable;
 import org.zerobase.reservestoreapi.domain.constants.Address;
 import org.zerobase.reservestoreapi.domain.constants.MemberRole;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Member {
+public class Member implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -70,5 +72,8 @@ public class Member {
         return new Member(username, password, nickname, memberRole, address, phone, null);
     }
 
-    // TODO: implement isNew
+    @Override
+    public boolean isNew() {
+        return Objects.isNull(this.id);
+    }
 }

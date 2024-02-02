@@ -4,15 +4,17 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Persistable;
 import org.zerobase.reservestoreapi.domain.auditing.AuditingCreatedFields;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Booking extends AuditingCreatedFields {
+public class Booking extends AuditingCreatedFields implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -36,5 +38,8 @@ public class Booking extends AuditingCreatedFields {
         this.approve = true;
     }
 
-    // TODO: implement isNew
+    @Override
+    public boolean isNew() {
+        return Objects.isNull(this.id);
+    }
 }
