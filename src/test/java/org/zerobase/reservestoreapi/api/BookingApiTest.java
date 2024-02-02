@@ -48,7 +48,9 @@ class BookingApiTest {
             new PageImpl<>(
                 List.of(BookingDto.fromEntity(createBooking(LocalDateTime.now()))), pageable, 1));
     // when
-    mvc.perform(get("/api/v1/stores/" + storeId + "/bookings").param("date", LocalDate.now().toString()))
+    mvc.perform(
+            get("/api/v1/stores/" + storeId + "/bookings")
+                .param("date", LocalDate.now().toString()))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.totalElements").value(1));

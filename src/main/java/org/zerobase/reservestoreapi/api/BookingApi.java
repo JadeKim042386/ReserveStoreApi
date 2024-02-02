@@ -66,9 +66,7 @@ public class BookingApi {
    */
   @PutMapping("/{bookingId}")
   public ResponseEntity<?> confirmBooking(
-      @PathVariable Long storeId,
-      @PathVariable Long bookingId,
-      @RequestParam Boolean isApprove) {
+      @PathVariable Long storeId, @PathVariable Long bookingId, @RequestParam Boolean isApprove) {
 
     bookingService.confirmBooking(bookingId, isApprove, storeId);
     return ResponseEntity.ok(ApiResponse.of("you're successfully confirm."));
