@@ -1,15 +1,17 @@
 package org.zerobase.reservestoreapi.domain;
 
 import lombok.*;
+import org.springframework.data.domain.Persistable;
 import org.zerobase.reservestoreapi.domain.auditing.AuditingAllFields;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Review extends AuditingAllFields {
+public class Review extends AuditingAllFields implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -34,5 +36,9 @@ public class Review extends AuditingAllFields {
     public static Review of(String content, Integer rating, Store store) {
         return new Review(content, rating, store);
     }
-    // TODO: implement isNew
+
+    @Override
+    public boolean isNew() {
+        return Objects.isNull(this.id);
+    }
 }

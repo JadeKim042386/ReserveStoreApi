@@ -19,7 +19,6 @@ import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.service.ReviewService;
 import org.zerobase.reservestoreapi.service.StoreService;
 
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor

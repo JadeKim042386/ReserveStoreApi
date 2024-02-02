@@ -4,19 +4,21 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Persistable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Store {
+public class Store implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -78,5 +80,9 @@ public class Store {
             StoreType storeType) {
         return new Store(name, startTime, lastTime, intervalTime, storeType);
     }
-    // TODO: implement isNew
+
+    @Override
+    public boolean isNew() {
+        return Objects.isNull(this.id);
+    }
 }

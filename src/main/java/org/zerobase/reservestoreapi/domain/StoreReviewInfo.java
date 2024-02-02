@@ -1,14 +1,16 @@
 package org.zerobase.reservestoreapi.domain;
 
 import lombok.*;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class StoreReviewInfo {
+public class StoreReviewInfo implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -34,5 +36,9 @@ public class StoreReviewInfo {
     public static StoreReviewInfo of(Float averageRating, Integer reviewCount) {
         return new StoreReviewInfo(averageRating, reviewCount);
     }
-    // TODO: implement isNew
+
+    @Override
+    public boolean isNew() {
+        return Objects.isNull(this.id);
+    }
 }
