@@ -17,5 +17,5 @@ public interface BookingService {
   Page<BookingDto> searchBookingsByDate(LocalDateTime date, Long storeId, Pageable pageable);
 
   /** Approve or Deny for request booking */
-  void confirmBooking(Long storeId, Boolean isApprove, String storeName);
+  void confirmBooking(Long bookingId, Boolean isApprove, Long storeId);
 }
