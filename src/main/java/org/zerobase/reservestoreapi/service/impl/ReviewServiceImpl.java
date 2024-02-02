@@ -21,50 +21,52 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Transactional
 public class ReviewServiceImpl implements ReviewService {
-  private final ReviewRepository reviewRepository;
-  private final StoreReviewInfoRepository storeReviewInfoRepository;
+    private final ReviewRepository reviewRepository;
+    private final StoreReviewInfoRepository storeReviewInfoRepository;
 
-  @Override
-  public ReviewDto writeReview(Store store, ReviewRequest reviewRequest) {
-    ReviewDto reviewDto =
-        ReviewDto.fromEntity(reviewRepository.save(reviewRequest.toEntity(store)));
-    updateStoreReviewInfo(store.getId());
-    return reviewDto;
-  }
-
-  @Override
-  public ReviewDto updateReview(ReviewRequest reviewRequest, Long reviewId, Long storeId, String requestUsername) {
-    Review review = reviewRepository.findById(reviewId).orElseThrow(EntityNotFoundException::new);
-    // check whether writer or not
-    if (!review.getCreatedBy().equals(requestUsername)) {
-      throw new ReviewException(ErrorCode.NOT_WRITER);
-    }
-    if (StringUtils.hasText(reviewRequest.content())
-        && !reviewRequest.content().equals(review.getContent())) {
-      review.setContent(reviewRequest.content());
-    }
-    if (!Objects.isNull(reviewRequest.rating())
-        && !Objects.equals(reviewRequest.rating(), review.getRating())) {
-      review.setRating(reviewRequest.rating());
-      updateStoreReviewInfo(storeId);
+    @Override
+    public ReviewDto writeReview(Store store, ReviewRequest reviewRequest) {
+        ReviewDto reviewDto =
+                ReviewDto.fromEntity(reviewRepository.save(reviewRequest.toEntity(store)));
+        updateStoreReviewInfo(store.getId());
+        return reviewDto;
     }
 
-    return ReviewDto.fromEntity(review);
-  }
+    @Override
+    public ReviewDto updateReview(
+            ReviewRequest reviewRequest, Long reviewId, Long storeId, String requestUsername) {
+        Review review =
+                reviewRepository.findById(reviewId).orElseThrow(EntityNotFoundException::new);
+        // check whether writer or not
+        if (!review.getCreatedBy().equals(requestUsername)) {
+            throw new ReviewException(ErrorCode.NOT_WRITER);
+        }
+        if (StringUtils.hasText(reviewRequest.content())
+                && !reviewRequest.content().equals(review.getContent())) {
+            review.setContent(reviewRequest.content());
+        }
+        if (!Objects.isNull(reviewRequest.rating())
+                && !Objects.equals(reviewRequest.rating(), review.getRating())) {
+            review.setRating(reviewRequest.rating());
+            updateStoreReviewInfo(storeId);
+        }
 
-  @Override
-  public void deleteReview(Long reviewId, Long storeId, String requestUsername) {
-    reviewRepository.deleteById(reviewId);
-    updateStoreReviewInfo(storeId);
-  }
+        return ReviewDto.fromEntity(review);
+    }
 
-  @Override
-  public boolean isExistsReviewByUsername(Long reviewId, String username) {
-    return reviewRepository.existsByIdAndCreatedBy(reviewId, username);
-  }
+    @Override
+    public void deleteReview(Long reviewId, Long storeId, String requestUsername) {
+        reviewRepository.deleteById(reviewId);
+        updateStoreReviewInfo(storeId);
+    }
 
-  /** Update average rating, review count of specific store when write/update/delete review */
-  private void updateStoreReviewInfo(Long storeId) {
-    storeReviewInfoRepository.updateStoreReviewInfoByStoreId(storeId);
-  }
+    @Override
+    public boolean isExistsReviewByUsername(Long reviewId, String username) {
+        return reviewRepository.existsByIdAndCreatedBy(reviewId, username);
+    }
+
+    /** Update average rating, review count of specific store when write/update/delete review */
+    private void updateStoreReviewInfo(Long storeId) {
+        storeReviewInfoRepository.updateStoreReviewInfoByStoreId(storeId);
+    }
 }

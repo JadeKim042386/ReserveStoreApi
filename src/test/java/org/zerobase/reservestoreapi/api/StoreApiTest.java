@@ -38,71 +38,72 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(TestSecurityConfig.class)
 @WebMvcTest(StoreApi.class)
 class StoreApiTest {
-  @Autowired private MockMvc mvc;
-  @MockBean private StoreService storeService;
+    @Autowired private MockMvc mvc;
+    @MockBean private StoreService storeService;
 
-  @DisplayName("search all stores")
-  @Test
-  void searchAllStores() throws Exception {
-    // given
-    Pageable pageable = PageRequest.of(0, 10);
-    given(storeService.searchStores(any()))
-        .willReturn(new PageImpl<>(List.of(createStoreDto()), pageable, 1));
-    // when
-    mvc.perform(get("/api/v1/stores"))
-        .andExpect(status().isOk())
-        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.totalElements").value(1));
-    // then
-  }
+    @DisplayName("search all stores")
+    @Test
+    void searchAllStores() throws Exception {
+        // given
+        Pageable pageable = PageRequest.of(0, 10);
+        given(storeService.searchStores(any()))
+                .willReturn(new PageImpl<>(List.of(createStoreDto()), pageable, 1));
+        // when
+        mvc.perform(get("/api/v1/stores"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.totalElements").value(1));
+        // then
+    }
 
-  @DisplayName("search specific store")
-  @Test
-  void searchStore() throws Exception {
-    // given
-    Long storeId = 1L;
-    given(storeService.searchStoreWithReviewDto(anyLong())).willReturn(createStoreWithReviewDto());
-    // when
-    mvc.perform(get("/api/v1/stores/" + storeId))
-        .andExpect(status().isOk())
-        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.storeDto.name").value("store"))
-        .andExpect(jsonPath("$.reviews.size()").value(1));
-    // then
-  }
+    @DisplayName("search specific store")
+    @Test
+    void searchStore() throws Exception {
+        // given
+        Long storeId = 1L;
+        given(storeService.searchStoreWithReviewDto(anyLong()))
+                .willReturn(createStoreWithReviewDto());
+        // when
+        mvc.perform(get("/api/v1/stores/" + storeId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.storeDto.name").value("store"))
+                .andExpect(jsonPath("$.reviews.size()").value(1));
+        // then
+    }
 
-  private StoreWithReviewDto createStoreWithReviewDto() throws IllegalAccessException {
-    return StoreWithReviewDto.fromEntity(createStore());
-  }
+    private StoreWithReviewDto createStoreWithReviewDto() throws IllegalAccessException {
+        return StoreWithReviewDto.fromEntity(createStore());
+    }
 
-  private StoreDto createStoreDto() throws IllegalAccessException {
-    Store store = createStore();
-    return StoreDto.fromEntity(store);
-  }
+    private StoreDto createStoreDto() throws IllegalAccessException {
+        Store store = createStore();
+        return StoreDto.fromEntity(store);
+    }
 
-  private Store createStore() throws IllegalAccessException {
-    Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.BAR);
-    FieldUtils.writeField(store, "member", createMember(), true);
-    store.getReviews().add(createReview(store));
-    return store;
-  }
+    private Store createStore() throws IllegalAccessException {
+        Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.BAR);
+        FieldUtils.writeField(store, "member", createMember(), true);
+        store.getReviews().add(createReview(store));
+        return store;
+    }
 
-  private Review createReview(Store store) throws IllegalAccessException {
-    Review review = Review.of("content", 5, store);
-    FieldUtils.writeField(review, "createdAt", LocalDateTime.now(), true);
-    FieldUtils.writeField(review, "modifiedAt", LocalDateTime.now(), true);
-    FieldUtils.writeField(review, "createdBy", "admin", true);
-    FieldUtils.writeField(review, "modifiedBy", "admin", true);
-    return review;
-  }
+    private Review createReview(Store store) throws IllegalAccessException {
+        Review review = Review.of("content", 5, store);
+        FieldUtils.writeField(review, "createdAt", LocalDateTime.now(), true);
+        FieldUtils.writeField(review, "modifiedAt", LocalDateTime.now(), true);
+        FieldUtils.writeField(review, "createdBy", "admin", true);
+        FieldUtils.writeField(review, "modifiedBy", "admin", true);
+        return review;
+    }
 
-  private Member createMember() {
-    return Member.ofMember(
-        "testUser",
-        "pw",
-        "nickname",
-        MemberRole.MEMBER,
-        Address.of("zipcode", "street", "detail"),
-        "01011111111");
-  }
+    private Member createMember() {
+        return Member.ofMember(
+                "testUser",
+                "pw",
+                "nickname",
+                MemberRole.MEMBER,
+                Address.of("zipcode", "street", "detail"),
+                "01011111111");
+    }
 }

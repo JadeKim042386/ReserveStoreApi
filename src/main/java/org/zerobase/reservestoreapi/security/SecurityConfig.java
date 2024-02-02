@@ -13,22 +13,24 @@ import org.zerobase.reservestoreapi.service.MemberService;
 @Configuration
 public class SecurityConfig {
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http.csrf()
-        .disable()
-        .authorizeHttpRequests(
-            auth ->
-                auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                    .permitAll()
-                    .anyRequest()
-                    .permitAll())
-        .formLogin(Customizer.withDefaults())
-        .build();
-  }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf()
+                .disable()
+                .authorizeHttpRequests(
+                        auth ->
+                                auth.requestMatchers(
+                                                PathRequest.toStaticResources().atCommonLocations())
+                                        .permitAll()
+                                        .anyRequest()
+                                        .permitAll())
+                .formLogin(Customizer.withDefaults())
+                .build();
+    }
 
-  @Bean
-  public UserDetailsService userDetailsService(MemberService memberService) {
-    return username -> MemberPrincipal.fromEntity(memberService.searchMemberByUsername(username));
-  }
+    @Bean
+    public UserDetailsService userDetailsService(MemberService memberService) {
+        return username ->
+                MemberPrincipal.fromEntity(memberService.searchMemberByUsername(username));
+    }
 }

@@ -23,66 +23,70 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/stores/{storeId}/bookings")
 public class BookingApi {
-  private final BookingService bookingService;
-  private final MemberService memberService;
+    private final BookingService bookingService;
+    private final MemberService memberService;
 
-  /**
-   * Look up booking info for a specific date for a specific store. Returns Page based on SSR(Server
-   * Side Rendering). Therefore, the return type may change in the future.
-   */
-  @GetMapping
-  public ResponseEntity<?> searchBookingsByDate(
-      @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable,
-      @PathVariable Long storeId,
-      @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate queryDate) {
+    /**
+     * Look up booking info for a specific date for a specific store. Returns Page based on
+     * SSR(Server Side Rendering). Therefore, the return type may change in the future.
+     */
+    @GetMapping
+    public ResponseEntity<?> searchBookingsByDate(
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable,
+            @PathVariable Long storeId,
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                    LocalDate queryDate) {
 
-    return ResponseEntity.ok(
-        bookingService.searchBookingsByDate(queryDate.atTime(0, 0, 0), storeId, pageable));
-  }
-
-  /**
-   * Request booking for a specific time for a specific store.
-   *
-   * <p>throw an exception followed: 1. if requested user wasn't sign up 2. if already exists
-   * booking at request booking time 3. if already exists booking by request user
-   */
-  @PostMapping
-  public ResponseEntity<?> requestBooking(
-      @PathVariable Long storeId,
-      @RequestParam("time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-          LocalDateTime requestBookingTime,
-      @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-
-    if (memberService.isExistsUsername(memberPrincipal.getUsername())) {
-      throw new BookingException(ErrorCode.ALREADY_EXISTS_USERNAME_OR_NICKNAME);
+        return ResponseEntity.ok(
+                bookingService.searchBookingsByDate(queryDate.atTime(0, 0, 0), storeId, pageable));
     }
-    return ResponseEntity.status(HttpStatus.CREATED)
-        .body(
-            bookingService.requestBooking(memberPrincipal.username(), storeId, requestBookingTime));
-  }
 
-  /**
-   * store can deny or approve the booking. if the requested store and the booking store do not
-   * match, throw exception.
-   */
-  @PutMapping("/{bookingId}")
-  public ResponseEntity<?> confirmBooking(
-      @PathVariable Long storeId, @PathVariable Long bookingId, @RequestParam Boolean isApprove) {
+    /**
+     * Request booking for a specific time for a specific store.
+     *
+     * <p>throw an exception followed: 1. if requested user wasn't sign up 2. if already exists
+     * booking at request booking time 3. if already exists booking by request user
+     */
+    @PostMapping
+    public ResponseEntity<?> requestBooking(
+            @PathVariable Long storeId,
+            @RequestParam("time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                    LocalDateTime requestBookingTime,
+            @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
 
-    bookingService.confirmBooking(bookingId, isApprove, storeId);
-    return ResponseEntity.ok(ApiResponse.of("you're successfully confirm."));
-  }
+        if (memberService.isExistsUsername(memberPrincipal.getUsername())) {
+            throw new BookingException(ErrorCode.ALREADY_EXISTS_USERNAME_OR_NICKNAME);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(
+                        bookingService.requestBooking(
+                                memberPrincipal.username(), storeId, requestBookingTime));
+    }
 
-  /**
-   * when a user visits the store, can request a visit check. if the user wasn't arrive 10 minutes
-   * earlier than the booking time, throw exception.
-   */
-  @DeleteMapping
-  public ResponseEntity<?> checkVisit(
-      @PathVariable Long storeId, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+    /**
+     * store can deny or approve the booking. if the requested store and the booking store do not
+     * match, throw exception.
+     */
+    @PutMapping("/{bookingId}")
+    public ResponseEntity<?> confirmBooking(
+            @PathVariable Long storeId,
+            @PathVariable Long bookingId,
+            @RequestParam Boolean isApprove) {
 
-    bookingService.checkVisit(memberPrincipal.username(), storeId);
-    return ResponseEntity.status(HttpStatus.NO_CONTENT)
-        .body(ApiResponse.of("you're successfully check visit."));
-  }
+        bookingService.confirmBooking(bookingId, isApprove, storeId);
+        return ResponseEntity.ok(ApiResponse.of("you're successfully confirm."));
+    }
+
+    /**
+     * when a user visits the store, can request a visit check. if the user wasn't arrive 10 minutes
+     * earlier than the booking time, throw exception.
+     */
+    @DeleteMapping
+    public ResponseEntity<?> checkVisit(
+            @PathVariable Long storeId, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+
+        bookingService.checkVisit(memberPrincipal.username(), storeId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(ApiResponse.of("you're successfully check visit."));
+    }
 }

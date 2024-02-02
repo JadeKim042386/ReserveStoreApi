@@ -13,28 +13,28 @@ import org.zerobase.reservestoreapi.service.MemberService;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
-  private final MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-  @Override
-  public Member searchMemberByUsername(String username) {
-    return memberRepository
-        .findByUsername(username)
-        .orElseThrow(() -> new MemberException(ErrorCode.NOT_FOUND_ENTITY));
-  }
+    @Override
+    public Member searchMemberByUsername(String username) {
+        return memberRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new MemberException(ErrorCode.NOT_FOUND_ENTITY));
+    }
 
-  @Override
-  public boolean isExistsUsername(String username) {
-    return memberRepository.existsByUsername(username);
-  }
+    @Override
+    public boolean isExistsUsername(String username) {
+        return memberRepository.existsByUsername(username);
+    }
 
-  @Override
-  public boolean isExistsNickname(String nickname) {
-    return memberRepository.existsByNickname(nickname);
-  }
+    @Override
+    public boolean isExistsNickname(String nickname) {
+        return memberRepository.existsByNickname(nickname);
+    }
 
-  @Transactional
-  @Override
-  public void saveMember(Member member) {
-    memberRepository.save(member);
-  }
+    @Transactional
+    @Override
+    public void saveMember(Member member) {
+        memberRepository.save(member);
+    }
 }

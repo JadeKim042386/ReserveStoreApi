@@ -10,8 +10,8 @@ import java.util.Optional;
 @TestConfiguration
 @EnableJpaAuditing
 public class TestJpaConfig {
-  @Bean
-  public AuditorAware<String> auditorAware() {
-    return () -> Optional.of("joo");
-  }
+    @Bean
+    public AuditorAware<String> auditorAware() {
+        return () -> Optional.of("joo");
+    }
 }

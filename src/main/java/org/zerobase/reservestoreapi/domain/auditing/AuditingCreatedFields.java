@@ -17,12 +17,12 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditingCreatedFields {
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  @CreatedDate
-  @Column(nullable = false, updatable = false)
-  protected LocalDateTime createdAt;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    protected LocalDateTime createdAt;
 
-  @CreatedBy
-  @Column(nullable = false, updatable = false)
-  protected String createdBy;
+    @CreatedBy
+    @Column(nullable = false, updatable = false)
+    protected String createdBy;
 }

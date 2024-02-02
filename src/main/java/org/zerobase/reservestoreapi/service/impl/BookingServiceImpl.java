@@ -23,65 +23,65 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Transactional
 public class BookingServiceImpl implements BookingService {
-  private final BookingRepository bookingRepository;
+    private final BookingRepository bookingRepository;
 
-  @Override
-  public BookingDto requestBooking(String username, Long storeId, LocalDateTime requestTime) {
-    // 1. if already exists booking at requestTime, you can't
-    // 2. if already exists booking by username, you can't
-    if (bookingRepository.existsByCreatedAtAndStoreId(requestTime, storeId)
-        || bookingRepository.existsByCreatedByAndStoreId(username, storeId)) {
-      throw new BookingException(ErrorCode.ALREADY_EXISTS_BOOKING);
+    @Override
+    public BookingDto requestBooking(String username, Long storeId, LocalDateTime requestTime) {
+        // 1. if already exists booking at requestTime, you can't
+        // 2. if already exists booking by username, you can't
+        if (bookingRepository.existsByCreatedAtAndStoreId(requestTime, storeId)
+                || bookingRepository.existsByCreatedByAndStoreId(username, storeId)) {
+            throw new BookingException(ErrorCode.ALREADY_EXISTS_BOOKING);
+        }
+        // add booking
+        return BookingDto.fromEntity(bookingRepository.save(Booking.of(false)));
     }
-    // add booking
-    return BookingDto.fromEntity(bookingRepository.save(Booking.of(false)));
-  }
 
-  @Override
-  public void checkVisit(String username, Long storeId) {
-    Booking booking =
-        bookingRepository
-            .findByCreatedByAndStoreId(username, storeId)
-            .orElseThrow(EntityNotFoundException::new);
-    // delete booking
-    bookingRepository.delete(booking);
-    // check whether approve or not
-    if (!booking.getApprove()) {
-      throw new BookingException(ErrorCode.NO_APPROVAL_BOOKING);
+    @Override
+    public void checkVisit(String username, Long storeId) {
+        Booking booking =
+                bookingRepository
+                        .findByCreatedByAndStoreId(username, storeId)
+                        .orElseThrow(EntityNotFoundException::new);
+        // delete booking
+        bookingRepository.delete(booking);
+        // check whether approve or not
+        if (!booking.getApprove()) {
+            throw new BookingException(ErrorCode.NO_APPROVAL_BOOKING);
+        }
+        // check visit before 10 minutes
+        if (booking.getCreatedAt().minusMinutes(10).isBefore(LocalDateTime.now())) {
+            throw new BookingException(ErrorCode.LATE_VISIT);
+        }
     }
-    // check visit before 10 minutes
-    if (booking.getCreatedAt().minusMinutes(10).isBefore(LocalDateTime.now())) {
-      throw new BookingException(ErrorCode.LATE_VISIT);
-    }
-  }
 
-  @Transactional(readOnly = true)
-  @Override
-  public Page<BookingDto> searchBookingsByDate(
-      LocalDateTime date, Long storeId, Pageable pageable) {
-    // TODO: use queryDSL to filter approval
-    return bookingRepository
-        .findAllByCreatedAtBetweenAndStoreId(date, date.plusDays(1), storeId, pageable)
-        .map(BookingDto::fromEntity);
-  }
+    @Transactional(readOnly = true)
+    @Override
+    public Page<BookingDto> searchBookingsByDate(
+            LocalDateTime date, Long storeId, Pageable pageable) {
+        // TODO: use queryDSL to filter approval
+        return bookingRepository
+                .findAllByCreatedAtBetweenAndStoreId(date, date.plusDays(1), storeId, pageable)
+                .map(BookingDto::fromEntity);
+    }
 
-  @Override
-  public void confirmBooking(Long bookingId, Boolean isApprove, Long storeId) {
-    Booking booking =
-        bookingRepository.findById(bookingId).orElseThrow(EntityNotFoundException::new);
-    // check requested store and booking store match
-    if (!Objects.equals(booking.getStore().getId(), storeId)) {
-      throw new StoreException(ErrorCode.NOT_MATCH_STORE);
+    @Override
+    public void confirmBooking(Long bookingId, Boolean isApprove, Long storeId) {
+        Booking booking =
+                bookingRepository.findById(bookingId).orElseThrow(EntityNotFoundException::new);
+        // check requested store and booking store match
+        if (!Objects.equals(booking.getStore().getId(), storeId)) {
+            throw new StoreException(ErrorCode.NOT_MATCH_STORE);
+        }
+        // approval when isApprove is true
+        if (isApprove) {
+            booking.approval();
+            log.debug("you're successfully approve booking {}", bookingId);
+        }
+        // delete(reject) when isApprove is false
+        else {
+            bookingRepository.delete(booking);
+            log.debug("you're successfully delete booking {}", bookingId);
+        }
     }
-    // approval when isApprove is true
-    if (isApprove) {
-      booking.approval();
-      log.debug("you're successfully approve booking {}", bookingId);
-    }
-    // delete(reject) when isApprove is false
-    else {
-      bookingRepository.delete(booking);
-      log.debug("you're successfully delete booking {}", bookingId);
-    }
-  }
 }

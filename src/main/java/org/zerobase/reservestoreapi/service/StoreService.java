@@ -7,20 +7,20 @@ import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
 
 public interface StoreService {
-  /** Get all stores */
-  Page<StoreDto> searchStores(Pageable pageable);
+    /** Get all stores */
+    Page<StoreDto> searchStores(Pageable pageable);
 
-  /** Get specific store */
-  Store searchStore(Long storeId);
+    /** Get specific store */
+    Store searchStore(Long storeId);
 
-  Store saveStore(Store store);
+    Store saveStore(Store store);
 
-  /** Get store detail DTO by storeId */
-  StoreWithReviewDto searchStoreWithReviewDto(Long storeId);
+    /** Get store detail DTO by storeId */
+    StoreWithReviewDto searchStoreWithReviewDto(Long storeId);
 
-  /** Check already exists store name */
-  boolean isExistsStoreName(String storeName);
+    /** Check already exists store name */
+    boolean isExistsStoreName(String storeName);
 
-  /** Check exists store member had specific storeId */
-  boolean isExistsStoreByUsername(Long storeId, String username);
+    /** Check exists store member had specific storeId */
+    boolean isExistsStoreByUsername(Long storeId, String username);
 }
