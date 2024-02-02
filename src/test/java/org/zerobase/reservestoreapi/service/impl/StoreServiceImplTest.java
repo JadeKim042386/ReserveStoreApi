@@ -35,65 +35,66 @@ import static org.mockito.BDDMockito.given;
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class StoreServiceImplTest {
-  @InjectMocks private StoreServiceImpl storeService;
-  @Mock private StoreRepository storeRepository;
+    @InjectMocks private StoreServiceImpl storeService;
+    @Mock private StoreRepository storeRepository;
 
-  @DisplayName("Get all stores")
-  @Test
-  void searchStores() throws IllegalAccessException {
-    // given
-    Pageable pageable = PageRequest.of(0, 10);
-    given(storeRepository.findAll(any(Pageable.class)))
-        .willReturn(new PageImpl<>(List.of(createStore()), pageable, 1));
-    // when
-    Page<StoreDto> storeDtos = storeService.searchStores(pageable);
-    // then
-    assertThat(storeDtos.getTotalElements()).isEqualTo(1);
-    assertThat(storeDtos.getContent().get(0).name()).isEqualTo("name");
-  }
+    @DisplayName("Get all stores")
+    @Test
+    void searchStores() throws IllegalAccessException {
+        // given
+        Pageable pageable = PageRequest.of(0, 10);
+        given(storeRepository.findAll(any(Pageable.class)))
+                .willReturn(new PageImpl<>(List.of(createStore()), pageable, 1));
+        // when
+        Page<StoreDto> storeDtos = storeService.searchStores(pageable);
+        // then
+        assertThat(storeDtos.getTotalElements()).isEqualTo(1);
+        assertThat(storeDtos.getContent().get(0).name()).isEqualTo("name");
+    }
 
-  @DisplayName("Get store detail info by storeId")
-  @Test
-  void searchStore() throws IllegalAccessException {
-    // given
-    Long storeId = 1L;
-    given(storeRepository.findById(anyLong())).willReturn(Optional.of(createStore()));
-    // when
-    StoreWithReviewDto storeWithReviewDto = storeService.searchStoreWithReviewDto(storeId);
-    // then
-    assertThat(storeWithReviewDto.storeDto().name()).isEqualTo("name");
-    assertThat(storeWithReviewDto.reviews().size()).isEqualTo(1);
-  }
+    @DisplayName("Get store detail info by storeId")
+    @Test
+    void searchStore() throws IllegalAccessException {
+        // given
+        Long storeId = 1L;
+        given(storeRepository.findById(anyLong())).willReturn(Optional.of(createStore()));
+        // when
+        StoreWithReviewDto storeWithReviewDto = storeService.searchStoreWithReviewDto(storeId);
+        // then
+        assertThat(storeWithReviewDto.storeDto().name()).isEqualTo("name");
+        assertThat(storeWithReviewDto.reviews().size()).isEqualTo(1);
+    }
 
-  private static Store createStore() throws IllegalAccessException {
-    Store store = Store.of("name", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.CAFFE);
-    Member member =
-        Member.ofMember(
-            "username",
-            "pw",
-            "nickname",
-            MemberRole.MEMBER,
-            Address.of("12345", "street", "detail"),
-            "01012341234");
-    Review review = Review.of("content", 5, store);
-    FieldUtils.writeField(store, "member", member, true);
-    LocalDateTime now = LocalDateTime.now();
-    FieldUtils.writeField(review, "createdAt", now, true);
-    FieldUtils.writeField(review, "modifiedAt", now, true);
-    FieldUtils.writeField(review, "createdBy", "admin", true);
-    FieldUtils.writeField(review, "modifiedBy", "admin", true);
-    store.getReviews().add(review);
-    return store;
-  }
+    private static Store createStore() throws IllegalAccessException {
+        Store store =
+                Store.of("name", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.CAFFE);
+        Member member =
+                Member.ofMember(
+                        "username",
+                        "pw",
+                        "nickname",
+                        MemberRole.MEMBER,
+                        Address.of("12345", "street", "detail"),
+                        "01012341234");
+        Review review = Review.of("content", 5, store);
+        FieldUtils.writeField(store, "member", member, true);
+        LocalDateTime now = LocalDateTime.now();
+        FieldUtils.writeField(review, "createdAt", now, true);
+        FieldUtils.writeField(review, "modifiedAt", now, true);
+        FieldUtils.writeField(review, "createdBy", "admin", true);
+        FieldUtils.writeField(review, "modifiedBy", "admin", true);
+        store.getReviews().add(review);
+        return store;
+    }
 
-  @DisplayName("check already exists store name")
-  @Test
-  void isExistsStoreName() {
-    // given
-    String storeName = "store";
-    given(storeRepository.existsByName(anyString())).willReturn(false);
-    // when
-    assertThatNoException().isThrownBy(() -> storeService.isExistsStoreName(storeName));
-    // then
-  }
+    @DisplayName("check already exists store name")
+    @Test
+    void isExistsStoreName() {
+        // given
+        String storeName = "store";
+        given(storeRepository.existsByName(anyString())).willReturn(false);
+        // when
+        assertThatNoException().isThrownBy(() -> storeService.isExistsStoreName(storeName));
+        // then
+    }
 }

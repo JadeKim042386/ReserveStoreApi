@@ -8,6 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 class ReserveStoreApiApplicationTests {
 
-  @Test
-  void contextLoads() {}
+    @Test
+    void contextLoads() {}
 }

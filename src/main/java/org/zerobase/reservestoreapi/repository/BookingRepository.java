@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-  boolean existsByCreatedAtAndStoreId(LocalDateTime requestTime, Long storeId);
+    boolean existsByCreatedAtAndStoreId(LocalDateTime requestTime, Long storeId);
 
-  boolean existsByCreatedByAndStoreId(String username, Long storeId);
+    boolean existsByCreatedByAndStoreId(String username, Long storeId);
 
-  Optional<Booking> findByCreatedByAndStoreId(String username, Long storeId);
+    Optional<Booking> findByCreatedByAndStoreId(String username, Long storeId);
 
-  Page<Booking> findAllByCreatedAtBetweenAndStoreId(
-      LocalDateTime startDate, LocalDateTime endDate, Long storeId, Pageable pageable);
+    Page<Booking> findAllByCreatedAtBetweenAndStoreId(
+            LocalDateTime startDate, LocalDateTime endDate, Long storeId, Pageable pageable);
 }

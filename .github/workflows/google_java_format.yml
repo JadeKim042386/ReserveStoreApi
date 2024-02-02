@@ -20,6 +20,6 @@ jobs:
           distribution: corretto
       - uses: axel-op/googlejavaformat-action@v3.6.0
         with:
-          args: "--skip-sorting-imports --replace"
+          args: "--skip-sorting-imports --replace --aosp"
           # Recommended if you use MacOS:
           github-token: ${{ secrets.GITHUB_TOKEN }}

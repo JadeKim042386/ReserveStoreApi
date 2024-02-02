@@ -4,12 +4,12 @@ import lombok.Getter;
 import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 
 @Getter
-public class MemberException extends CustomException {
-    public MemberException(ErrorCode errorCode) {
+public class ReviewException extends CustomException {
+    public ReviewException(ErrorCode errorCode) {
         super(errorCode);
     }
 
-    public MemberException(ErrorCode errorCode, Exception causeException) {
+    public ReviewException(ErrorCode errorCode, Exception causeException) {
         super(errorCode, causeException);
     }
 }
