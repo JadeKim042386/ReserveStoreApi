@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
+import org.zerobase.reservestoreapi.exception.BookingException;
+import org.zerobase.reservestoreapi.exception.StoreException;
+import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.repository.BookingRepository;
 import org.zerobase.reservestoreapi.service.BookingService;
 
@@ -28,8 +31,7 @@ public class BookingServiceImpl implements BookingService {
     // 2. if already exists booking by username, you can't
     if (bookingRepository.existsByCreatedAtAndStoreId(requestTime, storeId)
         || bookingRepository.existsByCreatedByAndStoreId(username, storeId)) {
-      // TODO: handling exception
-      throw new RuntimeException("already exists booking");
+      throw new BookingException(ErrorCode.ALREADY_EXISTS_BOOKING);
     }
     // add booking
     return BookingDto.fromEntity(bookingRepository.save(Booking.of(false)));
@@ -46,7 +48,7 @@ public class BookingServiceImpl implements BookingService {
     bookingRepository.delete(booking);
     // check visit before 10 minutes
     if (booking.getCreatedAt().minusMinutes(10).isBefore(LocalDateTime.now())) {
-      throw new RuntimeException("you're late. you should be visit before 10 minutes.");
+      throw new BookingException(ErrorCode.LATE_VISIT);
     }
   }
 
@@ -66,8 +68,7 @@ public class BookingServiceImpl implements BookingService {
         bookingRepository.findById(bookingId).orElseThrow(EntityNotFoundException::new);
     // check requested store and booking store match
     if (!Objects.equals(booking.getStore().getId(), storeId)) {
-      // TODO: exception handle
-      throw new RuntimeException("requested store and booking store do not match!");
+      throw new StoreException(ErrorCode.NOT_MATCH_STORE);
     }
     // approval when isApprove is true
     if (isApprove) {

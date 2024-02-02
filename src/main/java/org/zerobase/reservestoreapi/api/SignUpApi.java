@@ -10,6 +10,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
+import org.zerobase.reservestoreapi.dto.response.ExceptionResponse;
+import org.zerobase.reservestoreapi.exception.ValidatedException;
+import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.service.MemberService;
 import org.zerobase.reservestoreapi.service.SignUpService;
 import org.zerobase.reservestoreapi.service.StoreService;
@@ -56,8 +59,13 @@ public class SignUpApi {
       BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       log.error("bindingResult: {}", bindingResult);
-      // TODO: exception handle
-      throw new RuntimeException();
+      throw new ValidatedException(
+              ErrorCode.INVALID_REQUEST,
+              ExceptionResponse.fromBindingResult(
+                      "validation error during sign up",
+                      bindingResult
+              )
+      );
     }
     if (isPartnerSignUp) {
       signUpService.partnerSignUp(signUpRequest);

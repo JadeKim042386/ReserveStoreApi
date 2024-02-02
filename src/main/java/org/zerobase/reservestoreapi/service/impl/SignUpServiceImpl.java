@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
+import org.zerobase.reservestoreapi.exception.SignUpException;
+import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.service.MemberService;
 import org.zerobase.reservestoreapi.service.SignUpService;
 import org.zerobase.reservestoreapi.service.StoreService;
@@ -32,12 +34,11 @@ public class SignUpServiceImpl implements SignUpService {
         signUpRequest.getNickname(),
         signUpRequest.getPartnerInfo().getStoreName());
     // intervalTime must not be greater than lastTime - startTime
-    // TODO: exception handle
     if (LocalDateTimeUtils.diffMinutes(
             signUpRequest.getPartnerInfo().getStartTime(),
             signUpRequest.getPartnerInfo().getLastTime())
         < signUpRequest.getPartnerInfo().getIntervalTime())
-      throw new RuntimeException("intervalTime must not be greater than lastTime - startTime");
+      throw new SignUpException(ErrorCode.INVALID_INTERVAL_TIME);
     // save store
     Store store = storeService.saveStore(signUpRequest.getPartnerInfo().toStoreEntity());
     // save store member
@@ -47,8 +48,7 @@ public class SignUpServiceImpl implements SignUpService {
   /** Check validation for username and nickname */
   private void validationMemberCheck(String username, String nickname) {
     if (memberService.isExistsUsername(username) || memberService.isExistsNickname(nickname)) {
-      // TODO: exception handle
-      throw new RuntimeException("already exists nickname or username");
+      throw new SignUpException(ErrorCode.ALREADY_EXISTS_USERNAME_OR_NICKNAME);
     }
   }
 
@@ -56,8 +56,7 @@ public class SignUpServiceImpl implements SignUpService {
   private void validationStoreCheck(String username, String nickname, String storeName) {
     validationMemberCheck(username, nickname);
     if (storeService.isExistsStoreName(storeName)) {
-      // TODO: exception handle
-      throw new RuntimeException("already exists store name");
+      throw new SignUpException(ErrorCode.ALREADY_EXISTS_STORE_NAME);
     }
   }
 }

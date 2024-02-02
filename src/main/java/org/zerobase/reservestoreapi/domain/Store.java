@@ -41,7 +41,6 @@ public class Store {
   @Enumerated(EnumType.STRING)
   private StoreType storeType;
 
-  // TODO: update when write/update/delete
   @OneToOne(mappedBy = "store", cascade = CascadeType.ALL)
   private StoreReviewInfo storeReviewInfo;
 

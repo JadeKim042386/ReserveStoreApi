@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
 import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
+import org.zerobase.reservestoreapi.dto.response.ExceptionResponse;
+import org.zerobase.reservestoreapi.exception.ValidatedException;
+import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.service.ReviewService;
 import org.zerobase.reservestoreapi.service.StoreService;
 
@@ -29,8 +32,13 @@ public class ReviewApi {
       BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       log.error("bindingResult: {}", bindingResult);
-      // TODO: exception handle
-      throw new RuntimeException();
+      throw new ValidatedException(
+              ErrorCode.INVALID_REQUEST,
+              ExceptionResponse.fromBindingResult(
+                      "validation error during add review",
+                      bindingResult
+              )
+      );
     }
     // TODO: check whether booking user or not -> create log table
     ReviewDto reviewDto =
@@ -46,8 +54,13 @@ public class ReviewApi {
       BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       log.error("bindingResult: {}", bindingResult);
-      // TODO: exception handle
-      throw new RuntimeException();
+      throw new ValidatedException(
+              ErrorCode.INVALID_REQUEST,
+              ExceptionResponse.fromBindingResult(
+                      "validation error during update review",
+                      bindingResult
+              )
+      );
     }
     return ResponseEntity.ok(reviewService.updateReview(reviewRequest, reviewId, storeId));
   }
