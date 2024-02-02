@@ -45,4 +45,9 @@ public class StoreServiceImpl implements StoreService {
   public boolean isExistsStoreName(String storeName) {
     return storeRepository.existsByName(storeName);
   }
+
+  @Override
+  public boolean isExistsStoreByUsername(Long storeId, String username) {
+    return storeRepository.existsByIdAndMember_Username(storeId, username);
+  }
 }

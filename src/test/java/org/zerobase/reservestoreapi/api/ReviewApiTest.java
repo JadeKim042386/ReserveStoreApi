@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.zerobase.reservestoreapi.config.TestSecurityConfig;
@@ -26,8 +28,7 @@ import org.zerobase.reservestoreapi.service.StoreService;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -60,13 +61,14 @@ class ReviewApiTest {
     // then
   }
 
+  @WithUserDetails(value = "testUser", setupBefore = TestExecutionEvent.TEST_EXECUTION)
   @DisplayName("update review")
   @Test
   void updateReview() throws Exception {
     // given
     Long storeId = 1L;
     Long reviewId = 1L;
-    given(reviewService.updateReview(any(), anyLong(), anyLong())).willReturn(createReviewDto());
+    given(reviewService.updateReview(any(), anyLong(), anyLong(), anyString())).willReturn(createReviewDto());
     // when
     mvc.perform(
             put("/api/v1/stores/" + storeId + "/reviews/" + reviewId)
@@ -78,13 +80,14 @@ class ReviewApiTest {
     // then
   }
 
+  @WithUserDetails(value = "testUser", setupBefore = TestExecutionEvent.TEST_EXECUTION)
   @DisplayName("delete review")
   @Test
   void deleteReview() throws Exception {
     // given
     Long storeId = 1L;
     Long reviewId = 1L;
-    willDoNothing().given(reviewService).deleteReview(anyLong(), anyLong());
+    willDoNothing().given(reviewService).deleteReview(anyLong(), anyLong(), anyString());
     // when
     mvc.perform(delete("/api/v1/stores/" + storeId + "/reviews/" + reviewId))
         .andExpect(status().isNoContent())

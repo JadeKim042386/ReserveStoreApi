@@ -20,4 +20,7 @@ public interface StoreService {
 
   /** Check already exists store name */
   boolean isExistsStoreName(String storeName);
+
+  /** Check exists store member had specific storeId */
+  boolean isExistsStoreByUsername(Long storeId, String username);
 }

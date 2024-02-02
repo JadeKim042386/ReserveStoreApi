@@ -52,11 +52,12 @@ class ReviewServiceImplTest {
     // given
     Long reviewId = 1L;
     Long storeId = 1L;
+    String requestUsername = "admin";
     ReviewRequest reviewRequest = new ReviewRequest("update content", 5);
     given(reviewRepository.findById(anyLong())).willReturn(Optional.of(createReview("content", 3)));
     willDoNothing().given(storeReviewInfoRepository).updateStoreReviewInfoByStoreId(anyLong());
     // when
-    ReviewDto updatedReviewDto = reviewService.updateReview(reviewRequest, reviewId, storeId);
+    ReviewDto updatedReviewDto = reviewService.updateReview(reviewRequest, reviewId, storeId, requestUsername);
     // then
     assertThat(updatedReviewDto.content()).isEqualTo("update content");
     assertThat(updatedReviewDto.rating()).isEqualTo(5);
@@ -68,10 +69,11 @@ class ReviewServiceImplTest {
     // given
     Long reviewId = 1L;
     Long storeId = 1L;
+    String requestUsername = "admin";
     willDoNothing().given(reviewRepository).deleteById(anyLong());
     willDoNothing().given(storeReviewInfoRepository).updateStoreReviewInfoByStoreId(anyLong());
     // when
-    reviewService.deleteReview(reviewId, storeId);
+    reviewService.deleteReview(reviewId, storeId, requestUsername);
     // then
   }
 

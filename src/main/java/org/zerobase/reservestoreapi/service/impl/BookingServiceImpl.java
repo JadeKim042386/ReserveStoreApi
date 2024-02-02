@@ -43,9 +43,12 @@ public class BookingServiceImpl implements BookingService {
         bookingRepository
             .findByCreatedByAndStoreId(username, storeId)
             .orElseThrow(EntityNotFoundException::new);
-    // TODO: check whether approve or not
     // delete booking
     bookingRepository.delete(booking);
+    // check whether approve or not
+    if (!booking.getApprove()) {
+      throw new BookingException(ErrorCode.NO_APPROVAL_BOOKING);
+    }
     // check visit before 10 minutes
     if (booking.getCreatedAt().minusMinutes(10).isBefore(LocalDateTime.now())) {
       throw new BookingException(ErrorCode.LATE_VISIT);

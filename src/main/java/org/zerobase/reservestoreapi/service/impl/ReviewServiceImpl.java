@@ -8,6 +8,8 @@ import org.zerobase.reservestoreapi.domain.Review;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
 import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
+import org.zerobase.reservestoreapi.exception.ReviewException;
+import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.repository.ReviewRepository;
 import org.zerobase.reservestoreapi.repository.StoreReviewInfoRepository;
 import org.zerobase.reservestoreapi.service.ReviewService;
@@ -31,9 +33,12 @@ public class ReviewServiceImpl implements ReviewService {
   }
 
   @Override
-  public ReviewDto updateReview(ReviewRequest reviewRequest, Long reviewId, Long storeId) {
-    // TODO: check whether writer or not
+  public ReviewDto updateReview(ReviewRequest reviewRequest, Long reviewId, Long storeId, String requestUsername) {
     Review review = reviewRepository.findById(reviewId).orElseThrow(EntityNotFoundException::new);
+    // check whether writer or not
+    if (!review.getCreatedBy().equals(requestUsername)) {
+      throw new ReviewException(ErrorCode.NOT_WRITER);
+    }
     if (StringUtils.hasText(reviewRequest.content())
         && !reviewRequest.content().equals(review.getContent())) {
       review.setContent(reviewRequest.content());
@@ -48,10 +53,14 @@ public class ReviewServiceImpl implements ReviewService {
   }
 
   @Override
-  public void deleteReview(Long reviewId, Long storeId) {
-    // TODO: check writer or store
+  public void deleteReview(Long reviewId, Long storeId, String requestUsername) {
     reviewRepository.deleteById(reviewId);
     updateStoreReviewInfo(storeId);
+  }
+
+  @Override
+  public boolean isExistsReviewByUsername(Long reviewId, String username) {
+    return reviewRepository.existsByIdAndCreatedBy(reviewId, username);
   }
 
   /** Update average rating, review count of specific store when write/update/delete review */

@@ -5,4 +5,6 @@ import org.zerobase.reservestoreapi.domain.Store;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
   boolean existsByName(String storeName);
+
+  boolean existsByIdAndMember_Username(Long storeId, String username);
 }

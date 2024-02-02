@@ -9,8 +9,10 @@ public interface ReviewService {
   ReviewDto writeReview(Store store, ReviewRequest reviewRequest);
 
   /** Update review */
-  ReviewDto updateReview(ReviewRequest reviewRequest, Long reviewId, Long storeId);
+  ReviewDto updateReview(ReviewRequest reviewRequest, Long reviewId, Long storeId, String requestUsername);
 
   /** Delete review */
-  void deleteReview(Long reviewId, Long storeId);
+  void deleteReview(Long reviewId, Long storeId, String requestUsername);
+
+  boolean isExistsReviewByUsername(Long reviewId, String username);
 }

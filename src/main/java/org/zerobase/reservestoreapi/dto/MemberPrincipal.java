@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.zerobase.reservestoreapi.domain.Member;
 import org.zerobase.reservestoreapi.domain.constants.Address;
+import org.zerobase.reservestoreapi.domain.constants.MemberRole;
 
 import java.util.Collection;
 import java.util.Set;
@@ -16,6 +17,7 @@ public record MemberPrincipal(
     String nickname,
     Address address,
     String phone,
+    MemberRole memberRole,
     Collection<? extends GrantedAuthority> authorities)
     implements UserDetails {
 
@@ -27,6 +29,7 @@ public record MemberPrincipal(
         member.getNickname(),
         member.getAddress(),
         member.getPhone(),
+        member.getMemberRole(),
         Set.of(new SimpleGrantedAuthority(member.getMemberRole().getName())));
   }
 

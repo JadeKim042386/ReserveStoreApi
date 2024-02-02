@@ -63,6 +63,7 @@ class BookingServiceImplTest {
     Long storeId = 1L;
     LocalDateTime now = LocalDateTime.now();
     Booking booking = createBooking(now);
+    FieldUtils.writeField(booking, "approve", true, true);
     given(bookingRepository.findByCreatedByAndStoreId(anyString(), anyLong()))
         .willReturn(Optional.of(booking));
     willDoNothing().given(bookingRepository).delete(any());
