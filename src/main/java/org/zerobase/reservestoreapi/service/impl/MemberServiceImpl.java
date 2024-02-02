@@ -2,6 +2,7 @@ package org.zerobase.reservestoreapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerobase.reservestoreapi.domain.Member;
 import org.zerobase.reservestoreapi.repository.MemberRepository;
 import org.zerobase.reservestoreapi.service.MemberService;
@@ -10,6 +11,7 @@ import javax.persistence.EntityExistsException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
   private final MemberRepository memberRepository;
 
@@ -30,6 +32,7 @@ public class MemberServiceImpl implements MemberService {
     return memberRepository.existsByNickname(nickname);
   }
 
+  @Transactional
   @Override
   public void saveMember(Member member) {
     memberRepository.save(member);

@@ -2,6 +2,7 @@ package org.zerobase.reservestoreapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 import org.zerobase.reservestoreapi.service.MemberService;
@@ -11,16 +12,19 @@ import org.zerobase.reservestoreapi.utils.LocalDateTimeUtils;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SignUpServiceImpl implements SignUpService {
   private final MemberService memberService;
   private final StoreService storeService;
 
+  @Transactional
   @Override
   public void signUp(SignUpRequest signUpRequest) {
     validationMemberCheck(signUpRequest.getUsername(), signUpRequest.getNickname());
     memberService.saveMember(signUpRequest.toMemberEntity());
   }
 
+  @Transactional
   @Override
   public void partnerSignUp(SignUpRequest signUpRequest) {
     validationStoreCheck(

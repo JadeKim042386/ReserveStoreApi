@@ -2,6 +2,7 @@ package org.zerobase.reservestoreapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.zerobase.reservestoreapi.domain.Review;
 import org.zerobase.reservestoreapi.domain.Store;
@@ -16,6 +17,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ReviewServiceImpl implements ReviewService {
   private final ReviewRepository reviewRepository;
   private final StoreReviewInfoRepository storeReviewInfoRepository;
