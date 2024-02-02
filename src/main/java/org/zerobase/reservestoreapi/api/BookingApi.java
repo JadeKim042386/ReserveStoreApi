@@ -82,6 +82,7 @@ public class BookingApi {
       @PathVariable Long storeId, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
 
     bookingService.checkVisit(memberPrincipal.username(), storeId);
-    return ResponseEntity.ok(ApiResponse.of("you're successfully check visit."));
+    return ResponseEntity.status(HttpStatus.NO_CONTENT)
+            .body(ApiResponse.of("you're successfully check visit."));
   }
 }
