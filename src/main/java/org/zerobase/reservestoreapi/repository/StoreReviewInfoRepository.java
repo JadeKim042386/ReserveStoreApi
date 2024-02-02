@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.zerobase.reservestoreapi.domain.StoreReviewInfo;
 
-
 public interface StoreReviewInfoRepository extends JpaRepository<StoreReviewInfo, Long> {
   @Modifying
   @Query(

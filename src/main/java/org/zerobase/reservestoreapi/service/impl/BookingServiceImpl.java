@@ -35,7 +35,6 @@ public class BookingServiceImpl implements BookingService {
     return BookingDto.fromEntity(bookingRepository.save(Booking.of(false)));
   }
 
-
   @Override
   public void checkVisit(String username, Long storeId) {
     Booking booking =
