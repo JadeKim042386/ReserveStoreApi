@@ -8,10 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
+import org.zerobase.reservestoreapi.exception.StoreException;
+import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.repository.StoreRepository;
 import org.zerobase.reservestoreapi.service.StoreService;
-
-import javax.persistence.EntityNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +26,9 @@ public class StoreServiceImpl implements StoreService {
 
   @Override
   public Store searchStore(Long storeId) {
-    return storeRepository.findById(storeId).orElseThrow(EntityNotFoundException::new);
+    return storeRepository
+        .findById(storeId)
+        .orElseThrow(() -> new StoreException(ErrorCode.NOT_FOUND_ENTITY));
   }
 
   @Override
@@ -36,7 +38,6 @@ public class StoreServiceImpl implements StoreService {
 
   @Override
   public StoreWithReviewDto searchStoreWithReviewDto(Long storeId) {
-    // TODO: handling exception
     return StoreWithReviewDto.fromEntity(searchStore(storeId));
   }
 

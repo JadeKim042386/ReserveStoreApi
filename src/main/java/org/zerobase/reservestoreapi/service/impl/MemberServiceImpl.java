@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerobase.reservestoreapi.domain.Member;
+import org.zerobase.reservestoreapi.exception.MemberException;
+import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.repository.MemberRepository;
 import org.zerobase.reservestoreapi.service.MemberService;
-
-import javax.persistence.EntityExistsException;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +19,7 @@ public class MemberServiceImpl implements MemberService {
   public Member searchMemberByUsername(String username) {
     return memberRepository
         .findByUsername(username)
-        .orElseThrow(EntityExistsException::new); // TODO: exception handling
+        .orElseThrow(() -> new MemberException(ErrorCode.NOT_FOUND_ENTITY));
   }
 
   @Override

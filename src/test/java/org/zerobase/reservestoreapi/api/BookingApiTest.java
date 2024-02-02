@@ -99,7 +99,7 @@ class BookingApiTest {
     Long storeId = 1L;
     // when
     mvc.perform(delete("/api/v1/stores/" + storeId + "/bookings"))
-        .andExpect(status().isOk())
+        .andExpect(status().isNoContent())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     // then
   }

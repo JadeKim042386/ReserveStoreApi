@@ -11,6 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.zerobase.reservestoreapi.dto.MemberPrincipal;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
+import org.zerobase.reservestoreapi.exception.BookingException;
+import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.service.BookingService;
 import org.zerobase.reservestoreapi.service.MemberService;
 
@@ -52,8 +54,7 @@ public class BookingApi {
       @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
 
     if (memberService.isExistsUsername(memberPrincipal.getUsername())) {
-      // TODO: handling exception
-      throw new RuntimeException("already exists username");
+      throw new BookingException(ErrorCode.ALREADY_EXISTS_USERNAME_OR_NICKNAME);
     }
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(
@@ -81,6 +82,7 @@ public class BookingApi {
       @PathVariable Long storeId, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
 
     bookingService.checkVisit(memberPrincipal.username(), storeId);
-    return ResponseEntity.ok(ApiResponse.of("you're successfully check visit."));
+    return ResponseEntity.status(HttpStatus.NO_CONTENT)
+        .body(ApiResponse.of("you're successfully check visit."));
   }
 }
