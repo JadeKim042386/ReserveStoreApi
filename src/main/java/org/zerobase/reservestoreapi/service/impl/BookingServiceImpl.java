@@ -12,6 +12,7 @@ import org.zerobase.reservestoreapi.service.BookingService;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -57,11 +58,11 @@ public class BookingServiceImpl implements BookingService {
   }
 
   @Override
-  public void confirmBooking(Long bookingId, Boolean isApprove, String storeName) {
+  public void confirmBooking(Long bookingId, Boolean isApprove, Long storeId) {
     Booking booking =
         bookingRepository.findById(bookingId).orElseThrow(EntityNotFoundException::new);
     // check requested store and booking store match
-    if (!booking.getStore().getName().equals(storeName)) {
+    if (!Objects.equals(booking.getStore().getId(), storeId)) {
       // TODO: exception handle
       throw new RuntimeException("requested store and booking store do not match!");
     }

@@ -13,7 +13,7 @@ import org.zerobase.reservestoreapi.service.StoreService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/store")
+@RequestMapping("/api/v1/stores")
 public class StoreApi {
   private final StoreService storeService;
 

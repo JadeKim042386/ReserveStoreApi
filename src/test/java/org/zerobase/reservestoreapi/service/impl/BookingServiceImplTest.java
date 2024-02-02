@@ -93,14 +93,14 @@ class BookingServiceImplTest {
   @Test
   void confirmBooking_approve() throws IllegalAccessException {
     // given
+    Long bookingId = 1L;
     Long storeId = 1L;
     Boolean isApprove = true;
-    String storeName = "store";
     Booking booking = createBooking(LocalDateTime.now());
     given(bookingRepository.findById(anyLong())).willReturn(Optional.of(booking));
     // when
     assertThatNoException()
-        .isThrownBy(() -> bookingService.confirmBooking(storeId, isApprove, storeName));
+        .isThrownBy(() -> bookingService.confirmBooking(bookingId, isApprove, storeId));
     // then
     assertThat(booking.getApprove()).isEqualTo(true);
   }
@@ -110,15 +110,15 @@ class BookingServiceImplTest {
   @Test
   void confirmBooking_reject() throws IllegalAccessException {
     // given
+    Long bookingId = 1L;
     Long storeId = 1L;
     Boolean isApprove = false;
-    String storeName = "store";
     Booking booking = createBooking(LocalDateTime.now());
     given(bookingRepository.findById(anyLong())).willReturn(Optional.of(booking));
     willDoNothing().given(bookingRepository).delete(any());
     // when
     assertThatNoException()
-        .isThrownBy(() -> bookingService.confirmBooking(storeId, isApprove, storeName));
+        .isThrownBy(() -> bookingService.confirmBooking(bookingId, isApprove, storeId));
     // then
   }
 
@@ -130,7 +130,9 @@ class BookingServiceImplTest {
     return booking;
   }
 
-  private static Store createStore() {
-    return Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.BAR);
+  private static Store createStore() throws IllegalAccessException {
+    Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.BAR);
+    FieldUtils.writeField(store, "id", 1L, true);
+    return store;
   }
 }

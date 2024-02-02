@@ -48,7 +48,9 @@ class BookingApiTest {
             new PageImpl<>(
                 List.of(BookingDto.fromEntity(createBooking(LocalDateTime.now()))), pageable, 1));
     // when
-    mvc.perform(get("/api/v1/booking/" + storeId).param("date", LocalDate.now().toString()))
+    mvc.perform(
+            get("/api/v1/stores/" + storeId + "/bookings")
+                .param("date", LocalDate.now().toString()))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.totalElements").value(1));
@@ -65,7 +67,7 @@ class BookingApiTest {
         .willReturn(BookingDto.fromEntity(createBooking(LocalDateTime.now())));
     // when
     mvc.perform(
-            post("/api/v1/booking/" + storeId)
+            post("/api/v1/stores/" + storeId + "/bookings")
                 .param("time", LocalDate.now().atTime(10, 0, 0).toString()))
         .andExpect(status().isCreated())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -78,10 +80,11 @@ class BookingApiTest {
   @Test
   void confirmBooking() throws Exception {
     // given
+    Long storeId = 1L;
     Long bookingId = 1L;
     // when
     mvc.perform(
-            put("/api/v1/booking/" + bookingId)
+            put("/api/v1/stores/" + storeId + "/bookings/" + bookingId)
                 .param("isApprove", "true")
                 .param("storeName", "testStore"))
         .andExpect(status().isOk())
@@ -95,7 +98,7 @@ class BookingApiTest {
     // given
     Long storeId = 1L;
     // when
-    mvc.perform(delete("/api/v1/booking/" + storeId))
+    mvc.perform(delete("/api/v1/stores/" + storeId + "/bookings"))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     // then

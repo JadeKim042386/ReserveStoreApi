@@ -49,7 +49,7 @@ class StoreApiTest {
     given(storeService.searchStores(any()))
         .willReturn(new PageImpl<>(List.of(createStoreDto()), pageable, 1));
     // when
-    mvc.perform(get("/api/v1/store"))
+    mvc.perform(get("/api/v1/stores"))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.totalElements").value(1));
@@ -63,7 +63,7 @@ class StoreApiTest {
     Long storeId = 1L;
     given(storeService.searchStoreWithReviewDto(anyLong())).willReturn(createStoreWithReviewDto());
     // when
-    mvc.perform(get("/api/v1/store/" + storeId))
+    mvc.perform(get("/api/v1/stores/" + storeId))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.storeDto.name").value("store"))

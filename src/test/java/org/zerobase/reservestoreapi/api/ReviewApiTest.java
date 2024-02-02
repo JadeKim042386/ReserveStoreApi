@@ -51,7 +51,7 @@ class ReviewApiTest {
     given(reviewService.writeReview(any(), any())).willReturn(createReviewDto());
     // when
     mvc.perform(
-            post("/api/v1/review/" + storeId)
+            post("/api/v1/stores/" + storeId + "/reviews")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(createReviewRequest())))
         .andExpect(status().isCreated())
@@ -64,11 +64,12 @@ class ReviewApiTest {
   @Test
   void updateReview() throws Exception {
     // given
+    Long storeId = 1L;
     Long reviewId = 1L;
-    given(reviewService.updateReview(any(), anyLong())).willReturn(createReviewDto());
+    given(reviewService.updateReview(any(), anyLong(), anyLong())).willReturn(createReviewDto());
     // when
     mvc.perform(
-            put("/api/v1/review/" + reviewId)
+            put("/api/v1/stores/" + storeId + "/reviews/" + reviewId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(createReviewRequest())))
         .andExpect(status().isOk())
@@ -81,10 +82,11 @@ class ReviewApiTest {
   @Test
   void deleteReview() throws Exception {
     // given
+    Long storeId = 1L;
     Long reviewId = 1L;
-    willDoNothing().given(reviewService).deleteReview(anyLong());
+    willDoNothing().given(reviewService).deleteReview(anyLong(), anyLong());
     // when
-    mvc.perform(delete("/api/v1/review/" + reviewId))
+    mvc.perform(delete("/api/v1/stores/" + storeId + "/reviews/" + reviewId))
         .andExpect(status().isNoContent())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     // then
