@@ -1,9 +1,6 @@
 package org.zerobase.reservestoreapi.domain;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -17,11 +14,12 @@ public class StoreReviewInfo {
   @EqualsAndHashCode.Include
   private Long id;
 
+  @Setter
   @Column(
       columnDefinition =
           "float constraint average_rating_range check (average_rating between 0 and 5)")
   private Float averageRating;
-
+  @Setter
   private Integer reviewCount;
 
   @OneToOne

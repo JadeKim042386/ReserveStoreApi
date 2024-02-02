@@ -16,13 +16,13 @@ import org.zerobase.reservestoreapi.service.StoreService;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/review")
+@RequestMapping("/api/v1/stores/{storeId}/reviews")
 // TODO: bindingResult AOP handle
 public class ReviewApi {
   private final StoreService storeService;
   private final ReviewService reviewService;
 
-  @PostMapping("/{storeId}")
+  @PostMapping
   public ResponseEntity<?> writeReview(
       @PathVariable Long storeId,
       @RequestBody @Validated ReviewRequest reviewRequest,
@@ -40,6 +40,7 @@ public class ReviewApi {
 
   @PutMapping("/{reviewId}")
   public ResponseEntity<?> updateReview(
+      @PathVariable Long storeId,
       @PathVariable Long reviewId,
       @RequestBody @Validated ReviewRequest reviewRequest,
       BindingResult bindingResult) {
@@ -48,12 +49,12 @@ public class ReviewApi {
       // TODO: exception handle
       throw new RuntimeException();
     }
-    return ResponseEntity.ok(reviewService.updateReview(reviewRequest, reviewId));
+    return ResponseEntity.ok(reviewService.updateReview(reviewRequest, reviewId, storeId));
   }
 
   @DeleteMapping("/{reviewId}")
-  public ResponseEntity<?> deleteReview(@PathVariable Long reviewId) {
-    reviewService.deleteReview(reviewId);
+  public ResponseEntity<?> deleteReview(@PathVariable Long storeId, @PathVariable Long reviewId) {
+    reviewService.deleteReview(reviewId, storeId);
     return ResponseEntity.status(HttpStatus.NO_CONTENT)
         .body(ApiResponse.of("You're successfully delete review."));
   }

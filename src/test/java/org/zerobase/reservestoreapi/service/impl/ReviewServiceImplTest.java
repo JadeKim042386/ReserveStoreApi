@@ -14,6 +14,7 @@ import org.zerobase.reservestoreapi.domain.constants.StoreType;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
 import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
 import org.zerobase.reservestoreapi.repository.ReviewRepository;
+import org.zerobase.reservestoreapi.repository.StoreReviewInfoRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,26 +23,14 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.*;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class ReviewServiceImplTest {
   @InjectMocks private ReviewServiceImpl reviewService;
   @Mock private ReviewRepository reviewRepository;
-
-  @DisplayName("get average rating")
-  @Test
-  void getAverageRatingByStoreId() {
-    // given
-    Long storeId = 1L;
-    given(reviewRepository.getAverageRatingByStoreId(anyLong())).willReturn(3.4f);
-    // when
-    Float rating = reviewService.getAverageRatingByStoreId(storeId);
-    // then
-    assertThat(rating).isEqualTo(3.4f);
-  }
+  @Mock private StoreReviewInfoRepository storeReviewInfoRepository;
 
   @DisplayName("write review")
   @Test
@@ -49,6 +38,7 @@ class ReviewServiceImplTest {
     // given
     ReviewRequest reviewRequest = new ReviewRequest("content", 5);
     given(reviewRepository.save(any())).willReturn(createReview("content", 5));
+    willDoNothing().given(storeReviewInfoRepository).updateStoreReviewInfoByStoreId(anyLong());
     // when
     ReviewDto reviewDto = reviewService.writeReview(createStore(), reviewRequest);
     // then
@@ -61,10 +51,12 @@ class ReviewServiceImplTest {
   void updateReview() throws IllegalAccessException {
     // given
     Long reviewId = 1L;
+    Long storeId = 1L;
     ReviewRequest reviewRequest = new ReviewRequest("update content", 5);
     given(reviewRepository.findById(anyLong())).willReturn(Optional.of(createReview("content", 3)));
+    willDoNothing().given(storeReviewInfoRepository).updateStoreReviewInfoByStoreId(anyLong());
     // when
-    ReviewDto updatedReviewDto = reviewService.updateReview(reviewRequest, reviewId);
+    ReviewDto updatedReviewDto = reviewService.updateReview(reviewRequest, reviewId, storeId);
     // then
     assertThat(updatedReviewDto.content()).isEqualTo("update content");
     assertThat(updatedReviewDto.rating()).isEqualTo(5);
@@ -75,9 +67,11 @@ class ReviewServiceImplTest {
   void deleteReview() {
     // given
     Long reviewId = 1L;
+    Long storeId = 1L;
     willDoNothing().given(reviewRepository).deleteById(anyLong());
+    willDoNothing().given(storeReviewInfoRepository).updateStoreReviewInfoByStoreId(anyLong());
     // when
-    reviewService.deleteReview(reviewId);
+    reviewService.deleteReview(reviewId, storeId);
     // then
   }
 
@@ -90,7 +84,9 @@ class ReviewServiceImplTest {
     return review;
   }
 
-  private Store createStore() {
-    return Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.BAR);
+  private Store createStore() throws IllegalAccessException {
+    Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.BAR);
+    FieldUtils.writeField(store, "id", 1L, true);
+    return store;
   }
 }

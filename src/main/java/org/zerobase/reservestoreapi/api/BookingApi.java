@@ -33,7 +33,6 @@ public class BookingApi {
       @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable,
       @PathVariable Long storeId,
       @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate queryDate) {
-    // TODO: pagination
     return ResponseEntity.ok(
         bookingService.searchBookingsByDate(queryDate.atTime(0, 0, 0), storeId, pageable));
   }
