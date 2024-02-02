@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.repository.BookingRepository;
@@ -17,6 +18,7 @@ import java.util.Objects;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookingServiceImpl implements BookingService {
   private final BookingRepository bookingRepository;
 
@@ -33,6 +35,7 @@ public class BookingServiceImpl implements BookingService {
     return BookingDto.fromEntity(bookingRepository.save(Booking.of(false)));
   }
 
+
   @Override
   public void checkVisit(String username, Long storeId) {
     Booking booking =
@@ -48,6 +51,7 @@ public class BookingServiceImpl implements BookingService {
     }
   }
 
+  @Transactional(readOnly = true)
   @Override
   public Page<BookingDto> searchBookingsByDate(
       LocalDateTime date, Long storeId, Pageable pageable) {
