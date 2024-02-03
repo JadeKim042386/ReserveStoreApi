@@ -30,7 +30,8 @@ public class BookingApi {
 
     /**
      * Look up booking info for a specific date for a specific store. Returns Page based on
-     * SSR(Server Side Rendering) (e.g.thymeleaf). Therefore, the return type may change in the future.
+     * SSR(Server Side Rendering) (e.g.thymeleaf). Therefore, the return type may change in the
+     * future.
      */
     @GetMapping
     public ResponseEntity<Page<BookingDto>> searchBookingsByDate(

@@ -21,8 +21,8 @@ public class StoreApi {
     private final StoreService storeService;
 
     /**
-     * Look up all stores Returns Page based on SSR(Server Side Rendering) (e.g.thymeleaf). Therefore, the return
-     * type may change in the future.
+     * Look up all stores Returns Page based on SSR(Server Side Rendering) (e.g.thymeleaf).
+     * Therefore, the return type may change in the future.
      */
     @GetMapping
     public ResponseEntity<Page<StoreDto>> searchAllStores(
