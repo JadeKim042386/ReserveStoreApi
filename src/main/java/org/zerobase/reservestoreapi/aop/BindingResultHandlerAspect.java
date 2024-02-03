@@ -21,8 +21,7 @@ import java.lang.reflect.Method;
 public class BindingResultHandlerAspect {
 
     @Pointcut("@annotation(BindingResultHandler)")
-    private void bindingResultPointcut() {
-    }
+    private void bindingResultPointcut() {}
 
     @Around("bindingResultPointcut()")
     public Object handle(ProceedingJoinPoint pjp) throws Throwable {
@@ -35,8 +34,7 @@ public class BindingResultHandlerAspect {
             log.error("bindingResult: {}", bindingResult);
             throw new ValidatedException(
                     ErrorCode.INVALID_REQUEST,
-                    ExceptionResponse.fromBindingResult(
-                            annotation.message(), bindingResult));
+                    ExceptionResponse.fromBindingResult(annotation.message(), bindingResult));
         }
 
         return pjp.proceed();
