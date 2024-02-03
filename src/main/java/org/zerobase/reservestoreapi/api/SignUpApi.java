@@ -53,7 +53,7 @@ public class SignUpApi {
      * @param isPartnerSignUp determine whether or not to sign up a partner
      */
     @PostMapping
-    public ResponseEntity<?> requestSignUp(
+    public ResponseEntity<ApiResponse> requestSignUp(
             @RequestParam("partner") Boolean isPartnerSignUp,
             @RequestBody @Validated SignUpRequest signUpRequest,
             BindingResult bindingResult) {
@@ -75,7 +75,7 @@ public class SignUpApi {
 
     /** Verify that one of username, nickname, storeName already exists.<br> */
     @GetMapping("/exists")
-    public ResponseEntity<?> checkExists(
+    public ResponseEntity<ApiResponse> checkExists(
             @RequestParam(required = false) String username,
             @RequestParam(required = false) String nickname,
             @RequestParam(required = false) String storeName) {
