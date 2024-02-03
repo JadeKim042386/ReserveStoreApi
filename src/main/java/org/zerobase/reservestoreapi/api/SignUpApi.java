@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.zerobase.reservestoreapi.aop.BindingResultHandler;
 import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
 import org.zerobase.reservestoreapi.dto.response.ExceptionResponse;
@@ -52,18 +53,13 @@ public class SignUpApi {
      *
      * @param isPartnerSignUp determine whether or not to sign up a partner
      */
+    @BindingResultHandler(message = "validation error during sign up")
     @PostMapping
     public ResponseEntity<ApiResponse> requestSignUp(
             @RequestParam("partner") Boolean isPartnerSignUp,
             @RequestBody @Validated SignUpRequest signUpRequest,
             BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            log.error("bindingResult: {}", bindingResult);
-            throw new ValidatedException(
-                    ErrorCode.INVALID_REQUEST,
-                    ExceptionResponse.fromBindingResult(
-                            "validation error during sign up", bindingResult));
-        }
+
         if (isPartnerSignUp) {
             signUpService.partnerSignUp(signUpRequest);
         } else {
