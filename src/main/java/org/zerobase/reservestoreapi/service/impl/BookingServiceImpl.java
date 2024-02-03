@@ -1,5 +1,6 @@
 package org.zerobase.reservestoreapi.service.impl;
 
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerobase.reservestoreapi.domain.Booking;
+import org.zerobase.reservestoreapi.domain.QBooking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.exception.BookingException;
 import org.zerobase.reservestoreapi.exception.StoreException;
@@ -58,10 +60,10 @@ public class BookingServiceImpl implements BookingService {
     @Transactional(readOnly = true)
     @Override
     public Page<BookingDto> searchBookingsByDate(
-            LocalDateTime date, Long storeId, Pageable pageable) {
-        // TODO: use queryDSL to filter approval
+            Long storeId, Predicate predicate, Pageable pageable) {
+
         return bookingRepository
-                .findAllByCreatedAtBetweenAndStoreId(date, date.plusDays(1), storeId, pageable)
+                .findAllByStoreId(storeId, predicate, pageable)
                 .map(BookingDto::fromEntity);
     }
 
