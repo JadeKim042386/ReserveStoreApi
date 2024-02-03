@@ -1,6 +1,7 @@
 package org.zerobase.reservestoreapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerobase.reservestoreapi.domain.Store;
@@ -18,12 +19,13 @@ import org.zerobase.reservestoreapi.utils.LocalDateTimeUtils;
 public class SignUpServiceImpl implements SignUpService {
     private final MemberService memberService;
     private final StoreService storeService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
     public void signUp(SignUpRequest signUpRequest) {
         validationMemberCheck(signUpRequest.getUsername(), signUpRequest.getNickname());
-        memberService.saveMember(signUpRequest.toMemberEntity());
+        memberService.saveMember(signUpRequest.toMemberEntity(passwordEncoder));
     }
 
     @Transactional
@@ -42,7 +44,7 @@ public class SignUpServiceImpl implements SignUpService {
         // save store
         Store store = storeService.saveStore(signUpRequest.getPartnerInfo().toStoreEntity());
         // save store member
-        memberService.saveMember(signUpRequest.toStoreMemberEntity(store));
+        memberService.saveMember(signUpRequest.toStoreMemberEntity(store, passwordEncoder));
     }
 
     /** Check validation for username and nickname */
