@@ -19,13 +19,14 @@ public class CustomBookingRepositoryImpl implements CustomBookingRepository {
 
     @Override
     public Page<Booking> findAllByStoreId(Long storeId, Predicate predicate, Pageable pageable) {
-        List<Booking> bookings = jpaQueryFactory
-                .selectFrom(QBooking.booking)
-                .where(predicate)
-                .where(QBooking.booking.store.id.eq(storeId))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+        List<Booking> bookings =
+                jpaQueryFactory
+                        .selectFrom(QBooking.booking)
+                        .where(predicate)
+                        .where(QBooking.booking.store.id.eq(storeId))
+                        .offset(pageable.getOffset())
+                        .limit(pageable.getPageSize())
+                        .fetch();
 
         return new PageImpl<>(bookings, pageable, bookings.size());
     }
