@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.zerobase.reservestoreapi.domain.Member;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.domain.constants.Address;
@@ -38,20 +39,20 @@ public class SignUpRequest {
 
     private PartnerSignUpRequest partnerInfo;
 
-    public Member toMemberEntity() {
+    public Member toMemberEntity(PasswordEncoder passwordEncoder) {
         return Member.ofMember(
                 username,
-                password,
+                passwordEncoder.encode(password),
                 nickname,
                 MemberRole.valueOf(memberRole),
                 Address.of(zipcode, street, detail),
                 phone);
     }
 
-    public Member toStoreMemberEntity(Store store) {
+    public Member toStoreMemberEntity(Store store, PasswordEncoder passwordEncoder) {
         return Member.ofStore(
                 username,
-                password,
+                passwordEncoder.encode(password),
                 nickname,
                 MemberRole.valueOf(memberRole),
                 Address.of(zipcode, street, detail),
