@@ -1,6 +1,7 @@
 package org.zerobase.reservestoreapi.api;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.dto.MemberPrincipal;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
 import org.zerobase.reservestoreapi.exception.BookingException;
@@ -28,10 +30,10 @@ public class BookingApi {
 
     /**
      * Look up booking info for a specific date for a specific store. Returns Page based on
-     * SSR(Server Side Rendering). Therefore, the return type may change in the future.
+     * SSR(Server Side Rendering) (e.g.thymeleaf). Therefore, the return type may change in the future.
      */
     @GetMapping
-    public ResponseEntity<?> searchBookingsByDate(
+    public ResponseEntity<Page<BookingDto>> searchBookingsByDate(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable,
             @PathVariable Long storeId,
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -48,7 +50,7 @@ public class BookingApi {
      * booking at request booking time 3. if already exists booking by request user
      */
     @PostMapping
-    public ResponseEntity<?> requestBooking(
+    public ResponseEntity<BookingDto> requestBooking(
             @PathVariable Long storeId,
             @RequestParam("time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                     LocalDateTime requestBookingTime,
@@ -68,7 +70,7 @@ public class BookingApi {
      * match, throw exception.
      */
     @PutMapping("/{bookingId}")
-    public ResponseEntity<?> confirmBooking(
+    public ResponseEntity<ApiResponse> confirmBooking(
             @PathVariable Long storeId,
             @PathVariable Long bookingId,
             @RequestParam Boolean isApprove) {
@@ -82,7 +84,7 @@ public class BookingApi {
      * earlier than the booking time, throw exception.
      */
     @DeleteMapping
-    public ResponseEntity<?> checkVisit(
+    public ResponseEntity<ApiResponse> checkVisit(
             @PathVariable Long storeId, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
 
         bookingService.checkVisit(memberPrincipal.username(), storeId);

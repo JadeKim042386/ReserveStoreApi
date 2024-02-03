@@ -29,7 +29,7 @@ public class ReviewApi {
     private final ReviewService reviewService;
 
     @PostMapping
-    public ResponseEntity<?> writeReview(
+    public ResponseEntity<ReviewDto> writeReview(
             @PathVariable Long storeId,
             @RequestBody @Validated ReviewRequest reviewRequest,
             BindingResult bindingResult) {
@@ -47,7 +47,7 @@ public class ReviewApi {
     }
 
     @PutMapping("/{reviewId}")
-    public ResponseEntity<?> updateReview(
+    public ResponseEntity<ReviewDto> updateReview(
             @PathVariable Long storeId,
             @PathVariable Long reviewId,
             @RequestBody @Validated ReviewRequest reviewRequest,
@@ -66,7 +66,7 @@ public class ReviewApi {
     }
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<?> deleteReview(
+    public ResponseEntity<ApiResponse> deleteReview(
             @PathVariable Long storeId,
             @PathVariable Long reviewId,
             @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
