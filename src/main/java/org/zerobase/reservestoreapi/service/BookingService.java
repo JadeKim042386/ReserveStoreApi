@@ -1,5 +1,6 @@
 package org.zerobase.reservestoreapi.service;
 
+import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.zerobase.reservestoreapi.dto.BookingDto;
@@ -16,7 +17,7 @@ public interface BookingService {
     void checkVisit(String username, Long storeId);
 
     /** Get bookings info by date(e.g.2024-01-01) */
-    Page<BookingDto> searchBookingsByDate(LocalDateTime date, Long storeId, Pageable pageable);
+    Page<BookingDto> searchBookingsByDate(Long storeId, Predicate predicate, Pageable pageable);
 
     /** Approve or Deny for request booking */
     void confirmBooking(Long bookingId, Boolean isApprove, Long storeId);

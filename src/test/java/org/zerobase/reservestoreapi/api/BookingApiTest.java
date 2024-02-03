@@ -43,7 +43,7 @@ class BookingApiTest {
         // given
         Long storeId = 1L;
         Pageable pageable = PageRequest.of(0, 10);
-        given(bookingService.searchBookingsByDate(any(), anyLong(), any()))
+        given(bookingService.searchBookingsByDate(anyLong(), any(), any()))
                 .willReturn(
                         new PageImpl<>(
                                 List.of(BookingDto.fromEntity(createBooking(LocalDateTime.now()))),

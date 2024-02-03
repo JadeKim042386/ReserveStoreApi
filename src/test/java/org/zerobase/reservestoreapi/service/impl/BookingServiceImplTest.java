@@ -1,5 +1,6 @@
 package org.zerobase.reservestoreapi.service.impl;
 
+import com.querydsl.core.types.Predicate;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.zerobase.reservestoreapi.domain.Booking;
+import org.zerobase.reservestoreapi.domain.QBooking;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
 import org.zerobase.reservestoreapi.dto.BookingDto;
@@ -80,10 +82,12 @@ class BookingServiceImplTest {
         // given
         LocalDateTime now = LocalDate.now().atTime(0, 0, 0);
         Pageable pageable = PageRequest.of(0, 10);
-        given(bookingRepository.findAllByCreatedAtBetweenAndStoreId(any(), any(), anyLong(), any()))
+        Boolean approve = true;
+        Predicate predicate = QBooking.booking.approve.eq(approve);
+        given(bookingRepository.findAllByStoreId(anyLong(), any(), any()))
                 .willReturn(new PageImpl<>(List.of(createBooking(now)), pageable, 1));
         // when
-        Page<BookingDto> bookingDtos = bookingService.searchBookingsByDate(now, 1L, pageable);
+        Page<BookingDto> bookingDtos = bookingService.searchBookingsByDate(1L, predicate, pageable);
         // then
         assertThat(bookingDtos.getTotalElements()).isEqualTo(1);
         assertThat(bookingDtos.getContent().get(0).userDateCreatedAudit().createdBy())
