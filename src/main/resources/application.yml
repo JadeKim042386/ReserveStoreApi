@@ -18,6 +18,9 @@ spring:
       hibernate.format_sql: true
     defer-datasource-initialization: true
   sql.init.mode: always
+scheduler:
+  booking:
+    delete-not-visited: "0 0 0 * * *"
 
 ---
 spring:
