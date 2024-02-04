@@ -23,6 +23,7 @@ public enum ErrorCode {
     LATE_VISIT(HttpStatus.BAD_REQUEST, "you're late. you should be visit before 10 minutes."),
     NO_APPROVAL_BOOKING(HttpStatus.BAD_REQUEST, "this booking is not approve from store"),
     // review
+    ALREADY_EXISTS_REVIEW(HttpStatus.BAD_REQUEST, "already exists review"),
     NOT_WRITER(HttpStatus.BAD_REQUEST, "request user is not writer"),
     NO_AUTHORIZED(HttpStatus.BAD_REQUEST, "can't handle this request. may be not authorized."),
     // store

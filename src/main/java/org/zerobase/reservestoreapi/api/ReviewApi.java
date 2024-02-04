@@ -13,6 +13,7 @@ import org.zerobase.reservestoreapi.dto.MemberPrincipal;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
 import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
+import org.zerobase.reservestoreapi.exception.BookingException;
 import org.zerobase.reservestoreapi.exception.ReviewException;
 import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.service.ReviewService;
@@ -31,11 +32,13 @@ public class ReviewApi {
     public ResponseEntity<ReviewDto> writeReview(
             @PathVariable Long storeId,
             @RequestBody @Validated ReviewRequest reviewRequest,
+            @AuthenticationPrincipal MemberPrincipal memberPrincipal,
             BindingResult bindingResult) {
 
-        // TODO: check whether booking user or not -> using schedule
-        // 1. booked before?
-        // 2. write review before?
+        // is there exists wrote review before?
+        if (reviewService.isExistsReviewByStoreIdAndUsername(storeId, memberPrincipal.username())) {
+            throw new ReviewException(ErrorCode.ALREADY_EXISTS_REVIEW);
+        }
         ReviewDto reviewDto =
                 reviewService.writeReview(storeService.searchStore(storeId), reviewRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(reviewDto);

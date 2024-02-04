@@ -65,6 +65,11 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.existsByIdAndCreatedBy(reviewId, username);
     }
 
+    @Override
+    public boolean isExistsReviewByStoreIdAndUsername(Long storeId, String username) {
+        return reviewRepository.existsByStoreIdAndCreatedBy(storeId, username);
+    }
+
     /** Update average rating, review count of specific store when write/update/delete review */
     private void updateStoreReviewInfo(Long storeId) {
         storeReviewInfoRepository.updateStoreReviewInfoByStoreId(storeId);
