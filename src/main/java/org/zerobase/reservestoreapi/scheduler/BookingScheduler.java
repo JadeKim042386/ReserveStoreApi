@@ -16,9 +16,7 @@ import java.time.LocalDateTime;
 public class BookingScheduler {
     private final BookingRepository bookingRepository;
 
-    /**
-     * Delete not visited bookings every midnight
-     */
+    /** Delete not visited bookings every midnight */
     @Scheduled(cron = "${scheduler.booking.delete-not-visited}")
     public void deleteNotVisited() {
         try {
