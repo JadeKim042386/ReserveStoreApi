@@ -32,4 +32,6 @@ public interface BookingRepository
     boolean existsByCreatedByAndStoreId(String username, Long storeId);
 
     Optional<Booking> findByCreatedByAndStoreId(String username, Long storeId);
+
+    void deleteAllByCreatedAtBefore(LocalDateTime now);
 }

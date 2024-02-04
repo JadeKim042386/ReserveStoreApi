@@ -33,7 +33,9 @@ public class ReviewApi {
             @RequestBody @Validated ReviewRequest reviewRequest,
             BindingResult bindingResult) {
 
-        // TODO: check whether booking user or not -> create log table
+        // TODO: check whether booking user or not -> using schedule
+        // 1. booked before?
+        // 2. write review before?
         ReviewDto reviewDto =
                 reviewService.writeReview(storeService.searchStore(storeId), reviewRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(reviewDto);
