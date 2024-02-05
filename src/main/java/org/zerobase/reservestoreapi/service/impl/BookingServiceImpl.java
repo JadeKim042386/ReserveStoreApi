@@ -30,8 +30,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto requestBooking(String username, Long storeId, LocalDateTime requestTime) {
         // 1. if already exists booking at requestTime, you can't
         // 2. if already exists booking by username, you can't
-        if (bookingRepository.existsByCreatedAtAndStoreId(requestTime, storeId)
-                || bookingRepository.existsByCreatedByAndStoreId(username, storeId)) {
+        if (bookingRepository.existsCreateByStoreId(requestTime, username, storeId)) {
             throw new BookingException(ErrorCode.ALREADY_EXISTS_BOOKING);
         }
         // add booking
@@ -43,7 +42,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking =
                 bookingRepository
                         .findByCreatedByAndStoreId(username, storeId)
-                        .orElseThrow(EntityNotFoundException::new);
+                        .orElseThrow(() -> new BookingException(ErrorCode.NOT_FOUND_ENTITY));
         // delete booking
         bookingRepository.delete(booking);
         // check whether approve or not
@@ -69,7 +68,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void confirmBooking(Long bookingId, Boolean isApprove, Long storeId) {
         Booking booking =
-                bookingRepository.findById(bookingId).orElseThrow(EntityNotFoundException::new);
+                bookingRepository.findById(bookingId)
+                        .orElseThrow(() -> new BookingException(ErrorCode.NOT_FOUND_ENTITY));
         // check requested store and booking store match
         if (!Objects.equals(booking.getStore().getId(), storeId)) {
             throw new StoreException(ErrorCode.NOT_MATCH_STORE);
@@ -82,7 +82,7 @@ public class BookingServiceImpl implements BookingService {
         // delete(reject) when isApprove is false
         else {
             bookingRepository.delete(booking);
-            log.debug("you're successfully delete booking {}", bookingId);
+            log.debug("you're successfully denied booking {}", bookingId);
         }
     }
 }

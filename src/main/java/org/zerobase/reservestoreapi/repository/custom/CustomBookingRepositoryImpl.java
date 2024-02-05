@@ -1,6 +1,7 @@
 package org.zerobase.reservestoreapi.repository.custom;
 
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.domain.QBooking;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -29,5 +31,16 @@ public class CustomBookingRepositoryImpl implements CustomBookingRepository {
                         .fetch();
 
         return new PageImpl<>(bookings, pageable, bookings.size());
+    }
+
+    @Override
+    public boolean existsCreateByStoreId(LocalDateTime time, String username, Long storeId) {
+        QBooking booking = QBooking.booking;
+        Predicate predicate = booking.store.id.eq(storeId).and(booking.createdAt.eq(time).or(booking.createdBy.eq(username)));
+
+        return jpaQueryFactory
+                .selectFrom(QBooking.booking)
+                .where(predicate)
+                .fetchFirst() != null;
     }
 }

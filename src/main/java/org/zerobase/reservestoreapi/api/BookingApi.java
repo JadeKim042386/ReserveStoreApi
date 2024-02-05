@@ -28,7 +28,8 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/v1/stores/{storeId}/bookings")
 public class BookingApi {
     private final BookingService bookingService;
-    private final MemberService memberService;
+
+    //TODO: search all bookings
 
     /**
      * Look up booking info for a specific date for a specific store. Returns Page based on
@@ -79,7 +80,7 @@ public class BookingApi {
     public ResponseEntity<ApiResponse> confirmBooking(
             @PathVariable Long storeId,
             @PathVariable Long bookingId,
-            @RequestParam Boolean isApprove) {
+            @RequestParam("approve") Boolean isApprove) {
 
         bookingService.confirmBooking(bookingId, isApprove, storeId);
         return ResponseEntity.ok(ApiResponse.of("you're successfully confirm."));

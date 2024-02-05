@@ -22,6 +22,8 @@ public class Booking extends AuditingCreatedFields implements Persistable<Long> 
 
     private Boolean approve;
 
+    //TODO: add phone
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "storeId")
     private Store store;

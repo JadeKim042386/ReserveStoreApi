@@ -36,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BookingApiTest {
     @Autowired private MockMvc mvc;
     @MockBean private BookingService bookingService;
-    @Mock private MemberService memberService;
 
     @Test
     void searchBookingsByDate() throws Exception {
@@ -64,7 +63,6 @@ class BookingApiTest {
     void requestBooking() throws Exception {
         // given
         Long storeId = 1L;
-        given(memberService.isExistsUsername(anyString())).willReturn(false);
         given(bookingService.requestBooking(anyString(), anyLong(), any()))
                 .willReturn(BookingDto.fromEntity(createBooking(LocalDateTime.now())));
         // when
