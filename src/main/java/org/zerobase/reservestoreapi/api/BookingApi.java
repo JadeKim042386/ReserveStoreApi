@@ -34,9 +34,11 @@ public class BookingApi {
      * Look up booking info for a specific date for a specific store. Returns Page based on
      * SSR(Server Side Rendering) (e.g.thymeleaf). Therefore, the return type may change in the
      * future.
-     *
-     * <p>Example: - /api/v1/stores/1/bookings?approve=true&date=2024-02-03T00:00:00 -
-     * /api/v1/stores/1/bookings?date=2024-02-03T00:00:00
+     * <pre>
+     * Example:
+     * - /api/v1/stores/1/bookings?approve=true&date=2024-02-03T00:00:00
+     * - /api/v1/stores/1/bookings?date=2024-02-03T00:00:00
+     * </pre>
      */
     @GetMapping
     public ResponseEntity<Page<BookingDto>> searchBookingsByDate(
@@ -50,8 +52,11 @@ public class BookingApi {
     /**
      * Request booking for a specific time for a specific store.
      *
-     * <p>throw an exception followed: 1. if requested user wasn't sign up 2. if already exists
-     * booking at request booking time 3. if already exists booking by request user
+     * <pre>
+     * throw an exception followed:
+     * 1. if already exists booking at request booking time
+     * 2. if already exists booking by request user
+     * </pre>
      */
     @PostMapping
     public ResponseEntity<BookingDto> requestBooking(
@@ -60,9 +65,6 @@ public class BookingApi {
                     LocalDateTime requestBookingTime,
             @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
 
-        if (memberService.isExistsUsername(memberPrincipal.getUsername())) {
-            throw new BookingException(ErrorCode.ALREADY_EXISTS_USERNAME_OR_NICKNAME);
-        }
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
                         bookingService.requestBooking(

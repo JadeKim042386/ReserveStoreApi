@@ -51,7 +51,7 @@ public class SignUpServiceImpl implements SignUpService {
 
     /** Check validation for username and nickname */
     private void validationMemberCheck(String username, String nickname) {
-        if (memberService.isExistsUsername(username) || memberService.isExistsNickname(nickname)) {
+        if (memberService.isExistsUsernameOrNickname(username, nickname)) {
             throw new SignUpException(ErrorCode.ALREADY_EXISTS_USERNAME_OR_NICKNAME);
         }
     }

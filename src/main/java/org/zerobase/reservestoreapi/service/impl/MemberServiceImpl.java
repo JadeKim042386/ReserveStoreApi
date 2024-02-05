@@ -23,13 +23,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean isExistsUsername(String username) {
-        return memberRepository.existsByUsername(username);
-    }
-
-    @Override
-    public boolean isExistsNickname(String nickname) {
-        return memberRepository.existsByNickname(nickname);
+    public boolean isExistsUsernameOrNickname(String username, String nickname) {
+        return memberRepository.existsByUsernameOrNickname(username, nickname);
     }
 
     @Transactional

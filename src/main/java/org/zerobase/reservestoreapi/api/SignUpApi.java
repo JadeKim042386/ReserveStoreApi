@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.zerobase.reservestoreapi.aop.BindingResultHandler;
 import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
+import org.zerobase.reservestoreapi.exception.SignUpException;
+import org.zerobase.reservestoreapi.exception.StoreException;
+import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.service.MemberService;
 import org.zerobase.reservestoreapi.service.SignUpService;
 import org.zerobase.reservestoreapi.service.StoreService;
@@ -27,8 +30,9 @@ public class SignUpApi {
     /**
      * request sign up<br>
      * request partner sign up example:
-     *
      * <pre class="code">
+     * /api/v1/signup?partner=true
+     *
      * {
      *      "username": "username",
      *      "password": "pw",
@@ -47,7 +51,6 @@ public class SignUpApi {
      *      }
      * }
      * </pre>
-     *
      * @param isPartnerSignUp determine whether or not to sign up a partner
      */
     @BindingResultHandler(message = "validation error during sign up")
@@ -66,18 +69,16 @@ public class SignUpApi {
                 .body(ApiResponse.of("You have successfully signed up"));
     }
 
-    /** Verify that one of username, nickname, storeName already exists.<br> */
+    /** Duplicated Check <br> Verify that one of username, nickname, storeName already exists.*/
     @GetMapping("/exists")
     public ResponseEntity<ApiResponse> checkExists(
             @RequestParam(required = false) String username,
             @RequestParam(required = false) String nickname,
             @RequestParam(required = false) String storeName) {
-        if (StringUtils.hasText(username) && memberService.isExistsUsername(username)) {
-            throw new RuntimeException("already exists username");
-        } else if (StringUtils.hasText(nickname) && memberService.isExistsNickname(nickname)) {
-            throw new RuntimeException("already exists nickname");
+        if ((StringUtils.hasText(username) || StringUtils.hasText(nickname)) && memberService.isExistsUsernameOrNickname(username, nickname)) {
+            throw new SignUpException(ErrorCode.ALREADY_EXISTS_USERNAME_OR_NICKNAME);
         } else if (StringUtils.hasText(storeName) && storeService.isExistsStoreName(storeName)) {
-            throw new RuntimeException("already exists store name");
+            throw new StoreException(ErrorCode.ALREADY_EXISTS_STORE_NAME);
         }
         return ResponseEntity.ok(ApiResponse.of("you can use"));
     }
