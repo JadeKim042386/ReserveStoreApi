@@ -2,7 +2,6 @@ package org.zerobase.reservestoreapi.api;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,7 +18,6 @@ import org.zerobase.reservestoreapi.config.TestSecurityConfig;
 import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.service.BookingService;
-import org.zerobase.reservestoreapi.service.MemberService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -30,6 +30,7 @@ public class SignUpApi {
     /**
      * request sign up<br>
      * request partner sign up example:
+     *
      * <pre class="code">
      * /api/v1/signup?partner=true
      *
@@ -51,6 +52,7 @@ public class SignUpApi {
      *      }
      * }
      * </pre>
+     *
      * @param isPartnerSignUp determine whether or not to sign up a partner
      */
     @BindingResultHandler(message = "validation error during sign up")
@@ -69,13 +71,17 @@ public class SignUpApi {
                 .body(ApiResponse.of("You have successfully signed up"));
     }
 
-    /** Duplicated Check <br> Verify that one of username, nickname, storeName already exists.*/
+    /**
+     * Duplicated Check <br>
+     * Verify that one of username, nickname, storeName already exists.
+     */
     @GetMapping("/exists")
     public ResponseEntity<ApiResponse> checkExists(
             @RequestParam(required = false) String username,
             @RequestParam(required = false) String nickname,
             @RequestParam(required = false) String storeName) {
-        if ((StringUtils.hasText(username) || StringUtils.hasText(nickname)) && memberService.isExistsUsernameOrNickname(username, nickname)) {
+        if ((StringUtils.hasText(username) || StringUtils.hasText(nickname))
+                && memberService.isExistsUsernameOrNickname(username, nickname)) {
             throw new SignUpException(ErrorCode.ALREADY_EXISTS_USERNAME_OR_NICKNAME);
         } else if (StringUtils.hasText(storeName) && storeService.isExistsStoreName(storeName)) {
             throw new StoreException(ErrorCode.ALREADY_EXISTS_STORE_NAME);

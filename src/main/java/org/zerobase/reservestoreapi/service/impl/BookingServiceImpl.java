@@ -15,7 +15,6 @@ import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.repository.BookingRepository;
 import org.zerobase.reservestoreapi.service.BookingService;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -68,7 +67,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void confirmBooking(Long bookingId, Boolean isApprove, Long storeId) {
         Booking booking =
-                bookingRepository.findById(bookingId)
+                bookingRepository
+                        .findById(bookingId)
                         .orElseThrow(() -> new BookingException(ErrorCode.NOT_FOUND_ENTITY));
         // check requested store and booking store match
         if (!Objects.equals(booking.getStore().getId(), storeId)) {

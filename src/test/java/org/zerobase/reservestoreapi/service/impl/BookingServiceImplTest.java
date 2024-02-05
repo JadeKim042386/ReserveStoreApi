@@ -47,7 +47,8 @@ class BookingServiceImplTest {
         Long storeId = 1L;
         LocalDateTime now = LocalDateTime.now();
         Booking booking = createBooking(now);
-        given(bookingRepository.existsCreateByStoreId(any(), anyString(), anyLong())).willReturn(false);
+        given(bookingRepository.existsCreateByStoreId(any(), anyString(), anyLong()))
+                .willReturn(false);
         given(bookingRepository.save(any())).willReturn(booking);
         // when
         BookingDto bookingDto = bookingService.requestBooking(username, storeId, now);

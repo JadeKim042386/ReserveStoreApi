@@ -14,7 +14,6 @@ import org.zerobase.reservestoreapi.repository.ReviewRepository;
 import org.zerobase.reservestoreapi.repository.StoreReviewInfoRepository;
 import org.zerobase.reservestoreapi.service.ReviewService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Objects;
 
 @Service
@@ -36,7 +35,9 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewDto updateReview(
             ReviewRequest reviewRequest, Long reviewId, Long storeId, String requestUsername) {
         Review review =
-                reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewException(ErrorCode.NOT_FOUND_ENTITY));
+                reviewRepository
+                        .findById(reviewId)
+                        .orElseThrow(() -> new ReviewException(ErrorCode.NOT_FOUND_ENTITY));
         // check whether writer or not
         if (!review.getCreatedBy().equals(requestUsername)) {
             throw new ReviewException(ErrorCode.NOT_WRITER);

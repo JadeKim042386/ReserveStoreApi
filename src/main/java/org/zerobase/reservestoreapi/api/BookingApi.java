@@ -16,10 +16,7 @@ import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.dto.MemberPrincipal;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
-import org.zerobase.reservestoreapi.exception.BookingException;
-import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.service.BookingService;
-import org.zerobase.reservestoreapi.service.MemberService;
 
 import java.time.LocalDateTime;
 
@@ -29,12 +26,13 @@ import java.time.LocalDateTime;
 public class BookingApi {
     private final BookingService bookingService;
 
-    //TODO: search all bookings
+    // TODO: search all bookings
 
     /**
      * Look up booking info for a specific date for a specific store. Returns Page based on
      * SSR(Server Side Rendering) (e.g.thymeleaf). Therefore, the return type may change in the
      * future.
+     *
      * <pre>
      * Example:
      * - /api/v1/stores/1/bookings?approve=true&date=2024-02-03T00:00:00
