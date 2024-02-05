@@ -26,8 +26,6 @@ import java.time.LocalDateTime;
 public class BookingApi {
     private final BookingService bookingService;
 
-    // TODO: search all bookings
-
     /**
      * Look up booking info for a specific date for a specific store. Returns Page based on
      * SSR(Server Side Rendering) (e.g.thymeleaf). Therefore, the return type may change in the

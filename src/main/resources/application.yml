@@ -17,6 +17,7 @@ spring:
     properties:
       hibernate.format_sql: true
     defer-datasource-initialization: true
+    open-in-view: false
   sql.init.mode: always
 scheduler:
   booking:
@@ -29,6 +30,11 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PW}
+springdoc:
+  api-docs:
+    path: "/api-docs"
+  swagger-ui:
+    path: "/swagger-ui"
 
 ---
 spring:
