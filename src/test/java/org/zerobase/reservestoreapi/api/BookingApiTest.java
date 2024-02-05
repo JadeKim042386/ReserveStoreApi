@@ -85,7 +85,7 @@ class BookingApiTest {
         // when
         mvc.perform(
                         put("/api/v1/stores/" + storeId + "/bookings/" + bookingId)
-                                .param("isApprove", "true")
+                                .param("approve", "true")
                                 .param("storeName", "testStore"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));

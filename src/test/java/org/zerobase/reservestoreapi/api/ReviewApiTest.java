@@ -89,6 +89,7 @@ class ReviewApiTest {
         // given
         Long storeId = 1L;
         Long reviewId = 1L;
+        given(reviewService.isExistsReviewByUsername(anyLong(), anyString())).willReturn(true);
         willDoNothing().given(reviewService).deleteReview(anyLong(), anyLong(), anyString());
         // when
         mvc.perform(delete("/api/v1/stores/" + storeId + "/reviews/" + reviewId))
