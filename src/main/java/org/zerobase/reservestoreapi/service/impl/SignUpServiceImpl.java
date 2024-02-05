@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 import org.zerobase.reservestoreapi.exception.SignUpException;
 import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
@@ -41,10 +40,13 @@ public class SignUpServiceImpl implements SignUpService {
                         signUpRequest.getPartnerInfo().getLastTime())
                 < signUpRequest.getPartnerInfo().getIntervalTime())
             throw new SignUpException(ErrorCode.INVALID_INTERVAL_TIME);
-        // save store
-        Store store = storeService.saveStore(signUpRequest.getPartnerInfo().toStoreEntity());
         // save store member
-        memberService.saveMember(signUpRequest.toStoreMemberEntity(store, passwordEncoder));
+        memberService.saveMember(
+                signUpRequest.toStoreMemberEntity(
+                        signUpRequest.getPartnerInfo().toStoreEntity(),
+                        passwordEncoder
+                )
+        );
     }
 
     /** Check validation for username and nickname */

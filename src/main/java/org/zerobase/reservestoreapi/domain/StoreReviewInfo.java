@@ -24,8 +24,7 @@ public class StoreReviewInfo implements Persistable<Long> {
 
     @Setter private Integer reviewCount;
 
-    @OneToOne
-    @JoinColumn(name = "storeId")
+    @OneToOne(mappedBy = "storeReviewInfo")
     private Store store;
 
     public StoreReviewInfo(Float averageRating, Integer reviewCount) {

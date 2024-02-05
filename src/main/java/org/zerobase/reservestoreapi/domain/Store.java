@@ -43,11 +43,11 @@ public class Store implements Persistable<Long> {
     @Enumerated(EnumType.STRING)
     private StoreType storeType;
 
-    @OneToOne(mappedBy = "store", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "storeReviewInfoId")
     private StoreReviewInfo storeReviewInfo;
 
-    @OneToOne
-    @JoinColumn(name = "memberId")
+    @OneToOne(mappedBy = "store")
     private Member member;
 
     @OrderBy("createdAt DESC")

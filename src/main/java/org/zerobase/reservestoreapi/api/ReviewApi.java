@@ -6,18 +6,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.zerobase.reservestoreapi.aop.BindingResultHandler;
 import org.zerobase.reservestoreapi.dto.MemberPrincipal;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
 import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
-import org.zerobase.reservestoreapi.exception.BookingException;
 import org.zerobase.reservestoreapi.exception.ReviewException;
 import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.service.ReviewService;
 import org.zerobase.reservestoreapi.service.StoreService;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -31,7 +31,7 @@ public class ReviewApi {
     @PostMapping
     public ResponseEntity<ReviewDto> writeReview(
             @PathVariable Long storeId,
-            @RequestBody @Validated ReviewRequest reviewRequest,
+            @RequestBody @Valid ReviewRequest reviewRequest,
             @AuthenticationPrincipal MemberPrincipal memberPrincipal,
             BindingResult bindingResult) {
 
@@ -50,7 +50,7 @@ public class ReviewApi {
             @PathVariable Long storeId,
             @PathVariable Long reviewId,
             @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @RequestBody @Validated ReviewRequest reviewRequest,
+            @RequestBody @Valid ReviewRequest reviewRequest,
             BindingResult bindingResult) {
 
         return ResponseEntity.ok(

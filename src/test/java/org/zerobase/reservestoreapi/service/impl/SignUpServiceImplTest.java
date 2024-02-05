@@ -48,11 +48,9 @@ class SignUpServiceImplTest {
     void partnerSignUp() {
         // given
         SignUpRequest partnerSignUpRequest = createPartnerSignUpRequest();
-        Store store = partnerSignUpRequest.getPartnerInfo().toStoreEntity();
         given(memberService.isExistsUsername(anyString())).willReturn(false);
         given(memberService.isExistsNickname(anyString())).willReturn(false);
         given(storeService.isExistsStoreName(anyString())).willReturn(false);
-        given(storeService.saveStore(any())).willReturn(store);
         willDoNothing().given(memberService).saveMember(any());
         // when
         assertThatNoException().isThrownBy(() -> signUpService.partnerSignUp(partnerSignUpRequest));

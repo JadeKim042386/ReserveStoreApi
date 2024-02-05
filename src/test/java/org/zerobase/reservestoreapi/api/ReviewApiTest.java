@@ -43,6 +43,7 @@ class ReviewApiTest {
     @MockBean private StoreService storeService;
     @MockBean private ReviewService reviewService;
 
+    @WithUserDetails(value = "testUser", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("write review")
     @Test
     void writeReview() throws Exception {

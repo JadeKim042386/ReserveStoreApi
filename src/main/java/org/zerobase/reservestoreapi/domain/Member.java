@@ -31,7 +31,8 @@ public class Member implements Persistable<Long> {
     @Embedded private Address address;
     private String phone;
 
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "storeId")
     private Store store;
 
     public Member(
