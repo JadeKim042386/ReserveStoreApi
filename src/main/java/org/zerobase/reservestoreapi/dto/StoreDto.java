@@ -15,7 +15,8 @@ public record StoreDto(
         Set<String> possibleBookingTimes,
         StoreType storeType,
         Address address,
-        String phone) {
+        String phone,
+        Float distance) {
     public static StoreDto fromEntity(Store store) {
         return new StoreDto(
                 store.getName(),
@@ -23,7 +24,8 @@ public record StoreDto(
                         store.getStartTime(), store.getLastTime(), store.getIntervalTime()),
                 store.getStoreType(),
                 store.getMember().getAddress(),
-                store.getMember().getPhone());
+                store.getMember().getPhone(),
+                store.getDistance());
     }
 
     private static Set<String> generateBookingTimes(

@@ -40,6 +40,8 @@ public class Store implements Persistable<Long> {
      */
     private Integer intervalTime;
 
+    private Float distance; //Meter
+
     @Enumerated(EnumType.STRING)
     private StoreType storeType;
 
@@ -63,11 +65,13 @@ public class Store implements Persistable<Long> {
             LocalTime startTime,
             LocalTime lastTime,
             Integer intervalTime,
+            Float distance,
             StoreType storeType) {
         this.name = name;
         this.startTime = startTime;
         this.lastTime = lastTime;
         this.intervalTime = intervalTime;
+        this.distance = distance;
         this.storeType = storeType;
         this.storeReviewInfo = StoreReviewInfo.of(0f, 0);
     }
@@ -77,8 +81,9 @@ public class Store implements Persistable<Long> {
             LocalTime startTime,
             LocalTime lastTime,
             Integer intervalTime,
+            Float distance,
             StoreType storeType) {
-        return new Store(name, startTime, lastTime, intervalTime, storeType);
+        return new Store(name, startTime, lastTime, intervalTime, distance, storeType);
     }
 
     @Override

@@ -23,11 +23,14 @@ public class StoreApi {
     /**
      * Look up all stores Returns Page based on SSR(Server Side Rendering) (e.g.thymeleaf).
      * Therefore, the return type may change in the future.
+     * <pre>
+     *     Example:
+     *     api/v1/stores?sort=name,desc&sort=storeReviewInfo.averageRating,asc&sort=distance,asc
+ *     </pre>
      */
     @GetMapping
     public ResponseEntity<Page<StoreDto>> searchAllStores(
-            // TODO: sort name, rating, dist
-            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(sort = {"name", "storeReviewInfo.averageRating", "distance"}, direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.ok(storeService.searchStores(pageable));
     }
 

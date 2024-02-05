@@ -49,7 +49,7 @@ public class SignUpRequest {
                 phone);
     }
 
-    public Member toStoreMemberEntity(Store store, PasswordEncoder passwordEncoder) {
+    public Member toStoreMemberEntity(PasswordEncoder passwordEncoder) {
         return Member.ofStore(
                 username,
                 passwordEncoder.encode(password),
@@ -57,6 +57,6 @@ public class SignUpRequest {
                 MemberRole.valueOf(memberRole),
                 Address.of(zipcode, street, detail),
                 phone,
-                store);
+                partnerInfo.toStoreEntity());
     }
 }
