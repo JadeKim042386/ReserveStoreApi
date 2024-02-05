@@ -43,6 +43,7 @@ class BookingServiceImplTest {
     @Test
     void requestBooking() throws IllegalAccessException {
         // given
+        String phone = "01011111111";
         String username = "admin";
         Long storeId = 1L;
         LocalDateTime now = LocalDateTime.now();
@@ -51,7 +52,7 @@ class BookingServiceImplTest {
                 .willReturn(false);
         given(bookingRepository.save(any())).willReturn(booking);
         // when
-        BookingDto bookingDto = bookingService.requestBooking(username, storeId, now);
+        BookingDto bookingDto = bookingService.requestBooking(phone, username, storeId, now);
         // then
         assertThat(bookingDto.approve()).isEqualTo(false);
     }
@@ -128,7 +129,7 @@ class BookingServiceImplTest {
     }
 
     private static Booking createBooking(LocalDateTime now) throws IllegalAccessException {
-        Booking booking = Booking.of(false);
+        Booking booking = Booking.of("01011111111", false);
         FieldUtils.writeField(booking, "createdAt", now.plusMinutes(11), true);
         FieldUtils.writeField(booking, "createdBy", "admin", true);
         FieldUtils.writeField(booking, "store", createStore(), true);

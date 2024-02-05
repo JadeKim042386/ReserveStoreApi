@@ -67,7 +67,7 @@ public class BookingApi {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
                         bookingService.requestBooking(
-                                memberPrincipal.username(), storeId, requestBookingTime));
+                                memberPrincipal.phone(), memberPrincipal.username(), storeId, requestBookingTime));
     }
 
     /**

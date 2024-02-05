@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 public interface BookingService {
     /** Request booking by memberId and storeId */
-    BookingDto requestBooking(String username, Long storeId, LocalDateTime requestTime);
+    BookingDto requestBooking(String phone, String username, Long storeId, LocalDateTime requestTime);
 
     /**
      * Check visit booked store before 10 minutes and delete. if you're late, cancel your booking.

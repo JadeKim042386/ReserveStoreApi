@@ -21,19 +21,19 @@ public class Booking extends AuditingCreatedFields implements Persistable<Long> 
     private Long id;
 
     private Boolean approve;
-
-    // TODO: add phone
+    private String phone;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "storeId")
     private Store store;
 
-    public Booking(Boolean approve) {
+    public Booking(String phone, Boolean approve) {
+        this.phone = phone;
         this.approve = approve;
     }
 
-    public static Booking of(Boolean approve) {
-        return new Booking(approve);
+    public static Booking of(String phone, Boolean approve) {
+        return new Booking(phone, approve);
     }
 
     public void approval() {

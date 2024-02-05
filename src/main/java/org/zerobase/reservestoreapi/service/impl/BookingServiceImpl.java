@@ -26,14 +26,14 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
 
     @Override
-    public BookingDto requestBooking(String username, Long storeId, LocalDateTime requestTime) {
+    public BookingDto requestBooking(String phone, String username, Long storeId, LocalDateTime requestTime) {
         // 1. if already exists booking at requestTime, you can't
         // 2. if already exists booking by username, you can't
         if (bookingRepository.existsCreateByStoreId(requestTime, username, storeId)) {
             throw new BookingException(ErrorCode.ALREADY_EXISTS_BOOKING);
         }
         // add booking
-        return BookingDto.fromEntity(bookingRepository.save(Booking.of(false)));
+        return BookingDto.fromEntity(bookingRepository.save(Booking.of(phone, false)));
     }
 
     @Override

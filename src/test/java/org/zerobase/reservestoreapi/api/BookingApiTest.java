@@ -61,7 +61,7 @@ class BookingApiTest {
     void requestBooking() throws Exception {
         // given
         Long storeId = 1L;
-        given(bookingService.requestBooking(anyString(), anyLong(), any()))
+        given(bookingService.requestBooking(anyString(), anyString(), anyLong(), any()))
                 .willReturn(BookingDto.fromEntity(createBooking(LocalDateTime.now())));
         // when
         mvc.perform(
@@ -103,7 +103,7 @@ class BookingApiTest {
     }
 
     private static Booking createBooking(LocalDateTime now) throws IllegalAccessException {
-        Booking booking = Booking.of(false);
+        Booking booking = Booking.of("01011111111", false);
         FieldUtils.writeField(booking, "createdAt", now.plusMinutes(11), true);
         FieldUtils.writeField(booking, "createdBy", "admin", true);
         return booking;
