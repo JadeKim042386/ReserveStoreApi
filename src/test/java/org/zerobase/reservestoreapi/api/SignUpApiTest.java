@@ -74,7 +74,7 @@ class SignUpApiTest {
     @Test
     void checkExists() throws Exception {
         // given
-        given(memberService.isExistsUsername(anyString())).willReturn(false);
+        given(memberService.isExistsUsernameOrNickname(anyString(), anyString())).willReturn(false);
         // when
         mvc.perform(get("/api/v1/signup/exists").param("username", "testUser"))
                 .andExpect(status().isOk())

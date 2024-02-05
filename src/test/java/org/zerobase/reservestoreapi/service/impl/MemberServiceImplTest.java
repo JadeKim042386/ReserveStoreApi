@@ -46,14 +46,17 @@ class MemberServiceImplTest {
         assertThat(member.getNickname()).isEqualTo("nickname");
     }
 
-    @DisplayName("check already exists nickname")
+    @DisplayName("check already exists username or nickname")
     @Test
-    void isExistsNickname() {
+    void isExistsUsernameOrNickname() {
         // given
+        String username = "username";
         String nickname = "nickname";
-        given(memberRepository.existsByNickname(anyString())).willReturn(false);
+        given(memberRepository.existsByUsernameOrNickname(anyString(), anyString()))
+                .willReturn(false);
         // when
-        assertThatNoException().isThrownBy(() -> memberService.isExistsNickname(nickname));
+        assertThatNoException()
+                .isThrownBy(() -> memberService.isExistsUsernameOrNickname(username, nickname));
         // then
     }
 }

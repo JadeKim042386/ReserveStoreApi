@@ -26,6 +26,7 @@ public class StoreApi {
      */
     @GetMapping
     public ResponseEntity<Page<StoreDto>> searchAllStores(
+            // TODO: sort name, rating, dist
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(storeService.searchStores(pageable));
     }

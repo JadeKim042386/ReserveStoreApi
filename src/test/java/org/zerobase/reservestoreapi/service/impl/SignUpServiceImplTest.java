@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.request.PartnerSignUpRequest;
 import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 import org.zerobase.reservestoreapi.service.MemberService;
@@ -35,8 +34,7 @@ class SignUpServiceImplTest {
     void signUp() {
         // given
         SignUpRequest signUpRequest = createMemberSignUpRequest();
-        given(memberService.isExistsUsername(anyString())).willReturn(false);
-        given(memberService.isExistsNickname(anyString())).willReturn(false);
+        given(memberService.isExistsUsernameOrNickname(anyString(), anyString())).willReturn(false);
         willDoNothing().given(memberService).saveMember(any());
         // when
         assertThatNoException().isThrownBy(() -> signUpService.signUp(signUpRequest));
@@ -48,8 +46,7 @@ class SignUpServiceImplTest {
     void partnerSignUp() {
         // given
         SignUpRequest partnerSignUpRequest = createPartnerSignUpRequest();
-        given(memberService.isExistsUsername(anyString())).willReturn(false);
-        given(memberService.isExistsNickname(anyString())).willReturn(false);
+        given(memberService.isExistsUsernameOrNickname(anyString(), anyString())).willReturn(false);
         given(storeService.isExistsStoreName(anyString())).willReturn(false);
         willDoNothing().given(memberService).saveMember(any());
         // when

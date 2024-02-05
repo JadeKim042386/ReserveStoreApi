@@ -2,7 +2,6 @@ package org.zerobase.reservestoreapi.api;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,7 +18,6 @@ import org.zerobase.reservestoreapi.config.TestSecurityConfig;
 import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.service.BookingService;
-import org.zerobase.reservestoreapi.service.MemberService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BookingApiTest {
     @Autowired private MockMvc mvc;
     @MockBean private BookingService bookingService;
-    @Mock private MemberService memberService;
 
     @Test
     void searchBookingsByDate() throws Exception {
@@ -64,7 +61,6 @@ class BookingApiTest {
     void requestBooking() throws Exception {
         // given
         Long storeId = 1L;
-        given(memberService.isExistsUsername(anyString())).willReturn(false);
         given(bookingService.requestBooking(anyString(), anyLong(), any()))
                 .willReturn(BookingDto.fromEntity(createBooking(LocalDateTime.now())));
         // when
@@ -87,7 +83,7 @@ class BookingApiTest {
         // when
         mvc.perform(
                         put("/api/v1/stores/" + storeId + "/bookings/" + bookingId)
-                                .param("isApprove", "true")
+                                .param("approve", "true")
                                 .param("storeName", "testStore"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));

@@ -43,10 +43,7 @@ public class SignUpServiceImpl implements SignUpService {
         // save store member
         memberService.saveMember(
                 signUpRequest.toStoreMemberEntity(
-                        signUpRequest.getPartnerInfo().toStoreEntity(),
-                        passwordEncoder
-                )
-        );
+                        signUpRequest.getPartnerInfo().toStoreEntity(), passwordEncoder));
     }
 
     /** Check validation for username and nickname */

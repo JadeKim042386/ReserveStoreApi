@@ -16,5 +16,6 @@ public interface ReviewService {
     void deleteReview(Long reviewId, Long storeId, String requestUsername);
 
     boolean isExistsReviewByUsername(Long reviewId, String username);
+
     boolean isExistsReviewByStoreIdAndUsername(Long storeId, String username);
 }
