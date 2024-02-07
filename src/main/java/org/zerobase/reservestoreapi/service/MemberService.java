@@ -9,4 +9,6 @@ public interface MemberService {
     boolean isExistsUsernameOrNickname(String username, String nickname);
 
     void saveMember(Member member);
+
+    boolean isExistsByUsernameAndStoreId(String username, Long storeId);
 }

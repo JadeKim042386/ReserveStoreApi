@@ -38,12 +38,6 @@ public class StoreServiceImpl implements StoreService {
                 .orElseThrow(() -> new StoreException(ErrorCode.NOT_FOUND_ENTITY));
     }
 
-    @CacheEvict(value = CacheKey.KEY_STORE, allEntries = true)
-    @Override
-    public Store saveStore(Store store) {
-        return storeRepository.save(store);
-    }
-
     @Override
     public StoreDto searchStoreDto(Long storeId) {
         return StoreDto.fromEntity(searchStore(storeId));
@@ -52,10 +46,5 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public boolean isExistsStoreName(String storeName) {
         return storeRepository.existsByName(storeName);
-    }
-
-    @Override
-    public boolean isExistsStoreByUsername(Long storeId, String username) {
-        return storeRepository.existsByIdAndMember_Username(storeId, username);
     }
 }

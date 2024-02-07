@@ -9,6 +9,13 @@ import java.util.Objects;
 
 @Getter
 @Entity
+@Table(
+        indexes = {
+                @Index(name = "id_and_created_by", columnList = "id, createdBy"),
+                @Index(name = "store_id_and_created_by", columnList = "storeId, createdBy"),
+                @Index(name = "store_id_idx", columnList = "storeId")
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Review extends AuditingAllFields implements Persistable<Long> {
