@@ -62,19 +62,14 @@ class StoreApiTest {
     void searchStore() throws Exception {
         // given
         Long storeId = 1L;
-        given(storeService.searchStoreWithReviewDto(anyLong()))
-                .willReturn(createStoreWithReviewDto());
+        given(storeService.searchStoreDto(anyLong()))
+                .willReturn(createStoreDto());
         // when
         mvc.perform(get("/api/v1/stores/" + storeId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.storeDto.name").value("store"))
-                .andExpect(jsonPath("$.reviews.size()").value(1));
+                .andExpect(jsonPath("$.name").value("store"));
         // then
-    }
-
-    private StoreWithReviewDto createStoreWithReviewDto() throws IllegalAccessException {
-        return StoreWithReviewDto.fromEntity(createStore());
     }
 
     private StoreDto createStoreDto() throws IllegalAccessException {

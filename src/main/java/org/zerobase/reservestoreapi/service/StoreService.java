@@ -17,7 +17,7 @@ public interface StoreService {
     Store saveStore(Store store);
 
     /** Get store detail DTO by storeId */
-    StoreWithReviewDto searchStoreWithReviewDto(Long storeId);
+    StoreDto searchStoreDto(Long storeId);
 
     /** Check already exists store name */
     boolean isExistsStoreName(String storeName);

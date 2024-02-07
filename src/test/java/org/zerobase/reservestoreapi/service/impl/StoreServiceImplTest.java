@@ -60,10 +60,9 @@ class StoreServiceImplTest {
         Long storeId = 1L;
         given(storeRepository.findById(anyLong())).willReturn(Optional.of(createStore()));
         // when
-        StoreWithReviewDto storeWithReviewDto = storeService.searchStoreWithReviewDto(storeId);
+        StoreDto storeDto = storeService.searchStoreDto(storeId);
         // then
-        assertThat(storeWithReviewDto.storeDto().name()).isEqualTo("name");
-        assertThat(storeWithReviewDto.reviews().size()).isEqualTo(1);
+        assertThat(storeDto.name()).isEqualTo("name");
     }
 
     private static Store createStore() throws IllegalAccessException {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
 import org.zerobase.reservestoreapi.dto.response.PagedResponse;
+import org.zerobase.reservestoreapi.service.ReviewService;
 import org.zerobase.reservestoreapi.service.StoreService;
 
 @RestController
@@ -34,10 +35,9 @@ public class StoreApi {
         return ResponseEntity.ok(storeService.searchStores(pageable));
     }
 
-    /** Look up specific store */
+    /** Retrieve specific store */
     @GetMapping("/{storeId}")
-    public ResponseEntity<StoreWithReviewDto> searchStore(@PathVariable Long storeId) {
-        //TODO: pagination review (e.g.StoreWithReviewDto(StoreDto, Page<ReviewDto>))
-        return ResponseEntity.ok(storeService.searchStoreWithReviewDto(storeId));
+    public ResponseEntity<StoreDto> searchStore(@PathVariable Long storeId) {
+        return ResponseEntity.ok(storeService.searchStoreDto(storeId));
     }
 }

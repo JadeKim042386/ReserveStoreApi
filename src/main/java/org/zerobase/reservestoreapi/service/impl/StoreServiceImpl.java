@@ -46,8 +46,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public StoreWithReviewDto searchStoreWithReviewDto(Long storeId) {
-        return StoreWithReviewDto.fromEntity(searchStore(storeId));
+    public StoreDto searchStoreDto(Long storeId) {
+        return StoreDto.fromEntity(searchStore(storeId));
     }
 
     @Override
