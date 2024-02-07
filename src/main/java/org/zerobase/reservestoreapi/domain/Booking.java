@@ -32,6 +32,7 @@ public class Booking extends AuditingCreatedFields implements Persistable<Long> 
 
     @Column(nullable = false)
     private Boolean approve;
+
     @Column(nullable = false)
     private String phone;
 

@@ -15,8 +15,10 @@ import javax.persistence.Embeddable;
 public class Address {
     @Column(length = 10)
     private String zipcode;
+
     @Column(length = 100)
     private String street;
+
     @Column(length = 50)
     private String detail;
 

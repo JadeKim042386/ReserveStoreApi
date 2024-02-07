@@ -24,9 +24,12 @@ public class Review extends AuditingAllFields implements Persistable<Long> {
     private Long id;
 
     @Column(nullable = false)
-    @Setter private String content;
+    @Setter
+    private String content;
 
-    @Column(nullable = false, columnDefinition = "int constraint rating_range check (rating between 0 and 5)")
+    @Column(
+            nullable = false,
+            columnDefinition = "int constraint rating_range check (rating between 0 and 5)")
     @Setter
     private Integer rating;
 

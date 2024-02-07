@@ -63,7 +63,7 @@ public class BookingApi {
                     LocalDateTime requestBookingTime,
             @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
 
-        //request booking at least one day before
+        // request booking at least one day before
         if (!LocalDate.now().isBefore(requestBookingTime.toLocalDate())) {
             throw new BookingException(ErrorCode.NOT_POSSIBLE_BOOKING);
         }

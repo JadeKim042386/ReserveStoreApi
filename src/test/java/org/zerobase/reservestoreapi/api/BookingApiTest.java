@@ -70,7 +70,9 @@ class BookingApiTest {
         // when
         mvc.perform(
                         post("/api/v1/stores/" + storeId + "/bookings")
-                                .param("time", LocalDate.now().plusDays(1).atTime(10, 0, 0).toString()))
+                                .param(
+                                        "time",
+                                        LocalDate.now().plusDays(1).atTime(10, 0, 0).toString()))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.approve").value(false));
