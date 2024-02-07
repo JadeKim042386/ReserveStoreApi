@@ -27,16 +27,22 @@ public class Member implements Persistable<Long> {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private String nickname;
 
+    @Column(nullable = false, length = 10)
     @Enumerated(value = EnumType.STRING)
     private MemberRole memberRole;
 
     @Embedded private Address address;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 11)
     private String phone;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

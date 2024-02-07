@@ -16,8 +16,11 @@ import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.dto.MemberPrincipal;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
 import org.zerobase.reservestoreapi.dto.response.PagedResponse;
+import org.zerobase.reservestoreapi.exception.BookingException;
+import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.service.BookingService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
@@ -60,6 +63,10 @@ public class BookingApi {
                     LocalDateTime requestBookingTime,
             @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
 
+        // request booking at least one day before
+        if (!LocalDate.now().isBefore(requestBookingTime.toLocalDate())) {
+            throw new BookingException(ErrorCode.NOT_POSSIBLE_BOOKING);
+        }
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
                         bookingService.requestBooking(

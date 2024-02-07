@@ -35,6 +35,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean isExistsByUsernameAndStoreId(String username, Long storeId) {
-        return memberRepository.isExistsByUsernameAndStoreId(username, storeId);
+        return memberRepository.existsByUsernameAndStoreId(username, storeId);
     }
 }
