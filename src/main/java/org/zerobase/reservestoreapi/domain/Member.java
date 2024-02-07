@@ -13,9 +13,14 @@ import java.util.Objects;
 
 @Getter
 @Entity
+@Table(
+        indexes = {
+            @Index(name = "username_idx", columnList = "username", unique = true),
+            @Index(name = "nickname_idx", columnList = "nickname", unique = true),
+            @Index(name = "username_store_id", columnList = "username, storeId"),
+        })
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-// TODO: username, nickname, phone is unique
 public class Member implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +35,8 @@ public class Member implements Persistable<Long> {
     private MemberRole memberRole;
 
     @Embedded private Address address;
+
+    @Column(unique = true)
     private String phone;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

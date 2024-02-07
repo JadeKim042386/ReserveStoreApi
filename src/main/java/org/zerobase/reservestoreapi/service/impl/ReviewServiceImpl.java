@@ -20,11 +20,12 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final StoreReviewInfoRepository storeReviewInfoRepository;
 
+    @Transactional
     @Override
     public ReviewDto writeReview(Store store, ReviewRequest reviewRequest) {
         ReviewDto reviewDto =
@@ -33,6 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewDto;
     }
 
+    @Transactional
     @Override
     public ReviewDto updateReview(
             ReviewRequest reviewRequest, Long reviewId, Long storeId, String requestUsername) {
@@ -57,6 +59,7 @@ public class ReviewServiceImpl implements ReviewService {
         return ReviewDto.fromEntity(review);
     }
 
+    @Transactional
     @Override
     public void deleteReview(Long reviewId, Long storeId, String requestUsername) {
         reviewRepository.deleteById(reviewId);

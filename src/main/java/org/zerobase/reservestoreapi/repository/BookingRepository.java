@@ -27,10 +27,6 @@ public interface BookingRepository
                 .first(((path, value) -> path.between(value, value.plusDays(1).minusSeconds(1))));
     }
 
-    boolean existsByCreatedAtAndStoreId(LocalDateTime requestTime, Long storeId);
-
-    boolean existsByCreatedByAndStoreId(String username, Long storeId);
-
     Optional<Booking> findByCreatedByAndStoreId(String username, Long storeId);
 
     void deleteAllByCreatedAtBefore(LocalDateTime now);

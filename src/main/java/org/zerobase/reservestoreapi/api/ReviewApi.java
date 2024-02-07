@@ -18,6 +18,7 @@ import org.zerobase.reservestoreapi.dto.response.ApiResponse;
 import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.exception.ReviewException;
 import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
+import org.zerobase.reservestoreapi.service.MemberService;
 import org.zerobase.reservestoreapi.service.ReviewService;
 import org.zerobase.reservestoreapi.service.StoreService;
 
@@ -28,6 +29,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/stores/{storeId}/reviews")
 public class ReviewApi {
+    private final MemberService memberService;
     private final StoreService storeService;
     private final ReviewService reviewService;
 
@@ -82,7 +84,8 @@ public class ReviewApi {
         // 1. check whether writer or not
         // 2. if request user is store and target store, possible delete
         if (!reviewService.isExistsReviewByUsername(reviewId, memberPrincipal.username())
-                && !storeService.isExistsStoreByUsername(storeId, memberPrincipal.username())) {
+                && !memberService.isExistsByUsernameAndStoreId(
+                        memberPrincipal.username(), storeId)) {
             throw new ReviewException(ErrorCode.NO_AUTHORIZED);
         }
         reviewService.deleteReview(reviewId, storeId, memberPrincipal.getUsername());

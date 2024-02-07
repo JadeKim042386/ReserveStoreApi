@@ -32,6 +32,7 @@ public class CustomBookingRepositoryImpl implements CustomBookingRepository {
         return new PageImpl<>(bookings, pageable, bookings.size());
     }
 
+    /** Check exists booking at same time or same user */
     @Override
     public boolean existsCreateByStoreId(LocalDateTime time, String username, Long storeId) {
         QBooking booking = QBooking.booking;
@@ -41,6 +42,6 @@ public class CustomBookingRepositoryImpl implements CustomBookingRepository {
                         .eq(storeId)
                         .and(booking.createdAt.eq(time).or(booking.createdBy.eq(username)));
 
-        return jpaQueryFactory.selectFrom(QBooking.booking).where(predicate).fetchFirst() != null;
+        return jpaQueryFactory.selectFrom(booking).where(predicate).fetchFirst() != null;
     }
 }

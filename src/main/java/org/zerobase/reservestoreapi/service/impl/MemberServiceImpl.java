@@ -32,4 +32,9 @@ public class MemberServiceImpl implements MemberService {
     public void saveMember(Member member) {
         memberRepository.save(member);
     }
+
+    @Override
+    public boolean isExistsByUsernameAndStoreId(String username, Long storeId) {
+        return memberRepository.isExistsByUsernameAndStoreId(username, storeId);
+    }
 }

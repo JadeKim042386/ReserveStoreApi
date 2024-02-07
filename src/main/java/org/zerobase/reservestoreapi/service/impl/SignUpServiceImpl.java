@@ -1,9 +1,11 @@
 package org.zerobase.reservestoreapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.zerobase.reservestoreapi.dto.constants.CacheKey;
 import org.zerobase.reservestoreapi.dto.request.SignUpRequest;
 import org.zerobase.reservestoreapi.exception.SignUpException;
 import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
@@ -27,6 +29,7 @@ public class SignUpServiceImpl implements SignUpService {
         memberService.saveMember(signUpRequest.toMemberEntity(passwordEncoder));
     }
 
+    @CacheEvict(value = CacheKey.KEY_STORE, allEntries = true)
     @Transactional
     @Override
     public void partnerSignUp(SignUpRequest signUpRequest) {
