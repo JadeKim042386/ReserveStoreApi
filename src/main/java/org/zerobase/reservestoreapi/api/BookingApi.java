@@ -2,7 +2,6 @@ package org.zerobase.reservestoreapi.api;
 
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -64,7 +63,10 @@ public class BookingApi {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
                         bookingService.requestBooking(
-                                memberPrincipal.phone(), memberPrincipal.username(), storeId, requestBookingTime));
+                                memberPrincipal.phone(),
+                                memberPrincipal.username(),
+                                storeId,
+                                requestBookingTime));
     }
 
     /**

@@ -1,6 +1,7 @@
 package org.zerobase.reservestoreapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -8,6 +9,7 @@ import org.zerobase.reservestoreapi.domain.Review;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
 import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
+import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.exception.ReviewException;
 import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.repository.ReviewRepository;
@@ -69,6 +71,12 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public boolean isExistsReviewByStoreIdAndUsername(Long storeId, String username) {
         return reviewRepository.existsByStoreIdAndCreatedBy(storeId, username);
+    }
+
+    @Override
+    public PagedResponse<ReviewDto> searchReviewDtoByStoreId(Long storeId, Pageable pageable) {
+        return PagedResponse.of(
+                reviewRepository.findAllByStoreId(storeId, pageable).map(ReviewDto::fromEntity));
     }
 
     /** Update average rating, review count of specific store when write/update/delete review */

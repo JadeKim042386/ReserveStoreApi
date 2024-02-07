@@ -3,13 +3,11 @@ package org.zerobase.reservestoreapi.service.impl;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
-import org.zerobase.reservestoreapi.dto.constants.CacheKey;
 import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.exception.BookingException;
 import org.zerobase.reservestoreapi.exception.StoreException;
@@ -28,7 +26,8 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
 
     @Override
-    public BookingDto requestBooking(String phone, String username, Long storeId, LocalDateTime requestTime) {
+    public BookingDto requestBooking(
+            String phone, String username, Long storeId, LocalDateTime requestTime) {
         // 1. if already exists booking at requestTime, you can't
         // 2. if already exists booking by username, you can't
         if (bookingRepository.existsCreateByStoreId(requestTime, username, storeId)) {
@@ -62,10 +61,9 @@ public class BookingServiceImpl implements BookingService {
             Long storeId, Predicate predicate, Pageable pageable) {
 
         return PagedResponse.of(
-            bookingRepository
-                .findAllByStoreId(storeId, predicate, pageable)
-                .map(BookingDto::fromEntity)
-        );
+                bookingRepository
+                        .findAllByStoreId(storeId, predicate, pageable)
+                        .map(BookingDto::fromEntity));
     }
 
     @Override

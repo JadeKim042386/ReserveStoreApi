@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +18,6 @@ import org.zerobase.reservestoreapi.domain.constants.Address;
 import org.zerobase.reservestoreapi.domain.constants.MemberRole;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
 import org.zerobase.reservestoreapi.dto.StoreDto;
-import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
 import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.repository.StoreRepository;
 
@@ -60,15 +58,20 @@ class StoreServiceImplTest {
         Long storeId = 1L;
         given(storeRepository.findById(anyLong())).willReturn(Optional.of(createStore()));
         // when
-        StoreWithReviewDto storeWithReviewDto = storeService.searchStoreWithReviewDto(storeId);
+        StoreDto storeDto = storeService.searchStoreDto(storeId);
         // then
-        assertThat(storeWithReviewDto.storeDto().name()).isEqualTo("name");
-        assertThat(storeWithReviewDto.reviews().size()).isEqualTo(1);
+        assertThat(storeDto.name()).isEqualTo("name");
     }
 
     private static Store createStore() throws IllegalAccessException {
         Store store =
-                Store.of("name", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, StoreType.CAFFE);
+                Store.of(
+                        "name",
+                        LocalTime.of(9, 0),
+                        LocalTime.of(18, 0),
+                        30,
+                        11.1f,
+                        StoreType.CAFFE);
         Member member =
                 Member.ofMember(
                         "username",

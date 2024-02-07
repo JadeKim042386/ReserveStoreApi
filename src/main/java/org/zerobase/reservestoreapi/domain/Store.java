@@ -40,7 +40,7 @@ public class Store implements Persistable<Long> {
      */
     private Integer intervalTime;
 
-    private Float distance; //Meter
+    private Float distance; // Meter
 
     @Enumerated(EnumType.STRING)
     private StoreType storeType;

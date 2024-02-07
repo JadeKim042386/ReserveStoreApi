@@ -11,8 +11,10 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI apiInfo() {
         return new OpenAPI()
-                .info(new Info().title("Reserve Store API")
-                        .description("Booking Store API Service")
-                        .version("v0.1"));
+                .info(
+                        new Info()
+                                .title("Reserve Store API")
+                                .description("Booking Store API Service")
+                                .version("v0.1"));
     }
 }

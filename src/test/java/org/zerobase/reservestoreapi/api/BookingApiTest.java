@@ -43,14 +43,13 @@ class BookingApiTest {
         Pageable pageable = PageRequest.of(0, 10);
         given(bookingService.searchBookingsByDate(anyLong(), any(), any()))
                 .willReturn(
-                            PagedResponse.of(
+                        PagedResponse.of(
                                 new PageImpl<>(
-                                        List.of(BookingDto.fromEntity(createBooking(LocalDateTime.now()))),
+                                        List.of(
+                                                BookingDto.fromEntity(
+                                                        createBooking(LocalDateTime.now()))),
                                         pageable,
-                                        1
-                                )
-                            )
-                        );
+                                        1)));
         // when
         mvc.perform(
                         get("/api/v1/stores/" + storeId + "/bookings")

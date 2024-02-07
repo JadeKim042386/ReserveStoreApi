@@ -1,10 +1,8 @@
 package org.zerobase.reservestoreapi.service;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.StoreDto;
-import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
 import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 
 public interface StoreService {
@@ -17,7 +15,7 @@ public interface StoreService {
     Store saveStore(Store store);
 
     /** Get store detail DTO by storeId */
-    StoreWithReviewDto searchStoreWithReviewDto(Long storeId);
+    StoreDto searchStoreDto(Long storeId);
 
     /** Check already exists store name */
     boolean isExistsStoreName(String storeName);

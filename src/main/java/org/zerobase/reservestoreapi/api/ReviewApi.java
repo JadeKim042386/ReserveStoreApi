@@ -2,6 +2,9 @@ package org.zerobase.reservestoreapi.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,6 +15,7 @@ import org.zerobase.reservestoreapi.dto.MemberPrincipal;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
 import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
+import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.exception.ReviewException;
 import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
 import org.zerobase.reservestoreapi.service.ReviewService;
@@ -27,6 +31,16 @@ public class ReviewApi {
     private final StoreService storeService;
     private final ReviewService reviewService;
 
+    /** Retrieve all reviews */
+    @GetMapping
+    public ResponseEntity<PagedResponse<ReviewDto>> getReviews(
+            @PathVariable Long storeId,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC)
+                    Pageable pageable) {
+        return ResponseEntity.ok(reviewService.searchReviewDtoByStoreId(storeId, pageable));
+    }
+
+    /** Write Review */
     @BindingResultHandler(message = "validation error during add review")
     @PostMapping
     public ResponseEntity<ReviewDto> writeReview(
@@ -44,6 +58,7 @@ public class ReviewApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(reviewDto);
     }
 
+    /** Update Review */
     @BindingResultHandler(message = "validation error during update review")
     @PutMapping("/{reviewId}")
     public ResponseEntity<ReviewDto> updateReview(
@@ -58,6 +73,7 @@ public class ReviewApi {
                         reviewRequest, reviewId, storeId, memberPrincipal.getUsername()));
     }
 
+    /** Delete Review */
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<ApiResponse> deleteReview(
             @PathVariable Long storeId,

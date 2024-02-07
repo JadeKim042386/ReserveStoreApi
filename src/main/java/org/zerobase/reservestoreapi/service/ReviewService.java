@@ -1,8 +1,10 @@
 package org.zerobase.reservestoreapi.service;
 
+import org.springframework.data.domain.Pageable;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.ReviewDto;
 import org.zerobase.reservestoreapi.dto.request.ReviewRequest;
+import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 
 public interface ReviewService {
     /** Add review for visited store */
@@ -18,4 +20,6 @@ public interface ReviewService {
     boolean isExistsReviewByUsername(Long reviewId, String username);
 
     boolean isExistsReviewByStoreIdAndUsername(Long storeId, String username);
+
+    PagedResponse<ReviewDto> searchReviewDtoByStoreId(Long storeId, Pageable pageable);
 }

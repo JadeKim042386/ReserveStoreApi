@@ -21,7 +21,6 @@ import org.zerobase.reservestoreapi.domain.constants.Address;
 import org.zerobase.reservestoreapi.domain.constants.MemberRole;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
 import org.zerobase.reservestoreapi.dto.StoreDto;
-import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
 import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.service.StoreService;
 
@@ -48,7 +47,8 @@ class StoreApiTest {
         // given
         Pageable pageable = PageRequest.of(0, 10);
         given(storeService.searchStores(any()))
-                .willReturn(PagedResponse.of(new PageImpl<>(List.of(createStoreDto()), pageable, 1)));
+                .willReturn(
+                        PagedResponse.of(new PageImpl<>(List.of(createStoreDto()), pageable, 1)));
         // when
         mvc.perform(get("/api/v1/stores"))
                 .andExpect(status().isOk())
@@ -62,19 +62,13 @@ class StoreApiTest {
     void searchStore() throws Exception {
         // given
         Long storeId = 1L;
-        given(storeService.searchStoreWithReviewDto(anyLong()))
-                .willReturn(createStoreWithReviewDto());
+        given(storeService.searchStoreDto(anyLong())).willReturn(createStoreDto());
         // when
         mvc.perform(get("/api/v1/stores/" + storeId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.storeDto.name").value("store"))
-                .andExpect(jsonPath("$.reviews.size()").value(1));
+                .andExpect(jsonPath("$.name").value("store"));
         // then
-    }
-
-    private StoreWithReviewDto createStoreWithReviewDto() throws IllegalAccessException {
-        return StoreWithReviewDto.fromEntity(createStore());
     }
 
     private StoreDto createStoreDto() throws IllegalAccessException {
@@ -83,7 +77,9 @@ class StoreApiTest {
     }
 
     private Store createStore() throws IllegalAccessException {
-        Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, StoreType.BAR);
+        Store store =
+                Store.of(
+                        "store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, StoreType.BAR);
         FieldUtils.writeField(store, "member", createMember(), true);
         store.getReviews().add(createReview(store));
         return store;
