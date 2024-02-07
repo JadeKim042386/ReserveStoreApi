@@ -1,0 +1,33 @@
+version: '1'
+services:
+  app:
+    image: app:0.0.2
+    container_name: app
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    environment:
+      - DB_URL=${SPRING_DATASOURCE_URL}
+      - DB_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - DB_PW=${SPRING_DATASOURCE_PASSWORD}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+    ports:
+      - "80:80"
+    networks:
+      - docker_store
+  store-nginx:
+    image: store-nginx:0.0.1
+    container_name: store-nginx
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "8080:8080"
+    networks:
+      - docker_store
+
+networks:
+  docker_store:
+    driver: bridge
+    external: true

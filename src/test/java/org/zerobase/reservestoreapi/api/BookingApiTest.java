@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.zerobase.reservestoreapi.config.TestSecurityConfig;
 import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
+import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.service.BookingService;
 
 import java.time.LocalDate;
@@ -42,10 +43,14 @@ class BookingApiTest {
         Pageable pageable = PageRequest.of(0, 10);
         given(bookingService.searchBookingsByDate(anyLong(), any(), any()))
                 .willReturn(
-                        new PageImpl<>(
-                                List.of(BookingDto.fromEntity(createBooking(LocalDateTime.now()))),
-                                pageable,
-                                1));
+                            PagedResponse.of(
+                                new PageImpl<>(
+                                        List.of(BookingDto.fromEntity(createBooking(LocalDateTime.now()))),
+                                        pageable,
+                                        1
+                                )
+                            )
+                        );
         // when
         mvc.perform(
                         get("/api/v1/stores/" + storeId + "/bookings")

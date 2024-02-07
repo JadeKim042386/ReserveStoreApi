@@ -117,7 +117,7 @@ class ReviewApiTest {
 
     private static Store createStore() throws IllegalAccessException {
         Store store =
-                Store.of("name", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.CAFFE);
+                Store.of("name", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, StoreType.CAFFE);
         Member member =
                 Member.ofMember(
                         "username",

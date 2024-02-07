@@ -106,6 +106,6 @@ class SignUpApiTest {
                 "detail",
                 "01011111111",
                 new PartnerSignUpRequest(
-                        "store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, "BAR"));
+                        "store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, "BAR"));
     }
 }

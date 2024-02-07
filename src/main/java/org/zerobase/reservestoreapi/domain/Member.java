@@ -15,6 +15,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+//TODO: username, nickname, phone is unique
 public class Member implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

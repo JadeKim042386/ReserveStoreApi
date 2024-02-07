@@ -20,6 +20,7 @@ import org.zerobase.reservestoreapi.domain.constants.MemberRole;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
 import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
+import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.repository.StoreRepository;
 
 import java.time.LocalDateTime;
@@ -46,10 +47,10 @@ class StoreServiceImplTest {
         given(storeRepository.findAll(any(Pageable.class)))
                 .willReturn(new PageImpl<>(List.of(createStore()), pageable, 1));
         // when
-        Page<StoreDto> storeDtos = storeService.searchStores(pageable);
+        PagedResponse<StoreDto> storeDtos = storeService.searchStores(pageable);
         // then
-        assertThat(storeDtos.getTotalElements()).isEqualTo(1);
-        assertThat(storeDtos.getContent().get(0).name()).isEqualTo("name");
+        assertThat(storeDtos.totalElements()).isEqualTo(1);
+        assertThat(storeDtos.content().get(0).name()).isEqualTo("name");
     }
 
     @DisplayName("Get store detail info by storeId")
@@ -67,7 +68,7 @@ class StoreServiceImplTest {
 
     private static Store createStore() throws IllegalAccessException {
         Store store =
-                Store.of("name", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.CAFFE);
+                Store.of("name", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, StoreType.CAFFE);
         Member member =
                 Member.ofMember(
                         "username",

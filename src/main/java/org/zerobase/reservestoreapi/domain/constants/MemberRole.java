@@ -1,8 +1,10 @@
 package org.zerobase.reservestoreapi.domain.constants;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum MemberRole {
     MEMBER("ROLE_MEMBER"),
     ADMIN("ROLE_ADMIN"),
@@ -10,8 +12,4 @@ public enum MemberRole {
     ANONYMOUS("ROLE_ANONYMOUS");
 
     private final String name;
-
-    MemberRole(String name) {
-        this.name = name;
-    }
 }

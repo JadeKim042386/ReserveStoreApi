@@ -17,6 +17,7 @@ import org.zerobase.reservestoreapi.domain.QBooking;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
 import org.zerobase.reservestoreapi.dto.BookingDto;
+import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.repository.BookingRepository;
 
 import java.time.LocalDate;
@@ -87,10 +88,10 @@ class BookingServiceImplTest {
         given(bookingRepository.findAllByStoreId(anyLong(), any(), any()))
                 .willReturn(new PageImpl<>(List.of(createBooking(now)), pageable, 1));
         // when
-        Page<BookingDto> bookingDtos = bookingService.searchBookingsByDate(1L, predicate, pageable);
+        PagedResponse<BookingDto> bookingDtos = bookingService.searchBookingsByDate(1L, predicate, pageable);
         // then
-        assertThat(bookingDtos.getTotalElements()).isEqualTo(1);
-        assertThat(bookingDtos.getContent().get(0).userDateCreatedAudit().createdBy())
+        assertThat(bookingDtos.totalElements()).isEqualTo(1);
+        assertThat(bookingDtos.content().get(0).userDateCreatedAudit().createdBy())
                 .isEqualTo("admin");
     }
 
@@ -137,7 +138,7 @@ class BookingServiceImplTest {
     }
 
     private static Store createStore() throws IllegalAccessException {
-        Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.BAR);
+        Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, StoreType.BAR);
         FieldUtils.writeField(store, "id", 1L, true);
         return store;
     }

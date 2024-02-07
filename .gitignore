@@ -207,7 +207,7 @@ gradle-app.setting
 /src/main/generated
 
 ###
-.env
+**/.env
 **/static/models/
 
 ### redis

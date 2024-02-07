@@ -22,6 +22,7 @@ import org.zerobase.reservestoreapi.domain.constants.MemberRole;
 import org.zerobase.reservestoreapi.domain.constants.StoreType;
 import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
+import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.service.StoreService;
 
 import java.time.LocalDateTime;
@@ -47,7 +48,7 @@ class StoreApiTest {
         // given
         Pageable pageable = PageRequest.of(0, 10);
         given(storeService.searchStores(any()))
-                .willReturn(new PageImpl<>(List.of(createStoreDto()), pageable, 1));
+                .willReturn(PagedResponse.of(new PageImpl<>(List.of(createStoreDto()), pageable, 1)));
         // when
         mvc.perform(get("/api/v1/stores"))
                 .andExpect(status().isOk())
@@ -82,7 +83,7 @@ class StoreApiTest {
     }
 
     private Store createStore() throws IllegalAccessException {
-        Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, StoreType.BAR);
+        Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, StoreType.BAR);
         FieldUtils.writeField(store, "member", createMember(), true);
         store.getReviews().add(createReview(store));
         return store;

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
+import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.service.StoreService;
 
 @RestController
@@ -21,15 +22,14 @@ public class StoreApi {
     private final StoreService storeService;
 
     /**
-     * Look up all stores Returns Page based on SSR(Server Side Rendering) (e.g.thymeleaf).
-     * Therefore, the return type may change in the future.
+     * Retrieve all stores.
      * <pre>
      *     Example:
      *     api/v1/stores?sort=name,desc&sort=storeReviewInfo.averageRating,asc&sort=distance,asc
- *     </pre>
+     * </pre>
      */
     @GetMapping
-    public ResponseEntity<Page<StoreDto>> searchAllStores(
+    public ResponseEntity<PagedResponse<StoreDto>> searchAllStores(
             @PageableDefault(sort = {"name", "storeReviewInfo.averageRating", "distance"}, direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.ok(storeService.searchStores(pageable));
     }
@@ -37,6 +37,7 @@ public class StoreApi {
     /** Look up specific store */
     @GetMapping("/{storeId}")
     public ResponseEntity<StoreWithReviewDto> searchStore(@PathVariable Long storeId) {
+        //TODO: pagination review (e.g.StoreWithReviewDto(StoreDto, Page<ReviewDto>))
         return ResponseEntity.ok(storeService.searchStoreWithReviewDto(storeId));
     }
 }

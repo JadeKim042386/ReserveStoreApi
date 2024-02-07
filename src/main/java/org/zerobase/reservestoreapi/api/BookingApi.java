@@ -16,6 +16,7 @@ import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
 import org.zerobase.reservestoreapi.dto.MemberPrincipal;
 import org.zerobase.reservestoreapi.dto.response.ApiResponse;
+import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.service.BookingService;
 
 import java.time.LocalDateTime;
@@ -27,9 +28,7 @@ public class BookingApi {
     private final BookingService bookingService;
 
     /**
-     * Look up booking info for a specific date for a specific store. Returns Page based on
-     * SSR(Server Side Rendering) (e.g.thymeleaf). Therefore, the return type may change in the
-     * future.
+     * Retrieve booking info for a specific date for a specific store.
      *
      * <pre>
      * Example:
@@ -38,7 +37,7 @@ public class BookingApi {
      * </pre>
      */
     @GetMapping
-    public ResponseEntity<Page<BookingDto>> searchBookingsByDate(
+    public ResponseEntity<PagedResponse<BookingDto>> searchBookingsByDate(
             @PathVariable Long storeId,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable,
             @QuerydslPredicate(root = Booking.class) Predicate predicate) {

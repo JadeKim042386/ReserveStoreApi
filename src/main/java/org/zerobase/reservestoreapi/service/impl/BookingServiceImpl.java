@@ -3,12 +3,14 @@ package org.zerobase.reservestoreapi.service.impl;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerobase.reservestoreapi.domain.Booking;
 import org.zerobase.reservestoreapi.dto.BookingDto;
+import org.zerobase.reservestoreapi.dto.constants.CacheKey;
+import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 import org.zerobase.reservestoreapi.exception.BookingException;
 import org.zerobase.reservestoreapi.exception.StoreException;
 import org.zerobase.reservestoreapi.exception.constant.ErrorCode;
@@ -56,12 +58,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<BookingDto> searchBookingsByDate(
+    public PagedResponse<BookingDto> searchBookingsByDate(
             Long storeId, Predicate predicate, Pageable pageable) {
 
-        return bookingRepository
+        return PagedResponse.of(
+            bookingRepository
                 .findAllByStoreId(storeId, predicate, pageable)
-                .map(BookingDto::fromEntity);
+                .map(BookingDto::fromEntity)
+        );
     }
 
     @Override

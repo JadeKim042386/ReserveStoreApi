@@ -12,13 +12,9 @@ spring:
   config.activate.on-profile: common
   jpa:
     show-sql: true
-    hibernate:
-      ddl-auto: create
     properties:
       hibernate.format_sql: true
-    defer-datasource-initialization: true
     open-in-view: false
-  sql.init.mode: always
 scheduler:
   booking:
     delete-not-visited: "0 0 0 * * *"
@@ -26,10 +22,18 @@ scheduler:
 ---
 spring:
   config.activate.on-profile: local
+  jpa:
+    hibernate:
+      ddl-auto: none
+    defer-datasource-initialization: false
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PW}
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+  sql.init.mode: never
 springdoc:
   api-docs:
     path: "/api-docs"
@@ -39,5 +43,10 @@ springdoc:
 ---
 spring:
   config.activate.on-profile: test
+  jpa:
+    hibernate:
+      ddl-auto: create
+    defer-datasource-initialization: true
+  sql.init.mode: always
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1

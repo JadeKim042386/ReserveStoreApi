@@ -5,10 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
+import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 
 public interface StoreService {
     /** Get all stores */
-    Page<StoreDto> searchStores(Pageable pageable);
+    PagedResponse<StoreDto> searchStores(Pageable pageable);
 
     /** Get specific store */
     Store searchStore(Long storeId);
