@@ -84,7 +84,8 @@ public class ReviewApi {
         // 1. check whether writer or not
         // 2. if request user is store and target store, possible delete
         if (!reviewService.isExistsReviewByUsername(reviewId, memberPrincipal.username())
-                && !memberService.isExistsByUsernameAndStoreId(memberPrincipal.username(), storeId)) {
+                && !memberService.isExistsByUsernameAndStoreId(
+                        memberPrincipal.username(), storeId)) {
             throw new ReviewException(ErrorCode.NO_AUTHORIZED);
         }
         reviewService.deleteReview(reviewId, storeId, memberPrincipal.getUsername());

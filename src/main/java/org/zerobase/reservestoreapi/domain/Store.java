@@ -16,11 +16,7 @@ import java.util.Set;
 
 @Getter
 @Entity
-@Table(
-        indexes = {
-                @Index(name = "store_name", columnList = "name", unique = true)
-        }
-)
+@Table(indexes = {@Index(name = "store_name", columnList = "name", unique = true)})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Store implements Persistable<Long> {
