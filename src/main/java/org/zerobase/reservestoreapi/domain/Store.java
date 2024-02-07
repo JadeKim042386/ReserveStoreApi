@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Getter
 @Entity
-@Table(indexes = {@Index(name = "store_name", columnList = "name", unique = true)})
+@Table(indexes = {@Index(name = "store_name_idx", columnList = "name", unique = true)})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Store implements Persistable<Long> {
@@ -25,13 +25,16 @@ public class Store implements Persistable<Long> {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     /** possible reservation start time */
+    @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalTime startTime;
 
     /** possible reservation last time */
+    @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalTime lastTime;
 
@@ -39,10 +42,13 @@ public class Store implements Persistable<Long> {
      * reservation interval time(minute) if intervalTime is 30 minutes, you can make possible
      * reservation time like 12:00(startTime), 12:30, 13:00, ..., 18:00(lastTime)
      */
+    @Column(nullable = false)
     private Integer intervalTime;
 
+    @Column(nullable = false)
     private Float distance; // Meter
 
+    @Column(nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
     private StoreType storeType;
 

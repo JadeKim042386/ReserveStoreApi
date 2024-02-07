@@ -22,6 +22,7 @@ public enum ErrorCode {
     ALREADY_EXISTS_BOOKING(HttpStatus.BAD_REQUEST, "already exists booking"),
     LATE_VISIT(HttpStatus.BAD_REQUEST, "you're late. you should be visit before 10 minutes."),
     NO_APPROVAL_BOOKING(HttpStatus.BAD_REQUEST, "this booking is not approve from store"),
+    NOT_POSSIBLE_BOOKING(HttpStatus.BAD_REQUEST, "request booking at least one day before"),
     // review
     ALREADY_EXISTS_REVIEW(HttpStatus.BAD_REQUEST, "already exists review"),
     NOT_WRITER(HttpStatus.BAD_REQUEST, "request user is not writer"),

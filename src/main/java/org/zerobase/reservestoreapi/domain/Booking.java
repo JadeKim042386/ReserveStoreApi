@@ -15,7 +15,7 @@ import java.util.Objects;
 @Table(
         indexes = {
             @Index(name = "booking_id_and_created_by", columnList = "id, createdBy"),
-            @Index(name = "created_at", columnList = "createdAt"),
+            @Index(name = "created_at_idx", columnList = "createdAt"),
             @Index(name = "store_id_and_created_at", columnList = "storeId, createdAt"),
             @Index(name = "store_id_and_created_by", columnList = "storeId, createdBy"),
             @Index(
@@ -30,7 +30,9 @@ public class Booking extends AuditingCreatedFields implements Persistable<Long> 
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(nullable = false)
     private Boolean approve;
+    @Column(nullable = false)
     private String phone;
 
     @ManyToOne(fetch = FetchType.LAZY)
