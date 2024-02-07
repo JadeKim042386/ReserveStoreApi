@@ -75,7 +75,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public PagedResponse<ReviewDto> searchReviewDtoByStoreId(Long storeId, Pageable pageable) {
-        return PagedResponse.of(reviewRepository.findAllByStoreId(storeId, pageable).map(ReviewDto::fromEntity));
+        return PagedResponse.of(
+                reviewRepository.findAllByStoreId(storeId, pageable).map(ReviewDto::fromEntity));
     }
 
     /** Update average rating, review count of specific store when write/update/delete review */

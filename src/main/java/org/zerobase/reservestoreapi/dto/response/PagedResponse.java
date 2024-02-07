@@ -16,8 +16,7 @@ public record PagedResponse<T>(
         long totalElements,
         int totalPages,
         boolean first,
-        boolean last
-) {
+        boolean last) {
     public static <T> PagedResponse<T> of(Page<T> page) {
         return new PagedResponse<>(
                 Collections.unmodifiableList(page.getContent()),
@@ -27,28 +26,20 @@ public record PagedResponse<T>(
                 page.getTotalElements(),
                 page.getTotalPages(),
                 page.isFirst(),
-                page.isLast()
-        );
+                page.isLast());
     }
 
     /**
+     *
+     *
      * <pre>
      * Example:
      * <code>JsonNode jsonNode = sortToJsonNode(sort);</code>
      * <code>String property = jsonNode.get(0).get("property");</code>
      * </pre>
-     * @return
-     * [
-     *   {
-     *      "direction":"DESC",
-     *      "property":"name",
-     *      "ignoreCase":false,
-     *      "nullHandling":"NATIVE",
-     *      "descending":true,
-     *      "ascending":false
-     *   },
-     *   ...
-     * ]
+     *
+     * @return [ { "direction":"DESC", "property":"name", "ignoreCase":false,
+     *     "nullHandling":"NATIVE", "descending":true, "ascending":false }, ... ]
      */
     private static JsonNode sortToJsonNode(Sort sort) {
         ObjectMapper objectMapper = new ObjectMapper();

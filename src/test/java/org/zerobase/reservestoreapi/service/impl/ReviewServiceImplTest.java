@@ -90,7 +90,9 @@ class ReviewServiceImplTest {
     }
 
     private Store createStore() throws IllegalAccessException {
-        Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, StoreType.BAR);
+        Store store =
+                Store.of(
+                        "store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, StoreType.BAR);
         FieldUtils.writeField(store, "id", 1L, true);
         return store;
     }

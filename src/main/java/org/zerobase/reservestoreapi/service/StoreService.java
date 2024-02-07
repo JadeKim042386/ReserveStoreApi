@@ -1,10 +1,8 @@
 package org.zerobase.reservestoreapi.service;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.zerobase.reservestoreapi.domain.Store;
 import org.zerobase.reservestoreapi.dto.StoreDto;
-import org.zerobase.reservestoreapi.dto.StoreWithReviewDto;
 import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 
 public interface StoreService {

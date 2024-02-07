@@ -31,20 +31,16 @@ public class ReviewApi {
     private final StoreService storeService;
     private final ReviewService reviewService;
 
-    /**
-     * Retrieve all reviews
-     */
+    /** Retrieve all reviews */
     @GetMapping
     public ResponseEntity<PagedResponse<ReviewDto>> getReviews(
             @PathVariable Long storeId,
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
-    ) {
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC)
+                    Pageable pageable) {
         return ResponseEntity.ok(reviewService.searchReviewDtoByStoreId(storeId, pageable));
     }
 
-    /**
-     * Write Review
-     */
+    /** Write Review */
     @BindingResultHandler(message = "validation error during add review")
     @PostMapping
     public ResponseEntity<ReviewDto> writeReview(
@@ -62,9 +58,7 @@ public class ReviewApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(reviewDto);
     }
 
-    /**
-     * Update Review
-     */
+    /** Update Review */
     @BindingResultHandler(message = "validation error during update review")
     @PutMapping("/{reviewId}")
     public ResponseEntity<ReviewDto> updateReview(
@@ -79,9 +73,7 @@ public class ReviewApi {
                         reviewRequest, reviewId, storeId, memberPrincipal.getUsername()));
     }
 
-    /**
-     * Delete Review
-     */
+    /** Delete Review */
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<ApiResponse> deleteReview(
             @PathVariable Long storeId,

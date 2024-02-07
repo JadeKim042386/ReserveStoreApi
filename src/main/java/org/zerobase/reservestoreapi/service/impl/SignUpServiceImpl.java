@@ -41,8 +41,7 @@ public class SignUpServiceImpl implements SignUpService {
                 < signUpRequest.getPartnerInfo().getIntervalTime())
             throw new SignUpException(ErrorCode.INVALID_INTERVAL_TIME);
         // save store member
-        memberService.saveMember(
-                signUpRequest.toStoreMemberEntity(passwordEncoder));
+        memberService.saveMember(signUpRequest.toStoreMemberEntity(passwordEncoder));
     }
 
     /** Check validation for username and nickname */

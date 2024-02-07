@@ -35,13 +35,18 @@ public class PartnerSignUpRequest {
     @Max(1440)
     private Integer intervalTime;
 
-    @NotNull
-    private Float distance;
+    @NotNull private Float distance;
 
     @ValidEnum(enumClass = StoreType.class)
     private String storeType;
 
     public Store toStoreEntity() {
-        return Store.of(storeName, startTime, lastTime, intervalTime, distance, StoreType.valueOf(storeType));
+        return Store.of(
+                storeName,
+                startTime,
+                lastTime,
+                intervalTime,
+                distance,
+                StoreType.valueOf(storeType));
     }
 }

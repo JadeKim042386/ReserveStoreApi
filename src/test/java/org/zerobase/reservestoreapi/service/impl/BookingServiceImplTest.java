@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -88,7 +87,8 @@ class BookingServiceImplTest {
         given(bookingRepository.findAllByStoreId(anyLong(), any(), any()))
                 .willReturn(new PageImpl<>(List.of(createBooking(now)), pageable, 1));
         // when
-        PagedResponse<BookingDto> bookingDtos = bookingService.searchBookingsByDate(1L, predicate, pageable);
+        PagedResponse<BookingDto> bookingDtos =
+                bookingService.searchBookingsByDate(1L, predicate, pageable);
         // then
         assertThat(bookingDtos.totalElements()).isEqualTo(1);
         assertThat(bookingDtos.content().get(0).userDateCreatedAudit().createdBy())
@@ -138,7 +138,9 @@ class BookingServiceImplTest {
     }
 
     private static Store createStore() throws IllegalAccessException {
-        Store store = Store.of("store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, StoreType.BAR);
+        Store store =
+                Store.of(
+                        "store", LocalTime.of(9, 0), LocalTime.of(18, 0), 30, 11.1f, StoreType.BAR);
         FieldUtils.writeField(store, "id", 1L, true);
         return store;
     }
