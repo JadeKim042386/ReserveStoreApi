@@ -1,6 +1,7 @@
 package org.zerobase.reservestoreapi.api;
 
 import com.querydsl.core.types.Predicate;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,9 +34,32 @@ public class BookingApi {
      * Retrieve booking info for a specific date for a specific store.
      *
      * <pre>
-     * Example:
+     * Request Example:
      * - /api/v1/stores/1/bookings?approve=true&date=2024-02-03T00:00:00
      * - /api/v1/stores/1/bookings?date=2024-02-03T00:00:00
+     * </pre>
+     *
+     * <pre>
+     * Response Example:
+     * {
+     *     "content": List<BookingDto>,
+     *     "number": 0,
+     *     "size": 10,
+     *     "sort": [
+     *         {
+     *             "direction": "ASC",
+     *             "property": "createdAt",
+     *             "ignoreCase": false,
+     *             "nullHandling": "NATIVE",
+     *             "descending": false,
+     *             "ascending": true
+     *         }
+     *     ],
+     *     "totalElements": 0,
+     *     "totalPages": 0,
+     *     "first": true,
+     *     "last": true
+     * }
      * </pre>
      */
     @GetMapping
@@ -48,14 +72,26 @@ public class BookingApi {
     }
 
     /**
-     * Request booking for a specific time for a specific store.
+     * Request booking for a specific time and a specific store
      *
      * <pre>
-     * throw an exception followed:
-     * 1. if already exists booking at request booking time
-     * 2. if already exists booking by request user
+     * Request Example:
+     * - /api/v1/stores/1/bookings?time=2024-02-05T09:00:00
      * </pre>
+     *
+     * <pre>
+     * Response Example:
+     * {
+     *     "approve": false,
+     *     "phone": "01011111111",
+     *     "createdAt": 2024-02-04T09:00:00,
+     *     "createdBy": "admin"
+     * }
+     * </pre>
+     *
+     * @throws BookingException if not request booking at one day before ({@code ErrorCode.NOT_POSSIBLE_BOOKING})
      */
+    @Operation(summary = "Request booking for a specific time and a specific store")
     @PostMapping
     public ResponseEntity<BookingDto> requestBooking(
             @PathVariable Long storeId,
@@ -79,7 +115,20 @@ public class BookingApi {
     /**
      * store can deny or approve the booking. if the requested store and the booking store do not
      * match, throw exception.
+     *
+     * <pre>
+     * Request Example:
+     * - /api/v1/stores/1/bookings/1?approve=true
+     * </pre>
+     *
+     * <pre>
+     * Response Example:
+     * {
+     *     "message": "you're successfully confirm."
+     * }
+     * </pre>
      */
+    @Operation(summary = "store can deny or approve the booking")
     @PutMapping("/{bookingId}")
     public ResponseEntity<ApiResponse> confirmBooking(
             @PathVariable Long storeId,
@@ -93,7 +142,20 @@ public class BookingApi {
     /**
      * when a user visits the store, can request a visit check. if the user wasn't arrive 10 minutes
      * earlier than the booking time, throw exception.
+     *
+     * <pre>
+     * Request Example:
+     * - /api/v1/stores/1/bookings
+     * </pre>
+     *
+     * <pre>
+     * Response Example:
+     * {
+     *     "message": "you're successfully confirm."
+     * }
+     * </pre>
      */
+    @Operation(summary = "when a user visits the store, can request a visit check")
     @DeleteMapping
     public ResponseEntity<ApiResponse> checkVisit(
             @PathVariable Long storeId, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {

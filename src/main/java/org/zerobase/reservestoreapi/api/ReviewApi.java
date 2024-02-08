@@ -1,5 +1,6 @@
 package org.zerobase.reservestoreapi.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,38 @@ public class ReviewApi {
     private final StoreService storeService;
     private final ReviewService reviewService;
 
-    /** Retrieve all reviews */
+    /**
+     * Retrieve all reviews
+     *
+     * <pre>
+     * Request Example:
+     * - /api/v1/stores/1/reviews?sort=createdAt,asc
+     * </pre>
+     *
+     * <pre>
+     * Response Example:
+     * {
+     *     "content": List<ReviewDto>,
+     *     "number": 0,
+     *     "size": 10,
+     *     "sort": [
+     *         {
+     *             "direction": "DESC",
+     *             "property": "createdAt",
+     *             "ignoreCase": false,
+     *             "nullHandling": "NATIVE",
+     *             "descending": false,
+     *             "ascending": true
+     *         }
+     *     ],
+     *     "totalElements": 0,
+     *     "totalPages": 0,
+     *     "first": true,
+     *     "last": true
+     * }
+     * </pre>
+     */
+    @Operation(summary = "Retrieve all reviews")
     @GetMapping
     public ResponseEntity<PagedResponse<ReviewDto>> getReviews(
             @PathVariable Long storeId,
@@ -42,7 +74,30 @@ public class ReviewApi {
         return ResponseEntity.ok(reviewService.searchReviewDtoByStoreId(storeId, pageable));
     }
 
-    /** Write Review */
+    /**
+     * Write Review
+     *
+     * <pre>
+     * Request Example:
+     * - /api/v1/stores/1/reviews?content=good&rating=5
+     * </pre>
+     *
+     * <pre>
+     * Response Example:
+     * {
+     *     "id": 1,
+     *     "content": "good",
+     *     "rating": 5,
+     *     "createdAt": 2024-02-08T17:02:53,
+     *     "modifiedAt": 2024-02-08T17:02:53,
+     *     "createdBy": admin,
+     *     "modifiedBy": admin
+     * }
+     * </pre>
+     *
+     * @throws ReviewException if already exists booking ({@code ErrorCode.ALREADY_EXISTS_REVIEW})
+     */
+    @Operation(summary = "Write Review")
     @BindingResultHandler(message = "validation error during add review")
     @PostMapping
     public ResponseEntity<ReviewDto> writeReview(
@@ -60,7 +115,28 @@ public class ReviewApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(reviewDto);
     }
 
-    /** Update Review */
+    /**
+     * Update Review
+     *
+     * <pre>
+     * Request Example:
+     * - /api/v1/stores/1/reviews/1?content=dirty&rating=1
+     * </pre>
+     *
+     * <pre>
+     * Response Example:
+     * {
+     *     "id": 1,
+     *     "content": "dirty",
+     *     "rating": 1,
+     *     "createdAt": 2024-02-08T17:02:53,
+     *     "modifiedAt": 2024-02-08T17:12:53,
+     *     "createdBy": admin,
+     *     "modifiedBy": admin
+     * }
+     * </pre>
+     */
+    @Operation(summary = "Update Review")
     @BindingResultHandler(message = "validation error during update review")
     @PutMapping("/{reviewId}")
     public ResponseEntity<ReviewDto> updateReview(
@@ -75,7 +151,24 @@ public class ReviewApi {
                         reviewRequest, reviewId, storeId, memberPrincipal.getUsername()));
     }
 
-    /** Delete Review */
+    /**
+     * Delete Review
+     *
+     * <pre>
+     * Request Example:
+     * - /api/v1/stores/1/reviews/1
+     * </pre>
+     *
+     * <pre>
+     * Response Example:
+     * {
+     *     "message": "You're successfully delete review."
+     * }
+     * </pre>
+     *
+     * @throws ReviewException if not writer and admin store ({@code ErrorCode.NO_AUTHORIZED})
+     */
+    @Operation(summary = "Delete Review")
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<ApiResponse> deleteReview(
             @PathVariable Long storeId,

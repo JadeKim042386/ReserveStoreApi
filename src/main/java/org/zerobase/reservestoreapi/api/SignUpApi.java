@@ -1,5 +1,6 @@
 package org.zerobase.reservestoreapi.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,12 +29,11 @@ public class SignUpApi {
     private final StoreService storeService;
 
     /**
-     * request sign up<br>
-     * request partner sign up example:
+     * request sign up
      *
-     * <pre class="code">
-     * /api/v1/signup?partner=true
-     *
+     * <pre>
+     * Request Example:
+     * - /api/v1/signup?partner=true
      * {
      *      "username": "username",
      *      "password": "pw",
@@ -53,8 +53,16 @@ public class SignUpApi {
      * }
      * </pre>
      *
-     * @param isPartnerSignUp determine whether or not to sign up a partner
+     * <pre>
+     * Response Example:
+     * {
+     *      "message": "You have successfully signed up"
+     * }
+     * </pre>
+     *
+     * @throws SignUpException if already exists username or nickname or store name
      */
+    @Operation(summary = "Request Sign Up")
     @BindingResultHandler(message = "validation error during sign up")
     @PostMapping
     public ResponseEntity<ApiResponse> requestSignUp(
@@ -63,8 +71,10 @@ public class SignUpApi {
             BindingResult bindingResult) {
 
         if (isPartnerSignUp) {
+            checkExists(signUpRequest.getUsername(), signUpRequest.getNickname(), signUpRequest.getPartnerInfo().getStoreName());
             signUpService.partnerSignUp(signUpRequest);
         } else {
+            checkExists(signUpRequest.getUsername(), signUpRequest.getNickname(), null);
             signUpService.signUp(signUpRequest);
         }
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -75,17 +85,12 @@ public class SignUpApi {
      * Duplicated Check <br>
      * Verify that one of username, nickname, storeName already exists.
      */
-    @GetMapping("/exists")
-    public ResponseEntity<ApiResponse> checkExists(
-            @RequestParam(required = false) String username,
-            @RequestParam(required = false) String nickname,
-            @RequestParam(required = false) String storeName) {
+    private void checkExists(String username, String nickname, String storeName) {
         if ((StringUtils.hasText(username) || StringUtils.hasText(nickname))
                 && memberService.isExistsUsernameOrNickname(username, nickname)) {
             throw new SignUpException(ErrorCode.ALREADY_EXISTS_USERNAME_OR_NICKNAME);
         } else if (StringUtils.hasText(storeName) && storeService.isExistsStoreName(storeName)) {
             throw new StoreException(ErrorCode.ALREADY_EXISTS_STORE_NAME);
         }
-        return ResponseEntity.ok(ApiResponse.of("you can use"));
     }
 }

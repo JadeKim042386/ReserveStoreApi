@@ -32,7 +32,6 @@ public class CustomBookingRepositoryImpl implements CustomBookingRepository {
         return new PageImpl<>(bookings, pageable, bookings.size());
     }
 
-    /** Check exists booking at same time or same user */
     @Override
     public boolean existsCreateByStoreId(LocalDateTime time, String username, Long storeId) {
         QBooking booking = QBooking.booking;

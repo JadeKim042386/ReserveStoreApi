@@ -17,9 +17,12 @@ public interface ReviewService {
     /** Delete review */
     void deleteReview(Long reviewId, Long storeId, String requestUsername);
 
+    /** Check exists specific review had username */
     boolean isExistsReviewByUsername(Long reviewId, String username);
 
+    /** Check exists review had store id and username */
     boolean isExistsReviewByStoreIdAndUsername(Long storeId, String username);
 
+    /** Retrieve reviews by store id */
     PagedResponse<ReviewDto> searchReviewDtoByStoreId(Long storeId, Pageable pageable);
 }

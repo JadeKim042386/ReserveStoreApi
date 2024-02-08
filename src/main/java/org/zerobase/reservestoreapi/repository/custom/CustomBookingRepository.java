@@ -10,5 +10,6 @@ import java.time.LocalDateTime;
 public interface CustomBookingRepository {
     Page<Booking> findAllByStoreId(Long storeId, Predicate predicate, Pageable pageable);
 
+    /** Check exists booking had time or username for specific store */
     boolean existsCreateByStoreId(LocalDateTime time, String username, Long storeId);
 }

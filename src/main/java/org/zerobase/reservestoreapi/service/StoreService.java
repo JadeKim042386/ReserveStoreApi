@@ -6,15 +6,15 @@ import org.zerobase.reservestoreapi.dto.StoreDto;
 import org.zerobase.reservestoreapi.dto.response.PagedResponse;
 
 public interface StoreService {
-    /** Get all stores */
+    /** Retrieve stores */
     PagedResponse<StoreDto> searchStores(Pageable pageable);
 
-    /** Get specific store */
+    /** Retrieve specific store */
     Store searchStore(Long storeId);
 
-    /** Get store detail DTO by storeId */
+    /** Retrieve store detail DTO by storeId */
     StoreDto searchStoreDto(Long storeId);
 
-    /** Check already exists store name */
+    /** Check already exists store had storeName */
     boolean isExistsStoreName(String storeName);
 }
