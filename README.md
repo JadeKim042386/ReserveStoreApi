@@ -18,3 +18,7 @@
 
 ### Store API
 ![](./imgs/store-api.png)
+
+## ERD
+
+![](./imgs/reserve_store_erd.png)
